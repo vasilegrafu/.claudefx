@@ -69,14 +69,21 @@ class Component(NamedTuple):
 
 
 def load_components() -> list[Component]:
-    """Scan components/ once."""
-    components = []
-    for directory in sorted(COMPONENTS_DIR.iterdir()):
-        markup = directory / "component.html.j2"
-        if not (directory.is_dir() and markup.is_file()):
-            continue
-        components.append(Component(name=directory.name,
-                                    macro=directory.name.replace("-", "_"),
+    """Scan components/ once, recursively.
+
+    components/ is organized in CATEGORY folders (structure/, lists/, blocks/,
+    business/, …) that exist purely for humans — a component's identity stays
+    its own folder name (macro = name with - -> _), so category moves never
+    touch templates. Names must be unique across categories."""
+    components, seen = [], {}
+    for markup in sorted(COMPONENTS_DIR.rglob("component.html.j2")):
+        name = markup.parent.name
+        if name in seen:
+            raise SystemExit(f"duplicate component name: {name!r} "
+                             f"({seen[name]} and {markup.parent})")
+        seen[name] = markup.parent
+        components.append(Component(name=name,
+                                    macro=name.replace("-", "_"),
                                     path=markup))
     return components
 
@@ -94,7 +101,7 @@ def make_env(components: list[Component]) -> Environment:
     c = SimpleNamespace()
     for component in components:
         module = env.get_template(
-            f"components/{component.name}/component.html.j2").module
+            component.path.relative_to(SKILL_DIR).as_posix()).module
         if hasattr(module, component.macro):
             setattr(c, component.macro, getattr(module, component.macro))
     env.globals["c"] = c        # templates call {{ c.<macro>(...) }} — no imports
@@ -236,7 +243,7 @@ def compose_showcase() -> str:
         type_name="Component Showcase",
         author="docs-html",
         date=datetime.date.today().isoformat(),
-        version="12.0",
+        version="13.0",
         skill_href=skill_href(COMPONENTS_DIR),   # gallery lives in components/
         cdn_href="",   # skill-internal document: ALWAYS local relative refs
         body_class="")

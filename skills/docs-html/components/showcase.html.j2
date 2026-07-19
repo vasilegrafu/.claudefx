@@ -25,6 +25,7 @@
     ("10.0", "2026-07-19", "docs-html", "Code is plain text + data-lang — coloring moved to view time (Prism via docs-html.js)"),
     ("11.0", "2026-07-19", "docs-html", "Business &amp; finance components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge"),
     ("12.0", "2026-07-19", "docs-html", "Formulas: LaTeX rendered at view time by KaTeX (math feature module)"),
+    ("13.0", "2026-07-19", "docs-html", "quote, comparison-table, meter, risk-matrix, party-block, footnotes; components/ categorized"),
 ]) }}
 {% endblock %}
 
@@ -38,12 +39,14 @@
       ("tables", "Tables"),
       ("todo-and-trace", "Todo marker &amp; trace IDs"),
       ("collapsible", "Collapsible"),
+      ("quotes", "Quote &amp; footnotes"),
       ("facts-steps-checklist", "Facts, steps, checklist"),
       ("prose-lists", "Prose lists"),
       ("requirements", "Requirement cards"),
       ("acceptance", "Acceptance criteria"),
       ("kpis", "KPI tiles"),
       ("timeline", "Timeline"),
+      ("progress-risk", "Meter &amp; risk matrix"),
       ("glossary", "Glossary &amp; revision note"),
       ("references", "References &amp; appendices"),
       ("figure", "Figure"),
@@ -105,6 +108,14 @@ def rate_limited(partition: str) -> bool:
         ["Col 1", "Col 2", "Col 3", "Col 4", "Col 5", "Col 6", "Col 7", "Col 8", "Col 9", "Col 10"],
         [["wide", "table", "scrolls", "inside", "its", "own", "container", "not", "the", "page"]],
         wide=true) }}
+    {{ mark("comparison-table") }}
+    {{ c.comparison_table(
+        headers=["", "PostgreSQL", "SQLite"],
+        rows=[
+          ["Concurrent writers", "yes", "no"],
+          ["Zero administration", "part", "yes"],
+          ["Max database size", "unlimited", "281 TB"],
+        ]) }}
   {% endcall %}
 
   {% call c.section("todo-and-trace", "Todo marker &amp; trace IDs") %}
@@ -119,6 +130,17 @@ def rate_limited(partition: str) -> bool:
     {% call c.collapsible(summary="Full error payload") %}
       {% call c.code() %}{% raw %}{ "error": "rate_limited", "retry_after": 30 }{% endraw %}{% endcall %}
     {% endcall %}
+  {% endcall %}
+
+  {% call c.section("quotes", "Quote &amp; footnotes") %}
+    {{ mark("quote") }}
+    {% call c.quote(source="Nygard, Documenting Architecture Decisions, 2011") %}A decision without a record is a rumor with seniority.{% endcall %}
+    {{ mark("footnotes") }}
+    {% call c.prose() %}The figure excludes one-off items<sup class="fn"><a id="fnref-1" href="#fn-1">1</a></sup> as reported in the annual filing<sup class="fn"><a id="fnref-2" href="#fn-2">2</a></sup>.{% endcall %}
+    {{ c.footnotes([
+        "Restructuring charge of 4.2m in Q3.",
+        "Company filings, 10-K 2025, note 7.",
+    ]) }}
   {% endcall %}
 
   {% call c.section("facts-steps-checklist", "Facts, steps, checklist") %}
@@ -190,6 +212,18 @@ def rate_limited(partition: str) -> bool:
         ("done", "2026-Q1", "Importer rewrite shipped", "All eight domains on the new session builder."),
         ("current", "2026-Q3", "Portfolio app v2", "webapi + webapp split; v1 kept read-only."),
         ("", "2026-Q4", "Research workspace", "Planned."),
+    ]) }}
+  {% endcall %}
+
+  {% call c.section("progress-risk", "Meter &amp; risk matrix") %}
+    {{ mark("meter") }}
+    {{ c.meter(label="Equities vs 60% target", value=54, max=60, display="54%") }}
+    {{ c.meter(label="Roadmap — importer rewrite", value=80, max=100, display="80%") }}
+    {{ mark("risk-matrix") }}
+    {{ c.risk_matrix([
+        ("RISK-01", 4, 5, "Broker session drops during trading hours"),
+        ("RISK-02", 2, 3, "CDN outage degrades rendered documents"),
+        ("RISK-03", 3, 2, "Manual reconciliation backlog"),
     ]) }}
   {% endcall %}
 
@@ -274,6 +308,10 @@ def rate_limited(partition: str) -> bool:
         weaknesses=["Single-region supply"],
         opportunities=["Adjacent product line"],
         threats=["Regulatory change draft in consultation"]) }}
+    {{ mark("party-block") }}
+    {{ c.party_block(
+        from_title="Provider", from_lines=["Vasile Grafu", "Bucharest, RO", "vasilegrafu@gmail.com"],
+        to_title="Client", to_lines=["Acme Industries SRL", "Cluj-Napoca, RO", "RO12345678"]) }}
   {% endcall %}
 
   {% call c.section("formulas", "Formulas") %}

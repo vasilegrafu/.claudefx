@@ -4,10 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The Design System, Exercised — Component Showcase</title>
-  <link rel="stylesheet" href="../css/docs-html.css"
-        onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/gh/vasilegrafu/.claudefx@1.0.0/skills/docs-html/css/docs-html.css'">
-  <script src="../js/docs-html.js" defer
-          onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/vasilegrafu/.claudefx@1.0.0/skills/docs-html/js/docs-html.js';s.defer=true;document.head.appendChild(s)"></script>
+  <link rel="stylesheet" href="../css/docs-html.css">
+  <script src="../js/docs-html.js" defer></script>
 </head>
 <body>
   <div class="doc-toolbar" role="group" aria-label="Document width">
@@ -22,7 +20,7 @@
     <dl>
       <dt>Author</dt>         <dd>docs-html</dd>
       <dt>Date</dt>           <dd>2026-07-19</dd>
-      <dt>Version</dt>        <dd>12.0</dd>
+      <dt>Version</dt>        <dd>13.0</dd>
     </dl>
   </header>
 
@@ -39,6 +37,7 @@
       <tr><td>10.0</td><td>2026-07-19</td><td>docs-html</td><td>Code is plain text + data-lang — coloring moved to view time (Prism via docs-html.js)</td></tr>
       <tr><td>11.0</td><td>2026-07-19</td><td>docs-html</td><td>Business &amp; finance components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge</td></tr>
       <tr><td>12.0</td><td>2026-07-19</td><td>docs-html</td><td>Formulas: LaTeX rendered at view time by KaTeX (math feature module)</td></tr>
+      <tr><td>13.0</td><td>2026-07-19</td><td>docs-html</td><td>quote, comparison-table, meter, risk-matrix, party-block, footnotes; components/ categorized</td></tr>
     </tbody>
   </table>
 
@@ -54,12 +53,14 @@
       <li><a href="#tables">Tables</a></li>
       <li><a href="#todo-and-trace">Todo marker &amp; trace IDs</a></li>
       <li><a href="#collapsible">Collapsible</a></li>
+      <li><a href="#quotes">Quote &amp; footnotes</a></li>
       <li><a href="#facts-steps-checklist">Facts, steps, checklist</a></li>
       <li><a href="#prose-lists">Prose lists</a></li>
       <li><a href="#requirements">Requirement cards</a></li>
       <li><a href="#acceptance">Acceptance criteria</a></li>
       <li><a href="#kpis">KPI tiles</a></li>
       <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#progress-risk">Meter &amp; risk matrix</a></li>
       <li><a href="#glossary">Glossary &amp; revision note</a></li>
       <li><a href="#references">References &amp; appendices</a></li>
       <li><a href="#figure">Figure</a></li>
@@ -158,6 +159,29 @@ def rate_limited(partition: str) -> bool:
     </tbody>
   </table>
 
+      <div class="component-label"><span>comparison-table</span></div>
+
+      <table class="comparison">
+    <thead><tr><th></th><th>PostgreSQL</th><th>SQLite</th></tr></thead>
+    <tbody>
+      <tr>
+<td>Concurrent writers</td>
+<td><span class="mark-yes">✓</span></td>
+<td><span class="mark-no">✗</span></td>
+      </tr>
+      <tr>
+<td>Zero administration</td>
+<td><span class="mark-part">◐</span></td>
+<td><span class="mark-yes">✓</span></td>
+      </tr>
+      <tr>
+<td>Max database size</td>
+<td>unlimited</td>
+<td>281 TB</td>
+      </tr>
+    </tbody>
+  </table>
+
 
   </section>
 
@@ -181,6 +205,25 @@ def rate_limited(partition: str) -> bool:
       <pre><code>{ "error": "rate_limited", "retry_after": 30 }</code></pre>
 
   </details>
+
+  </section>
+
+  <section id="quotes">
+    <h2>Quote &amp; footnotes</h2>
+          <div class="component-label"><span>quote</span></div>
+
+  <blockquote class="pull">
+    <p>A decision without a record is a rumor with seniority.</p>
+    <footer>— Nygard, Documenting Architecture Decisions, 2011</footer>
+  </blockquote>
+      <div class="component-label"><span>footnotes</span></div>
+
+  <p>The figure excludes one-off items<sup class="fn"><a id="fnref-1" href="#fn-1">1</a></sup> as reported in the annual filing<sup class="fn"><a id="fnref-2" href="#fn-2">2</a></sup>.</p>
+      <ol class="footnotes">
+    <li id="fn-1">Restructuring charge of 4.2m in Q3. <a class="fn-back" href="#fnref-1" aria-label="back to text">↩</a></li>
+    <li id="fn-2">Company filings, 10-K 2025, note 7. <a class="fn-back" href="#fnref-2" aria-label="back to text">↩</a></li>
+  </ol>
+
 
   </section>
 
@@ -337,6 +380,95 @@ def rate_limited(partition: str) -> bool:
 
   </section>
 
+  <section id="progress-risk">
+    <h2>Meter &amp; risk matrix</h2>
+          <div class="component-label"><span>meter</span></div>
+
+      <div class="meter">
+    <div class="meter-head">
+      <span class="meter-label">Equities vs 60% target</span>
+      <span class="meter-value">54%</span>
+    </div>
+    <div class="meter-track"><div class="meter-fill" data-pct="90.0%"></div></div>
+  </div>
+
+      <div class="meter">
+    <div class="meter-head">
+      <span class="meter-label">Roadmap — importer rewrite</span>
+      <span class="meter-value">80%</span>
+    </div>
+    <div class="meter-track"><div class="meter-fill" data-pct="80.0%"></div></div>
+  </div>
+
+      <div class="component-label"><span>risk-matrix</span></div>
+
+      <div class="risk-matrix" role="img" aria-label="probability by impact risk matrix">
+    <span class="rm-corner">P \ I</span>
+    <span class="rm-axis">1</span>
+    <span class="rm-axis">2</span>
+    <span class="rm-axis">3</span>
+    <span class="rm-axis">4</span>
+    <span class="rm-axis">5</span>
+    <span class="rm-axis">5</span>
+      <span class="rm-cell rm-med">
+      </span>
+      <span class="rm-cell rm-med">
+      </span>
+      <span class="rm-cell rm-high">
+      </span>
+      <span class="rm-cell rm-high">
+      </span>
+      <span class="rm-cell rm-high">
+      </span>
+    <span class="rm-axis">4</span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-med">
+      </span>
+      <span class="rm-cell rm-med">
+      </span>
+      <span class="rm-cell rm-high">
+      </span>
+      <span class="rm-cell rm-high">
+<span class="rm-chip" title="Broker session drops during trading hours">RISK-01</span>      </span>
+    <span class="rm-axis">3</span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-med">
+<span class="rm-chip" title="Manual reconciliation backlog">RISK-03</span>      </span>
+      <span class="rm-cell rm-med">
+      </span>
+      <span class="rm-cell rm-med">
+      </span>
+      <span class="rm-cell rm-high">
+      </span>
+    <span class="rm-axis">2</span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-med">
+<span class="rm-chip" title="CDN outage degrades rendered documents">RISK-02</span>      </span>
+      <span class="rm-cell rm-med">
+      </span>
+      <span class="rm-cell rm-med">
+      </span>
+    <span class="rm-axis">1</span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-low">
+      </span>
+      <span class="rm-cell rm-med">
+      </span>
+  </div>
+
+
+  </section>
+
   <section id="glossary">
     <h2>Glossary &amp; revision note</h2>
           <div class="component-label"><span>glossary</span></div>
@@ -487,6 +619,19 @@ def rate_limited(partition: str) -> bool:
     <div class="weaknesses"><p>Weaknesses</p><ul><li>Single-region supply</li></ul></div>
     <div class="opportunities"><p>Opportunities</p><ul><li>Adjacent product line</li></ul></div>
     <div class="threats"><p>Threats</p><ul><li>Regulatory change draft in consultation</li></ul></div>
+  </div>
+
+      <div class="component-label"><span>party-block</span></div>
+
+      <div class="parties">
+    <div>
+      <p>Provider</p>
+      <ul><li>Vasile Grafu</li><li>Bucharest, RO</li><li>vasilegrafu@gmail.com</li></ul>
+    </div>
+    <div>
+      <p>Client</p>
+      <ul><li>Acme Industries SRL</li><li>Cluj-Napoca, RO</li><li>RO12345678</li></ul>
+    </div>
   </div>
 
 

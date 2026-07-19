@@ -46,12 +46,12 @@ only this file.
 | `base.css` | fonts (Inter + JetBrains Mono via CDN), tokens, typography, layout, the layout-toggle toolbar, opt-in numbering — always |
 | `metadata.css` | metadata-header (cover title block), change-history, approval-block |
 | `toc.css` | the static TOC (regular documents; not presentations) |
-| `content.css` | table, plain code, figure, collapsible |
+| `content.css` | table, plain code, figure, collapsible, quote, comparison-table |
 | `code.css` | framed code blocks (`figure.code` title bar) + the runtime syntax palette (`.token.*`, applied by docs-html.js/Prism) |
 | `callouts.css` | callout, todo-marker |
 | `lists.css` | facts, steps, checklist, trace-id |
-| `blocks.css` | requirement card, acceptance-criteria (Given/When/Then), kpi-tiles, timeline, glossary, revision-note, ISO front/back matter |
-| `business.css` | finance & decision components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge |
+| `blocks.css` | requirement card, acceptance-criteria (Given/When/Then), kpi-tiles, timeline, glossary, revision-note, meter, risk-matrix, footnotes, ISO front/back matter |
+| `business.css` | finance & decision components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge, party-block |
 | `math.css` | formula blocks (`.math`) — spacing, overflow, and the readable-LaTeX fallback before/without KaTeX |
 | `diagrams.css` | diagram-mermaid: the pan/zoom viewport + glyph toolbar |
 | `presentation.css` | presentation pages (`<body class="presentation">`) |
@@ -162,9 +162,11 @@ js/
     docs-html.js     ← the single script: entry/loader (MODULES list)
     modules/*.js     ← the modules it loads (core, util, icons, features, main)
 components/
-    <name>/
-        usage.md           guidance for the author: when + how, and the rules
-        component.html.j2  a Jinja macro {% macro <name>(...) %} — the callable markup
+    <category>/       structure | lists | content | callouts | blocks | matter |
+                      business | diagrams | math
+        <name>/
+            usage.md           guidance for the author: when + how, and the rules
+            component.html.j2  a Jinja macro {% macro <name>(...) %} — the callable markup
     showcase.html.j2       source template for the gallery (edit this)
     showcase.html          generated gallery — run `python builder.py showcase`
 doc-types/
@@ -222,34 +224,38 @@ carries a "Beyond software" note in its usage.md).
 **general/** — any field
 | Group | Types |
 |---|---|
-| Initiation & Planning | business-case, project-charter, feasibility-study, statement-of-work, project-management-plan, risk-register |
-| Governance & Operations | change-request, incident-postmortem, service-level-agreement, user-guide |
+| Initiation & Planning | business-case, project-charter, feasibility-study, statement-of-work, proposal, project-management-plan, roadmap, risk-register |
+| Governance & Operations | decision-record, policy, standard-operating-procedure, change-request, incident-postmortem, service-level-agreement, user-guide |
 | Communication | status-report, meeting-minutes, presentation |
 
 **software/** — SDLC
 | Stage | Types |
 |---|---|
 | Requirements | product-requirements-document †, software-requirements-specification, use-case-specification †, user-story-backlog, requirements-traceability-matrix † |
-| Design | architecture-decision-record †, software-architecture, software-design-document, api-specification, database-design-document, user-interface-design-specification |
+| Design | architecture-decision-record †, software-architecture, software-design-document, api-specification, database-design-document, user-interface-design-specification, threat-model |
 | Implementation | coding-standards, developer-setup-guide, technical-specification † |
-| Testing | test-plan, test-case-specification, test-summary-report, defect-report † |
-| Deployment & Operations | release-notes †, deployment-runbook †, rollback-plan, operations-runbook † |
-| Process | sprint-retrospective † |
+| Testing | test-plan, test-case-specification, test-summary-report, performance-test-report, defect-report † |
+| Deployment & Operations | release-notes †, deployment-runbook †, rollback-plan, operations-runbook †, data-migration-plan, disaster-recovery-plan |
+| Process | sprint-retrospective †, project-closure |
 
-**finance/** — budget, management-report
+**finance/** — budget, cash-flow-forecast, management-report,
+net-worth-statement, valuation-report
 
 **investing/** — investment-thesis, due-diligence-report, portfolio-review,
-trade-journal, investment-policy-statement, market-outlook
+trade-journal, investment-policy-statement, market-outlook,
+strategy-specification, backtest-report, watchlist, earnings-note
 
-**accounting/** — financial-statements, invoice, expense-report
+**accounting/** — financial-statements, invoice, credit-note, expense-report,
+reconciliation-report
 
 **research/** — research-report, data-analysis-report, literature-review,
-white-paper
+white-paper, experiment-log
 
-**economics/** — economic-analysis
+**economics/** — economic-analysis, policy-brief, industry-analysis
 
 **engineering/** — design-calculation-note, equipment-specification,
-inspection-report, failure-analysis, bill-of-materials
+inspection-report, failure-analysis, bill-of-materials, risk-assessment,
+maintenance-plan, commissioning-report
 
 **tools/** — diagram-editor (one Mermaid diagram, nothing else — a workspace
 for the built-in ✎ editor)
@@ -331,7 +337,7 @@ Its body is **only** component-macro calls — `{{ c.<name>(...) }}` for leaves,
 `{% call c.<name>(...) %}…{% endcall %}` for containers. Every component is a
 macro on the `c` namespace (no imports). Base shell, cover, and the two asset
 links come from `base.html.j2` + the builder. If a needed component is missing,
-add it as `components/<new>/{usage.md, component.html.j2}`.
+add it as `components/<category>/<new>/{usage.md, component.html.j2}` (pick the category folder; the builder discovers recursively).
 
 ### `release [major|minor|patch]` — publish a design-system version
 This skill lives in `github.com/vasilegrafu/.claudefx` — a standalone public

@@ -43,9 +43,10 @@ docs-html/
 │   ├── docs-html.js    the single script: entry/loader (MODULES list)
 │   └── modules/*.js    core (registry) · util · icons · layout-toggle · diagrams · main
 ├── components/
-│   ├── <name>/
-│   │   ├── usage.md           guidance: when + how to use, and the rules
-│   │   └── component.html.j2  a Jinja macro — the callable markup
+│   ├── <category>/            structure · lists · content · callouts · blocks ·
+│   │   └── <name>/            matter · business · diagrams · math
+│   │       ├── usage.md           guidance: when + how to use, and the rules
+│   │       └── component.html.j2  a Jinja macro — the callable markup
 │   └── showcase.html          curated live gallery of every component
 └── doc-types/
     ├── base.html.j2          the shared shell (head + toolbar + <main> + {% block content %})

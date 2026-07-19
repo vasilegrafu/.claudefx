@@ -135,3 +135,24 @@ table.financial .neg { color: var(--risk); }
 .swot .weaknesses    { border-top: 3px solid var(--risk); }      .swot .weaknesses p    { color: var(--risk); }
 .swot .opportunities { border-top: 3px solid var(--accent); }    .swot .opportunities p { color: var(--accent); }
 .swot .threats       { border-top: 3px solid var(--warning); }   .swot .threats p       { color: var(--warning); }
+
+/* ---------- party-block: two-party identity block (From / To) ---------- */
+.parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .85rem;
+  margin: var(--block-gap) 0;
+}
+.parties > div {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .6rem .9rem .7rem;
+}
+.parties p {
+  margin: 0 0 .3rem;
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .12em;
+  color: var(--fg-soft);
+}
+.parties ul { margin: 0; padding-left: 0; list-style: none; font-size: .92rem; }
+.parties li:first-child { font-weight: 650; }

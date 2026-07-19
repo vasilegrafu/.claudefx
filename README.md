@@ -1,7 +1,7 @@
 # .claudefx
 
 **A versioned toolbox for Claude Code — skills and agents in one public repo,
-dropped or mounted into any project.**
+dropped into any project.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Tag](https://img.shields.io/github/v/tag/vasilegrafu/.claudefx?label=version)](https://github.com/vasilegrafu/.claudefx/tags)

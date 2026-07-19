@@ -53,3 +53,20 @@ details {
 }
 summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
 details[open] summary { margin-bottom: .6rem; }
+
+/* ---------- quote: pull-quote with attribution ---------- */
+blockquote.pull {
+  margin: var(--block-gap) 0;
+  padding: .4rem 1.1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-soft);
+  border-radius: 0 8px 8px 0;
+}
+blockquote.pull p { margin: .3rem 0; font-size: 1.02rem; font-style: italic; }
+blockquote.pull footer { font-size: .85rem; color: var(--fg-soft); font-style: normal; padding-bottom: .2rem; }
+
+/* ---------- comparison-table: ✓ / ✗ / ◐ option matrix ---------- */
+table.comparison td:not(:first-child), table.comparison th:not(:first-child) { text-align: center; }
+table.comparison .mark-yes  { color: var(--decision); font-weight: 700; }
+table.comparison .mark-no   { color: var(--risk); font-weight: 700; }
+table.comparison .mark-part { color: var(--warning); font-weight: 700; }

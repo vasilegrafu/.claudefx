@@ -218,3 +218,77 @@ ol.references > li::before {
   content: "Appendix " counter(appendix, upper-alpha) ". ";
   color: var(--fg-soft);
 }
+
+/* ---------- meter: value-vs-target progress bar ---------- */
+.meter { margin: var(--block-gap) 0; }
+.meter-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: .25rem;
+  font-size: .9rem;
+}
+.meter-value { font-weight: 650; font-variant-numeric: tabular-nums; }
+.meter-track {
+  height: .5rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.meter-fill {
+  height: 100%;
+  max-width: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  /* width from the data-pct attribute — the contract forbids style=.
+     Older engines without advanced attr() show an empty track; the labeled
+     values above stay fully readable. */
+  width: attr(data-pct type(<percentage>), 0%);
+}
+
+/* ---------- risk-matrix: 5×5 probability × impact heat grid ---------- */
+.risk-matrix {
+  display: grid;
+  grid-template-columns: auto repeat(5, 1fr);
+  gap: 3px;
+  margin: var(--block-gap) 0;
+  max-width: 34rem;
+}
+.rm-corner, .rm-axis {
+  display: flex; align-items: center; justify-content: center;
+  font-size: .68rem; font-weight: 700; color: var(--fg-soft);
+  font-family: var(--font-mono);
+}
+.rm-cell {
+  min-height: 2.3rem;
+  border-radius: 4px;
+  display: flex; flex-wrap: wrap; gap: .2rem;
+  align-items: center; justify-content: center;
+  padding: .15rem;
+}
+.rm-low  { background: var(--decision-bg); }
+.rm-med  { background: var(--warning-bg); }
+.rm-high { background: var(--risk-bg); }
+.rm-chip {
+  font-family: var(--font-mono);
+  font-size: .68rem; font-weight: 600;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .05rem .3rem;
+  cursor: help;
+}
+
+/* ---------- footnotes: numbered end-notes with back-links ---------- */
+sup.fn a {
+  font-family: var(--font-mono);
+  font-size: .72em;
+  padding: 0 .1em;
+}
+ol.footnotes {
+  margin: var(--block-gap) 0 0;
+  padding-top: .7rem; padding-left: 1.2rem;
+  border-top: 1px solid var(--border);
+  font-size: .85rem; color: var(--fg-soft);
+}
+ol.footnotes li { margin: .25rem 0; }
+ol.footnotes .fn-back { font-size: .8em; }

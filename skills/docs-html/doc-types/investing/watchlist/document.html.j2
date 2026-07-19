@@ -1,0 +1,19 @@
+{# type-name: Watchlist #}
+{% extends "doc-types/base.html.j2" %}
+{% block content %}
+  {{ c.toc([
+      ("candidates", "Candidates"),
+      ("triggers", "Waiting for"),
+      ("dropped", "Dropped"),
+  ]) }}
+  {% call c.section("candidates", "Candidates") %}
+    {{ c.table(["Asset", "Thesis in one line", "Trigger", "Level", "Status"],
+        [["{{ticker}}", "{{why interesting}}", "{{price / event / date}}", "{{value}}", "{{a c.badge() Watch/Ready/Triggered}}"]]) }}
+  {% endcall %}
+  {% call c.section("triggers", "Waiting for") %}
+    {{ c.checklist([("pending", "{{asset}}: {{the concrete condition that turns watching into acting}}")]) }}
+  {% endcall %}
+  {% call c.section("dropped", "Dropped") %}
+    {{ c.bullets(["{{asset — why it left the list (keeps the list honest)}}"]) }}
+  {% endcall %}
+{% endblock %}

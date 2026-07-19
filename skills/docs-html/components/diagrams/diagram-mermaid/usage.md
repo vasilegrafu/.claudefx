@@ -42,3 +42,7 @@ Mermaid renders charts, not only diagrams — all through the same
 
 The data lives as editable text in the document, like any diagram. Prefer
 these over image charts in finance, research, and reporting doc-types.
+
+Also available through the same viewport: `gantt` (roadmaps, project plans),
+`sankey-beta` (cash/flow decomposition), `quadrantChart` (2×2 positioning —
+a diagram-native alternative to the risk-matrix component).
