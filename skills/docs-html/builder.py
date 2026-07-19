@@ -106,16 +106,32 @@ def make_env(components: list[Component]) -> Environment:
 # --------------------------------------------------------------------------
 
 
+def doc_type_dirs() -> dict[str, Path]:
+    """Every doc-type folder, discovered recursively: name -> directory.
+
+    doc-types/ is organized in DOMAIN folders (general/, software/, finance/,
+    …) that exist purely for humans — the type's identity stays its own folder
+    name, so `new investment-thesis` works regardless of which domain holds
+    it. Names must therefore be unique across all domains."""
+    dirs: dict[str, Path] = {}
+    for template in sorted(DOCTYPES_DIR.rglob("document.html.j2")):
+        name = template.parent.name
+        if name in dirs:
+            raise SystemExit(f"duplicate doc-type name: {name!r} "
+                             f"({dirs[name]} and {template.parent})")
+        dirs[name] = template.parent
+    return dirs
+
+
 def doc_types() -> list[str]:
-    """All doc-types that have a Jinja template."""
-    return sorted(path.name for path in DOCTYPES_DIR.iterdir()
-                  if path.is_dir() and (path / "document.html.j2").is_file())
+    """All doc-type names that have a Jinja template."""
+    return sorted(doc_type_dirs())
 
 
 def resolve_type(name: str) -> str:
     """Validate a doc-type name; fail with a hint otherwise."""
     name = name.strip().lower()
-    if name not in doc_types():
+    if name not in doc_type_dirs():
         raise SystemExit(f"unknown doc-type: {name!r}\n"
                          f"run  python builder.py --list")
     return name
@@ -183,7 +199,8 @@ def skill_href(out_dir: Path) -> str:
 
 def compose(type_name: str, title: str, out_dir: Path) -> str:
     """Render one doc-type template into standalone, hand-editable HTML."""
-    template_rel = f"doc-types/{type_name}/document.html.j2"
+    directory = doc_type_dirs()[type_name]
+    template_rel = (directory.relative_to(SKILL_DIR) / "document.html.j2").as_posix()
     template_src = (SKILL_DIR / template_rel).read_text(encoding="utf-8")
 
     # Display name from the template's {# type-name: ... #} comment.
@@ -248,10 +265,15 @@ def cmd_new(args: argparse.Namespace) -> int:
 
 
 def cmd_list() -> int:
-    """`--list` — the live doc-type catalog."""
-    print("doc-types (document.html.j2 present):")
-    for name in doc_types():
-        print(f"  {name}")
+    """`--list` — the live doc-type catalog, grouped by domain folder."""
+    by_domain: dict[str, list[str]] = {}
+    for name, directory in doc_type_dirs().items():
+        domain = directory.parent.name if directory.parent != DOCTYPES_DIR else "(root)"
+        by_domain.setdefault(domain, []).append(name)
+    for domain in sorted(by_domain):
+        print(f"{domain}:")
+        for name in sorted(by_domain[domain]):
+            print(f"  {name}")
     return 0
 
 

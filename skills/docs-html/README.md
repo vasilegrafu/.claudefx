@@ -49,9 +49,10 @@ docs-html/
 │   └── showcase.html          curated live gallery of every component
 └── doc-types/
     ├── base.html.j2          the shared shell (head + toolbar + <main> + {% block content %})
-    └── <name>/
-        ├── usage.md          audience, depth, research, rules
-        └── document.html.j2  {% extends base %}; body is ONLY macro calls
+    └── <domain>/             general · software · finance · investing · accounting ·
+        └── <name>/           research · economics · engineering · tools · fallback
+            ├── usage.md          audience, depth, research, rules
+            └── document.html.j2  {% extends base %}; body is ONLY macro calls
 ```
 
 ## Workflow

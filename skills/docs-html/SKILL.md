@@ -169,9 +169,11 @@ components/
     showcase.html          generated gallery — run `python builder.py showcase`
 doc-types/
     base.html.j2      the shared shell: head (the two links) + toolbar + <main> + {% block content %}
-    <name>/
-        usage.md          audience, depth, research, type rules
-        document.html.j2  {% extends base %}; body is ONLY component-macro calls
+    <domain>/         general | software | finance | investing | accounting |
+                      research | economics | engineering | tools | fallback
+        <name>/
+            usage.md          audience, depth, research, type rules
+            document.html.j2  {% extends base %}; body is ONLY component-macro calls
 ```
 
 **Jinja runs only at compose time.** `builder.py` renders a doc-type template to
@@ -206,22 +208,25 @@ column, hidden in print, and omitted from presentations.
 
 ## Document type catalog
 
-Each type is a folder `doc-types/<name>/` holding a `usage.md` and a
+Each type is a folder `doc-types/<domain>/<name>/` holding a `usage.md` and a
 `document.html.j2`. `doc-types/` is the authoritative list; this table is the
-map. Run `python builder.py --list` for the live catalog.
+map. Run `python builder.py --list` for the live catalog, grouped by domain.
 
-The catalog is organized by DOMAIN first. Types marked † are universal
-patterns whose recipes are still software-flavored — reusable in other fields
-with judgment (each carries a "Beyond software" note in its usage.md).
+The catalog is organized by DOMAIN, and **the directory tree mirrors this
+table exactly**: `doc-types/<domain>/<type>/`. The type's identity is its own
+folder name (unique across all domains) — commands take the type name alone,
+never the domain. Types marked † are universal patterns whose recipes are
+still software-flavored — reusable in other fields with judgment (each
+carries a "Beyond software" note in its usage.md).
 
-**General — any field**
+**general/** — any field
 | Group | Types |
 |---|---|
 | Initiation & Planning | business-case, project-charter, feasibility-study, statement-of-work, project-management-plan, risk-register |
 | Governance & Operations | change-request, incident-postmortem, service-level-agreement, user-guide |
 | Communication | status-report, meeting-minutes, presentation |
 
-**Software (SDLC)**
+**software/** — SDLC
 | Stage | Types |
 |---|---|
 | Requirements | product-requirements-document †, software-requirements-specification, use-case-specification †, user-story-backlog, requirements-traceability-matrix † |
@@ -231,25 +236,25 @@ with judgment (each carries a "Beyond software" note in its usage.md).
 | Deployment & Operations | release-notes †, deployment-runbook †, rollback-plan, operations-runbook † |
 | Process | sprint-retrospective † |
 
-**Finance & Investing**
-investment-thesis, due-diligence-report, portfolio-review, trade-journal,
-investment-policy-statement, market-outlook
+**finance/** — budget, management-report
 
-**Accounting**
-budget, financial-statements, management-report, invoice, expense-report
+**investing/** — investment-thesis, due-diligence-report, portfolio-review,
+trade-journal, investment-policy-statement, market-outlook
 
-**Research & Economics**
-research-report, data-analysis-report, literature-review, white-paper,
-economic-analysis
+**accounting/** — financial-statements, invoice, expense-report
 
-**Engineering**
-design-calculation-note, equipment-specification, inspection-report,
-failure-analysis, bill-of-materials
+**research/** — research-report, data-analysis-report, literature-review,
+white-paper
 
-**Tools** — diagram-editor (one Mermaid diagram, nothing else — a workspace
+**economics/** — economic-analysis
+
+**engineering/** — design-calculation-note, equipment-specification,
+inspection-report, failure-analysis, bill-of-materials
+
+**tools/** — diagram-editor (one Mermaid diagram, nothing else — a workspace
 for the built-in ✎ editor)
 
-**Fallback** — generic-document
+**fallback/** — generic-document
 
 ## Commands
 
@@ -309,7 +314,9 @@ Re-read the code/state the document describes; propose refresh edits as targeted
 changes; version bump + change-history row.
 
 ### `new type <name>`
-Extend the skill: add `doc-types/<full-name>/usage.md` + `document.html.j2`.
+Extend the skill: add `doc-types/<domain>/<full-name>/usage.md` +
+`document.html.j2` (pick the domain folder from the catalog; a genuinely new
+domain gets a new folder — the builder discovers recursively).
 The template is a Jinja file:
 ```jinja
 {# type-name: Full Type Name #}
