@@ -81,42 +81,6 @@ no git at all.)
 - **macOS**: `xcode-select --install` or `brew install git`
 - **Linux**: `sudo apt install git` (or your distro's package manager)
 
-### 3. Python 3.10+ and Jinja2 — for generator-based skills
-
-Why: some skills don't just instruct Claude — they ship a small **builder**
-that composes files from templates (Jinja2 is the template engine). The
-builder runs only at *creation* time; the generated output needs no Python
-ever again.
-
-- **Windows**: `winget install Python.Python.3.12` or [python.org](https://www.python.org/downloads/)
-- **macOS**: `brew install python`
-- **Linux**: `sudo apt install python3 python3-pip`
-
-Then the one library:
-
-```bash
-pip install jinja2
-```
-
-### 4. A browser + internet — for web-rendered output
-
-Why: skills that produce HTML (documents, diagrams) render in any modern
-browser and load their engines (diagram rendering, syntax coloring) from
-pinned CDNs at view time. Nothing to install — but fully offline viewing
-shows content without those enhancements.
-
-### Summary
-
-| You want to… | Claude Code | git | Python + Jinja2 | Browser |
-|---|:-:|:-:|:-:|:-:|
-| Copy a skill and use it (Option A) | ✓ | — | — | — |
-| Mount + link, stay updatable (Option B) | ✓ | ✓ | — | — |
-| Run a skill's generator/builder | ✓ | — | ✓ | — |
-| View generated HTML output | — | — | — | ✓ |
-
-Each skill states its exact needs in its own folder — the list above is the
-worst case.
-
 ## License
 
 [MIT](LICENSE) — use it, copy it, ship it.
