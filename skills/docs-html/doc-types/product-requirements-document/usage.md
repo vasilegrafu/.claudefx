@@ -20,3 +20,10 @@ requirements, success metrics. The bridge between a business need and an SRS.
 - Non-goals are mandatory — they scope the product as much as goals.
 - Every requirement is a `requirement` card with a `REQ-` id, never a bullet.
 - Success metrics are measurable with a target value, not aspirations.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

@@ -16,3 +16,10 @@ Changelog style.
 - User-facing language: what changed for them, not the commit message.
 - Breaking changes are called out with upgrade steps — never buried.
 - Known issues link to defect-report ids where they exist.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

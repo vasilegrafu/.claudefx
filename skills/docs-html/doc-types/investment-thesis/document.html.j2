@@ -1,0 +1,47 @@
+{# type-name: Investment Thesis #}
+{% extends "doc-types/base.html.j2" %}
+{% block content %}
+  {{ c.toc([
+      ("summary", "Summary"),
+      ("thesis", "Thesis"),
+      ("valuation", "Valuation"),
+      ("scenarios", "Scenarios"),
+      ("catalysts", "Catalysts"),
+      ("risks", "Risks &amp; invalidation"),
+      ("decision", "Decision"),
+  ]) }}
+  {% call c.section("summary", "Summary") %}
+    {% call c.lead() %}{% raw %}{{one paragraph: the asset, the bet, the expected return, the horizon}}{% endraw %}{% endcall %}
+    {{ c.facts([
+        ("Asset", "{{ticker / instrument}}"),
+        ("Position", "{{size / % of portfolio}}"),
+        ("Horizon", "{{time frame}}"),
+        ("Rating", "{{a c.badge() verdict}}"),
+    ]) }}
+  {% endcall %}
+  {% call c.section("thesis", "Thesis") %}
+    {% call c.prose() %}{% raw %}{{why this is mispriced — the variant view, in 2–4 paragraphs}}{% endraw %}{% endcall %}
+  {% endcall %}
+  {% call c.section("valuation", "Valuation") %}
+    {{ c.financial_table(caption="{{valuation summary}}",
+        headers=["", "{{yr-1}}", "{{yr}}", "{{yr+1E}}"],
+        rows=[("", ["{{metric}}", "{{v}}", "{{v}}", "{{v}}"])]) }}
+    {% call c.prose() %}{% raw %}{{method and key inputs; what the market assumes vs what you assume}}{% endraw %}{% endcall %}
+  {% endcall %}
+  {% call c.section("scenarios", "Scenarios") %}
+    {{ c.scenarios([
+        ("Bull", "good", ["{{assumption}}"], "{{outcome / target}}"),
+        ("Base", "neutral", ["{{assumption}}"], "{{outcome / target}}"),
+        ("Bear", "bad", ["{{assumption}}"], "{{outcome / target}}"),
+    ]) }}
+  {% endcall %}
+  {% call c.section("catalysts", "Catalysts") %}
+    {{ c.bullets(["{{event that closes the gap, with expected timing}}"]) }}
+  {% endcall %}
+  {% call c.section("risks", "Risks &amp; invalidation") %}
+    {% call c.callout("risk") %}{% call c.prose() %}{% raw %}{{the strongest argument against; what evidence would make you exit}}{% endraw %}{% endcall %}{% endcall %}
+  {% endcall %}
+  {% call c.section("decision", "Decision") %}
+    {% call c.callout("decision") %}{% call c.prose() %}{% raw %}{{action, size, entry conditions, review date}}{% endraw %}{% endcall %}{% endcall %}
+  {% endcall %}
+{% endblock %}

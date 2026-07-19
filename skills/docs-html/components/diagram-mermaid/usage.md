@@ -31,3 +31,14 @@ as text.
 - Keep each diagram readable — split into two diagrams rather than cram.
 - One Mermaid script per document, however many diagrams.
 - No diagrams → no script, and drop the `diagrams.css` link.
+
+## Charts, for free
+
+Mermaid renders charts, not only diagrams — all through the same
+`<pre class="mermaid">` viewport (pan/zoom, ✎ editor included):
+
+- `xychart-beta` — bar and line charts (performance curves, budgets over time)
+- `pie` — allocation / composition pies
+
+The data lives as editable text in the document, like any diagram. Prefer
+these over image charts in finance, research, and reporting doc-types.

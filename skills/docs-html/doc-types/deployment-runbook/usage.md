@@ -17,3 +17,10 @@ unambiguous.
   afterthought.
 - Pre-checks and post-deploy verification are objective checklists.
 - Emergency contacts and escalation are included.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

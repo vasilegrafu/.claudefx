@@ -1,0 +1,14 @@
+{# rows: list of (kind, cells) — kind "" | "subtotal" | "total" #}
+{% macro financial_table(headers=[], rows=[], caption="") %}
+  <table class="financial">
+  {% if caption %}
+    <caption>{{ caption }}</caption>
+  {% endif %}
+    <thead><tr>{% for h in headers %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for kind, cells in rows %}
+      <tr{% if kind %} class="{{ kind }}"{% endif %}>{% for cell in cells %}<td>{{ cell }}</td>{% endfor %}</tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}

@@ -1,0 +1,16 @@
+{# items: list of (title, tone, points, outcome) — tone good|neutral|bad #}
+{% macro scenarios(items=[]) %}
+  <div class="scenarios">
+  {% for title, tone, points, outcome in items %}
+    <article class="scenario{% if tone %} scenario-{{ tone }}{% endif %}">
+      <h3>{{ title }}</h3>
+      <ul>
+      {% for point in points %}
+        <li>{{ point }}</li>
+      {% endfor %}
+      </ul>
+      {% if outcome %}<p class="scenario-outcome">{{ outcome }}</p>{% endif %}
+    </article>
+  {% endfor %}
+  </div>
+{% endmacro %}

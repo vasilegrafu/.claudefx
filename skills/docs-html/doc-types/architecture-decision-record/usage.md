@@ -20,3 +20,10 @@ decisions and link them.
 - A published ADR's Decision is immutable — a new ADR supersedes it;
   both metadata headers get Supersedes / Superseded-by rows linking each other,
   and the change-history records the supersession.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

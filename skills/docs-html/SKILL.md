@@ -1,11 +1,13 @@
 ---
 name: docs-html
 description: Generate, maintain, and audit professional documents as clean,
-  manually-editable HTML. Covers software / SDLC documents (ADR, SRS,
-  architecture, test plan, release notes, runbook, status report, meeting
-  minutes, presentation) and extends to other domains (management, corporate,
-  finance, economics). Use when the user asks to create, modify, update, or
-  audit any such document.
+  manually-editable HTML. Domains built out - general business (charter,
+  business case, risk register, minutes, status), software/SDLC (ADR, SRS,
+  architecture, test plan, runbook), finance & investing (investment thesis,
+  portfolio review, trade journal, IPS), accounting (budget, statements,
+  invoice), research & economics (research report, data analysis, white
+  paper), and engineering (calc note, specification, inspection). Use when
+  the user asks to create, modify, update, or audit any such document.
 ---
 
 # docs-html — professional documents in HTML, one CSS + one JS
@@ -49,6 +51,7 @@ only this file.
 | `callouts.css` | callout, todo-marker |
 | `lists.css` | facts, steps, checklist, trace-id |
 | `blocks.css` | requirement card, acceptance-criteria (Given/When/Then), kpi-tiles, timeline, glossary, revision-note, ISO front/back matter |
+| `business.css` | finance & decision components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge |
 | `diagrams.css` | diagram-mermaid: the pan/zoom viewport + glyph toolbar |
 | `presentation.css` | presentation pages (`<body class="presentation">`) |
 | `print.css` | Ctrl+P → cover page, page breaks — layered LAST |
@@ -207,19 +210,46 @@ Each type is a folder `doc-types/<name>/` holding a `usage.md` and a
 `document.html.j2`. `doc-types/` is the authoritative list; this table is the
 map. Run `python builder.py --list` for the live catalog.
 
+The catalog is organized by DOMAIN first. Types marked † are universal
+patterns whose recipes are still software-flavored — reusable in other fields
+with judgment (each carries a "Beyond software" note in its usage.md).
+
+**General — any field**
+| Group | Types |
+|---|---|
+| Initiation & Planning | business-case, project-charter, feasibility-study, statement-of-work, project-management-plan, risk-register |
+| Governance & Operations | change-request, incident-postmortem, service-level-agreement, user-guide |
+| Communication | status-report, meeting-minutes, presentation |
+
+**Software (SDLC)**
 | Stage | Types |
 |---|---|
-| Initiation | business-case, project-charter, feasibility-study, statement-of-work |
-| Planning | project-management-plan, product-requirements-document, risk-register |
-| Requirements | software-requirements-specification, use-case-specification, user-story-backlog, requirements-traceability-matrix |
-| Design | architecture-decision-record, software-architecture, software-design-document, api-specification, database-design-document, user-interface-design-specification |
-| Implementation | coding-standards, developer-setup-guide, technical-specification |
-| Testing | test-plan, test-case-specification, test-summary-report, defect-report |
-| Deployment | release-notes, deployment-runbook, rollback-plan, user-guide |
-| Maintenance | incident-postmortem, change-request, operations-runbook, service-level-agreement |
-| Communication | status-report, meeting-minutes, sprint-retrospective, presentation |
-| Tools | diagram-editor (one Mermaid diagram, nothing else — a workspace for the built-in ✎ editor) |
-| Fallback | generic-document |
+| Requirements | product-requirements-document †, software-requirements-specification, use-case-specification †, user-story-backlog, requirements-traceability-matrix † |
+| Design | architecture-decision-record †, software-architecture, software-design-document, api-specification, database-design-document, user-interface-design-specification |
+| Implementation | coding-standards, developer-setup-guide, technical-specification † |
+| Testing | test-plan, test-case-specification, test-summary-report, defect-report † |
+| Deployment & Operations | release-notes †, deployment-runbook †, rollback-plan, operations-runbook † |
+| Process | sprint-retrospective † |
+
+**Finance & Investing**
+investment-thesis, due-diligence-report, portfolio-review, trade-journal,
+investment-policy-statement, market-outlook
+
+**Accounting**
+budget, financial-statements, management-report, invoice, expense-report
+
+**Research & Economics**
+research-report, data-analysis-report, literature-review, white-paper,
+economic-analysis
+
+**Engineering**
+design-calculation-note, equipment-specification, inspection-report,
+failure-analysis, bill-of-materials
+
+**Tools** — diagram-editor (one Mermaid diagram, nothing else — a workspace
+for the built-in ✎ editor)
+
+**Fallback** — generic-document
 
 ## Commands
 

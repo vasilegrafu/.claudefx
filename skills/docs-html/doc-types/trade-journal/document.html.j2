@@ -1,0 +1,30 @@
+{# type-name: Trade Journal #}
+{% extends "doc-types/base.html.j2" %}
+{% block content %}
+  {{ c.toc([
+      ("rules", "Standing rules"),
+      ("trades", "Trades"),
+      ("lessons", "Lessons"),
+  ]) }}
+  {% call c.section("rules", "Standing rules") %}
+    {{ c.bullets([
+        "{{max risk per trade / sizing rule}}",
+        "{{entry discipline rule}}",
+        "{{exit / stop rule}}",
+    ]) }}
+  {% endcall %}
+  {% call c.section("trades", "Trades") %}
+    {% call c.subsection("trade-001", "{{date}} — {{instrument}} {{long/short}}") %}
+      {{ c.facts([
+          ("Setup", "{{pattern / signal / reason}}"),
+          ("Entry", "{{price, size, stop, target}}"),
+          ("Exit", "{{price, date, why exited}}"),
+          ("Result", "{{P/L, R multiple}}"),
+      ]) }}
+      {% call c.prose() %}{% raw %}{{what happened vs the plan; was the loss/gain earned or lucky}}{% endraw %}{% endcall %}
+    {% endcall %}
+  {% endcall %}
+  {% call c.section("lessons", "Lessons") %}
+    {{ c.bullets(["{{recurring mistake or edge, stated as a rule change candidate}}"]) }}
+  {% endcall %}
+{% endblock %}

@@ -16,3 +16,10 @@ exception flows, postconditions. Cockburn style.
 - Preconditions and postconditions are checkable states, not prose.
 - Give the use case a `UC-` id in the title; trace it to `REQ-` ids it
   realises.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

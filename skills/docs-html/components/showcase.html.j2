@@ -23,6 +23,7 @@
     ("8.0", "2026-07-18", "docs-html", "Generated from showcase.html.j2 — every demo now calls its real component macro"),
     ("9.0", "2026-07-18", "docs-html", "Component-name labels over every demo; added lead, bullets, numbered"),
     ("10.0", "2026-07-19", "docs-html", "Code is plain text + data-lang — coloring moved to view time (Prism via docs-html.js)"),
+    ("11.0", "2026-07-19", "docs-html", "Business &amp; finance components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge"),
 ]) }}
 {% endblock %}
 
@@ -46,6 +47,7 @@
       ("references", "References &amp; appendices"),
       ("figure", "Figure"),
       ("approvals", "Approvals"),
+      ("business", "Business &amp; finance"),
       ("structural", "Structural components"),
   ]) }}
 
@@ -231,6 +233,45 @@ def rate_limited(partition: str) -> bool:
         ("Vasile Grafu", "Author"),
         ("", "Product Owner"),
     ]) }}
+  {% endcall %}
+
+  {% call c.section("business", "Business &amp; finance") %}
+    {{ mark("badge") }}
+    {% call c.prose() %}Verdicts inline: {{ c.badge("Buy", "good") }} {{ c.badge("Hold") }} {{ c.badge("Sell", "bad") }} {{ c.badge("Review", "warn") }} {{ c.badge("New", "info") }}{% endcall %}
+    {{ mark("financial-table") }}
+    {{ c.financial_table(
+        caption="Income statement — FY2026 (EUR '000)",
+        headers=["", "FY2025", "FY2026"],
+        rows=[
+          ("", ["Revenue", "1,200", "1,450"]),
+          ("", ["Cost of sales", '<span class="neg">(700)</span>', '<span class="neg">(810)</span>']),
+          ("subtotal", ["Gross profit", "500", "640"]),
+          ("", ["Operating expenses", '<span class="neg">(320)</span>', '<span class="neg">(355)</span>']),
+          ("total", ["Operating profit", "180", "285"]),
+        ]) }}
+    {{ mark("journal-entry") }}
+    {{ c.journal_entry(id="JE-042", date="2026-07-19",
+        memo="Broker commission on IBKR trade #18841",
+        lines=[
+          ("Trading commissions expense", "12.50", ""),
+          ("Cash — broker account", "", "12.50"),
+        ]) }}
+    {{ mark("scenarios") }}
+    {{ c.scenarios([
+        ("Bull", "good", ["Rate cuts land H2", "Margins recover"], "+40% · target 68"),
+        ("Base", "neutral", ["Rates flat", "Share stable"], "+12% · target 54"),
+        ("Bear", "bad", ["Recession", "Price war"], "−25% · target 36"),
+    ]) }}
+    {{ mark("pros-cons") }}
+    {{ c.pros_cons(
+        pros=["Recurring revenue, 92% retention", "Net cash balance sheet"],
+        cons=["Customer concentration (top 3 = 41%)", "Founder dependency"]) }}
+    {{ mark("swot-grid") }}
+    {{ c.swot_grid(
+        strengths=["Pricing power in niche"],
+        weaknesses=["Single-region supply"],
+        opportunities=["Adjacent product line"],
+        threats=["Regulatory change draft in consultation"]) }}
   {% endcall %}
 
   {% call c.section("structural", "Structural components") %}

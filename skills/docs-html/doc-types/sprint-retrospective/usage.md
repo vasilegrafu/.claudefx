@@ -14,3 +14,10 @@ improvements to try next. Blameless and action-oriented.
   with no actions changed nothing.
 - Optional headline metrics ([[kpi-tiles]]): velocity, carryover, etc.
 - Carry last retro's actions forward and mark whether they were done.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

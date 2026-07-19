@@ -16,3 +16,10 @@ The "tech spec" / design-doc engineers write before building.
   ADR, but broader scope).
 - Rollout covers flags, migration, and backward compatibility.
 - Diagrams for structure/flow; framed [[code-block]] for interfaces.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

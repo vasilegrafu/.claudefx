@@ -15,3 +15,10 @@ steps, expected vs actual, evidence, root cause, fix.
 - Severity and priority are separate fields (impact vs urgency).
 - Evidence (logs, payloads) uses `<details>` or framed [[code-block]];
   screenshots use [[figure]] with alt text.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

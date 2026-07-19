@@ -16,3 +16,10 @@ implementation, and the test(s) that verify it.
 - Cells reference real ids from the other documents ([[trace-id]]); this doc
   links them, it does not restate their content.
 - The coverage summary ([[kpi-tiles]]) counts covered vs total.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

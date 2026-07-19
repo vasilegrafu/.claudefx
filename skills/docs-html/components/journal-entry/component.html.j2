@@ -1,0 +1,20 @@
+{# lines: list of (account, debit, credit) — credit lines leave debit "" #}
+{% macro journal_entry(id="", date="", memo="", lines=[]) %}
+  <div class="journal">
+    <div class="journal-head">
+      {% if date %}<span class="journal-date">{{ date }}</span>{% endif %}
+      {% if id %}<span class="journal-id">{{ id }}</span>{% endif %}
+    </div>
+    <table>
+      <thead><tr><th>Account</th><th>Debit</th><th>Credit</th></tr></thead>
+      <tbody>
+      {% for account, debit, credit in lines %}
+        <tr><td{% if not debit %} class="credit-account"{% endif %}>{{ account }}</td><td>{{ debit }}</td><td>{{ credit }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% if memo %}
+    <p class="journal-memo">{{ memo }}</p>
+  {% endif %}
+  </div>
+{% endmacro %}

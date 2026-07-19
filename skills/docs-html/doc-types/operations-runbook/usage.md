@@ -14,3 +14,10 @@ alerts and their responses, escalation, recovery procedures.
 - Routine and recovery procedures are `ol.steps` with real commands.
 - An architecture diagram (Mermaid) orients the reader; delete if trivial.
 - Escalation path names roles/rotations, not individuals where possible.
+
+## Beyond software
+
+This pattern is universal — the examples above are software-flavored, but the
+same structure serves other fields (finance, engineering, operations,
+research). Reuse it with domain judgment: keep the mechanics, swap the
+vocabulary.

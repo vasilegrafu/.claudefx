@@ -1,0 +1,12 @@
+{% macro pros_cons(pros=[], cons=[]) %}
+  <div class="pros-cons">
+    <div class="pros">
+      <p>Pros</p>
+      <ul>{% for item in pros %}<li>{{ item }}</li>{% endfor %}</ul>
+    </div>
+    <div class="cons">
+      <p>Cons</p>
+      <ul>{% for item in cons %}<li>{{ item }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+{% endmacro %}
