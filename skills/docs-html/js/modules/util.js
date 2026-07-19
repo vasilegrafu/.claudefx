@@ -4,10 +4,26 @@
 "use strict";
 
 docsHtml.util = (() => {
-  /** src → Promise. Engines load once no matter how many features ask. */
+  /** url → Promise. Engines/styles load once no matter how many features ask. */
   const scripts = new Map();
+  const styles = new Map();
 
   return {
+
+  /** Load a stylesheet from a URL (an engine's CSS); resolves on load.
+      Deduplicated: repeated calls for the same URL share one load. */
+  loadStyle(href) {
+    if (!styles.has(href))
+      styles.set(href, new Promise((resolve, reject) => {
+        const l = document.createElement("link");
+        l.rel = "stylesheet";
+        l.href = href;
+        l.onload = resolve;
+        l.onerror = () => reject(new Error(`failed to load ${href}`));
+        document.head.appendChild(l);
+      }));
+    return styles.get(href);
+  },
 
   /** Load a classic script from a URL (the CDN engines); resolves on load.
       Deduplicated: repeated calls for the same URL share one load. */

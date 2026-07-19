@@ -1,0 +1,3 @@
+{% macro formula(tex="") %}
+  <div class="math">{{ caller() if caller else tex }}</div>
+{% endmacro %}

@@ -12,6 +12,7 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
     ├── icons.js      the shared SVG icon set (Lucide-style strokes, currentColor)
     ├── layout-toggle.js   feature — ▯/▭ width switch   (selector: .doc-toolbar)
     ├── highlight.js       feature — runtime code coloring (selector: code[data-lang]; Prism, lazy)
+    ├── math.js            feature — LaTeX formulas (selector: .math; KaTeX, lazy)
     ├── diagrams.js        feature — everything diagrams (selector: pre.mermaid)
     └── main.js       docsHtml.init() on DOM-ready — final, never edited
 ```

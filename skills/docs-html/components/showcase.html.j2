@@ -24,6 +24,7 @@
     ("9.0", "2026-07-18", "docs-html", "Component-name labels over every demo; added lead, bullets, numbered"),
     ("10.0", "2026-07-19", "docs-html", "Code is plain text + data-lang — coloring moved to view time (Prism via docs-html.js)"),
     ("11.0", "2026-07-19", "docs-html", "Business &amp; finance components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge"),
+    ("12.0", "2026-07-19", "docs-html", "Formulas: LaTeX rendered at view time by KaTeX (math feature module)"),
 ]) }}
 {% endblock %}
 
@@ -48,6 +49,7 @@
       ("figure", "Figure"),
       ("approvals", "Approvals"),
       ("business", "Business &amp; finance"),
+      ("formulas", "Formulas"),
       ("structural", "Structural components"),
   ]) }}
 
@@ -272,6 +274,12 @@ def rate_limited(partition: str) -> bool:
         weaknesses=["Single-region supply"],
         opportunities=["Adjacent product line"],
         threats=["Regulatory change draft in consultation"]) }}
+  {% endcall %}
+
+  {% call c.section("formulas", "Formulas") %}
+    {{ mark("formula") }}
+    {% call c.formula() %}{% raw %}d_1 = \frac{\ln(S/K) + \left(r + \sigma^2/2\right)t}{\sigma\sqrt{t}}{% endraw %}{% endcall %}
+    {% call c.prose() %}{% raw %}Inline math sits in prose: <span class="math">E = mc^2</span> — the document holds plain LaTeX text; KaTeX renders it at view time (CDN unreachable → the source stays readable in mono).{% endraw %}{% endcall %}
   {% endcall %}
 
   {% call c.section("structural", "Structural components") %}

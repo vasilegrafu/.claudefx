@@ -236,7 +236,7 @@ def compose_showcase() -> str:
         type_name="Component Showcase",
         author="docs-html",
         date=datetime.date.today().isoformat(),
-        version="11.0",
+        version="12.0",
         skill_href=skill_href(COMPONENTS_DIR),   # gallery lives in components/
         cdn_href=cdn_href(),
         body_class="")

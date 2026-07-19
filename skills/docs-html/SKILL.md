@@ -52,6 +52,7 @@ only this file.
 | `lists.css` | facts, steps, checklist, trace-id |
 | `blocks.css` | requirement card, acceptance-criteria (Given/When/Then), kpi-tiles, timeline, glossary, revision-note, ISO front/back matter |
 | `business.css` | finance & decision components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge |
+| `math.css` | formula blocks (`.math`) — spacing, overflow, and the readable-LaTeX fallback before/without KaTeX |
 | `diagrams.css` | diagram-mermaid: the pan/zoom viewport + glyph toolbar |
 | `presentation.css` | presentation pages (`<body class="presentation">`) |
 | `print.css` | Ctrl+P → cover page, page breaks — layered LAST |
@@ -73,6 +74,7 @@ the one `docsHtml` namespace:
 | `icons.js` | the inline SVG icon set (Lucide-style strokes, currentColor) |
 | `layout-toggle.js` | feature on `.doc-toolbar`: the ▯/▭ width switch |
 | `highlight.js` | feature on `code[data-lang]`: runtime syntax coloring (Prism core + autoloader, lazy; grammars on demand). Exposes `docsHtml.highlight.ensure()/element()` for other features |
+| `math.js` | feature on `.math`: LaTeX rendered by KaTeX `0.16.11` (lazy CDN, script + stylesheet). `<div class="math">` = display, `<span class="math">` = inline; CDN down → the LaTeX source stays readable (math.css) |
 | `diagrams.js` | feature on `pre.mermaid`: everything diagrams — CDN pins, `DiagramViewer` class (pan/zoom + toolbar from a declarative `BUTTONS` spec); the source editor reuses `highlight` for a colored overlay |
 | `main.js` | `docsHtml.init()` on DOM-ready — final, never edited |
 
@@ -432,6 +434,9 @@ valid. See `components/code-block/usage.md`.
 - Uncertain content is always `<mark class="todo">` — never silently invented,
   never an empty section.
 - Diagrams are Mermaid text, editable — never exported images of diagrams.
+- Formulas are LaTeX text in `.math` elements (`c.formula()` block /
+  hand-written `<span class="math">` inline), rendered at view time — never
+  images of equations.
 - Requirements and traceable items carry trace-ids (`REQ-`, `RISK-`, `TC-`); a
   requirement is a `requirement` card, not a bullet.
 - Formal documents (SRS, architecture, standards, test plans) carry ISO-style

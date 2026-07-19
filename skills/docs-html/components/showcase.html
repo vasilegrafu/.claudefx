@@ -22,7 +22,7 @@
     <dl>
       <dt>Author</dt>         <dd>docs-html</dd>
       <dt>Date</dt>           <dd>2026-07-19</dd>
-      <dt>Version</dt>        <dd>11.0</dd>
+      <dt>Version</dt>        <dd>12.0</dd>
     </dl>
   </header>
 
@@ -38,6 +38,7 @@
       <tr><td>9.0</td><td>2026-07-18</td><td>docs-html</td><td>Component-name labels over every demo; added lead, bullets, numbered</td></tr>
       <tr><td>10.0</td><td>2026-07-19</td><td>docs-html</td><td>Code is plain text + data-lang — coloring moved to view time (Prism via docs-html.js)</td></tr>
       <tr><td>11.0</td><td>2026-07-19</td><td>docs-html</td><td>Business &amp; finance components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge</td></tr>
+      <tr><td>12.0</td><td>2026-07-19</td><td>docs-html</td><td>Formulas: LaTeX rendered at view time by KaTeX (math feature module)</td></tr>
     </tbody>
   </table>
 
@@ -64,6 +65,7 @@
       <li><a href="#figure">Figure</a></li>
       <li><a href="#approvals">Approvals</a></li>
       <li><a href="#business">Business &amp; finance</a></li>
+      <li><a href="#formulas">Formulas</a></li>
       <li><a href="#structural">Structural components</a></li>
     </ul>
   </nav>
@@ -487,6 +489,15 @@ def rate_limited(partition: str) -> bool:
     <div class="threats"><p>Threats</p><ul><li>Regulatory change draft in consultation</li></ul></div>
   </div>
 
+
+  </section>
+
+  <section id="formulas">
+    <h2>Formulas</h2>
+          <div class="component-label"><span>formula</span></div>
+
+  <div class="math">d_1 = \frac{\ln(S/K) + \left(r + \sigma^2/2\right)t}{\sigma\sqrt{t}}</div>
+  <p>Inline math sits in prose: <span class="math">E = mc^2</span> — the document holds plain LaTeX text; KaTeX renders it at view time (CDN unreachable → the source stays readable in mono).</p>
 
   </section>
 
