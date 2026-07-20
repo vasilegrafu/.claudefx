@@ -200,7 +200,7 @@ def skill_href(out_dir: Path) -> str:
     Preferred: THROUGH the consuming project's `.claude/skills/docs-html`
     junction/symlink (out_dir is `<project>/docs`, so `../.claude/...`) — the
     path stays inside the project and is identical on every machine, wherever
-    the shared .claudefx clone lives. Otherwise: relative path to the skill
+    the shared .aifx clone lives. Otherwise: relative path to the skill
     itself (same drive), or an absolute file:// URL (cross-drive).
     """
     junction = out_dir.parent / ".claude" / "skills" / "docs-html"

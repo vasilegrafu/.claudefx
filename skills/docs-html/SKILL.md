@@ -93,7 +93,7 @@ pins, the toolbar, and the ✎-editor behaviour are in `js/REFERENCE.md`.**
 
 **Where the two hrefs point — documents are CDN-ONLY.** `builder.py` bakes
 the version-pinned CDN URLs into every composed document's head:
-`https://cdn.jsdelivr.net/gh/vasilegrafu/.claudefx@X.Y.Z/skills/docs-html/…`
+`https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@X.Y.Z/skills/docs-html/…`
 (the version read from `version.json` at compose time — a document is forever
 pinned to the design system it was authored against, and works anywhere on
 the internet with zero local setup). Local paths never appear in documents.
@@ -303,7 +303,7 @@ folder; the builder discovers recursively) — the macro file's FIRST line is
 regenerate CATALOG.md.
 
 ### `release [major|minor|patch]` — publish a design-system version
-This skill lives in `github.com/vasilegrafu/.claudefx` — a standalone public
+This skill lives in `github.com/vasilegrafu/.aifx` — a standalone public
 repo, checked out ONCE as a shared clone that solutions consume via
 junctions/symlinks into their `.claude/skills/`; the same repo is ALSO the CDN
 origin (jsDelivr serves its tags). There is no sync step: releasing IS tagging
@@ -314,10 +314,10 @@ When the user asks for a release:
    infer the level from what changed since the last entry if not stated).
 2. Write the new `version.json` (version + ISO date, keep the `cdn` template)
    and prepend a `version.md` entry summarizing the changes.
-3. In the `.claudefx` repo: commit all changes; `git tag vX.Y.Z`;
+3. In the `.aifx` repo: commit all changes; `git tag vX.Y.Z`;
    `git push origin main --tags`. A published tag is IMMUTABLE — never move or
    re-tag; any fix is a new version. Verify with a HEAD request to
-   `https://cdn.jsdelivr.net/gh/vasilegrafu/.claudefx@X.Y.Z/skills/docs-html/css/docs-html.css`.
+   `https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@X.Y.Z/skills/docs-html/css/docs-html.css`.
 4. Report the new version and the two CDN URLs.
 Never bump the version as a side effect of other work — only on an explicit
 release. Day-to-day skill commits to `main` are fine without a release; tags
