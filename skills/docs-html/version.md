@@ -14,6 +14,20 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 1.2.1 — 2026-07-20
+
+Visual patch — no markup change, safe for every document.
+
+- `kpi-tiles`: smaller headline number (`.kpi-value` 2rem → 1.5rem) so tiles
+  read as metrics, not banners.
+
+Tooling (unversioned assets, noted for the record): every generated file now
+links the version-pinned CDN — the showcase joined documents in dropping local
+refs, so all output is shareable as-is; a missing `cdn` in `version.json` is now
+a hard error.
+
+---
+
 ## 1.2.0 — 2026-07-20
 
 Catalog completion, generated reference, and internal reorganization. Additive —
