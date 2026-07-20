@@ -4,13 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title }} — {{ type_name }}</title>
-{% if cdn_href %}
   <link rel="stylesheet" href="{{ cdn_href }}/css/docs-html.css">
   <script src="{{ cdn_href }}/js/docs-html.js" defer></script>
-{% else %}
-  <link rel="stylesheet" href="{{ skill_href }}/css/docs-html.css">
-  <script src="{{ skill_href }}/js/docs-html.js" defer></script>
-{% endif %}
 {% block head %}{% endblock %}
 </head>
 <body{% if body_class %} class="{{ body_class }}"{% endif %}>

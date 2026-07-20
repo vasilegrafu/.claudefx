@@ -21,16 +21,16 @@ Jinja runs ONLY here, at compose time. The output written to
 Jinja syntax left.
 
 Single-include design system: every document links exactly one stylesheet
-(`css/docs-html.css`) and one script (`js/docs-html.js`) back to this skill;
-`base.html.j2` writes both from the resolved `skill_href`. There is no
-per-document CSS selection and no publish step — documents reference the shared
-assets directly.
+(`css/docs-html.css`) and one script (`js/docs-html.js`), both from the
+version-pinned CDN (`cdn_href`, read from version.json). There is no
+per-document CSS selection and no publish step — every generated file,
+documents and the showcase alike, references the shared CDN assets so it is
+shareable as-is.
 """
 
 import argparse
 import datetime
 import json
-import os
 import re
 import subprocess
 import sys
@@ -180,36 +180,18 @@ def git_user() -> str:
 def cdn_href() -> str:
     """CDN prefix (version-pinned) baked into the head's fallback URLs.
 
-    Read from version.json (the single source of truth) at compose time, so a
-    document's fallback is pinned to the design-system version it was authored
+    Read from version.json (the single source of truth) at compose time, so
+    every generated file is pinned to the design-system version it was authored
     against. The cdn field is a template containing "{version}" (the version
     sits mid-URL when the assets live in a repo subfolder, e.g.
     …/gh/<user>/<repo>@{version}/skills/docs-html); a plain base URL gets
-    "@version" appended. Empty while no CDN is configured — the head then
-    carries plain local links with no fallback."""
+    "@version" appended. It is the only asset path the builder emits, so a
+    missing cdn is a hard error rather than a silent broken link."""
     info = json.loads((SKILL_DIR / "version.json").read_text(encoding="utf-8"))
     cdn, version = info.get("cdn"), info["version"]
     if not cdn:
-        return ""
+        sys.exit("version.json has no \"cdn\" — every document links the CDN; set it first.")
     return cdn.replace("{version}", version) if "{version}" in cdn else f"{cdn}@{version}"
-
-
-def skill_href(out_dir: Path) -> str:
-    """How the composed document links back to this skill's css/ and js/.
-
-    Preferred: THROUGH the consuming project's `.claude/skills/docs-html`
-    junction/symlink (out_dir is `<project>/docs`, so `../.claude/...`) — the
-    path stays inside the project and is identical on every machine, wherever
-    the shared .aifx clone lives. Otherwise: relative path to the skill
-    itself (same drive), or an absolute file:// URL (cross-drive).
-    """
-    junction = out_dir.parent / ".claude" / "skills" / "docs-html"
-    if (junction / "SKILL.md").is_file():
-        return "../.claude/skills/docs-html"
-    try:
-        return os.path.relpath(SKILL_DIR, out_dir).replace(os.sep, "/")
-    except ValueError:
-        return SKILL_DIR.as_uri()
 
 
 # --------------------------------------------------------------------------
@@ -217,7 +199,7 @@ def skill_href(out_dir: Path) -> str:
 # --------------------------------------------------------------------------
 
 
-def compose(type_name: str, title: str, out_dir: Path) -> str:
+def compose(type_name: str, title: str) -> str:
     """Render one doc-type template into standalone, hand-editable HTML."""
     directory = doc_type_dirs()[type_name]
     template_rel = (directory.relative_to(SKILL_DIR) / "document.html.j2").as_posix()
@@ -239,7 +221,6 @@ def compose(type_name: str, title: str, out_dir: Path) -> str:
         author=git_user(),
         date=datetime.date.today().isoformat(),
         version="0.1",
-        skill_href=skill_href(out_dir),
         cdn_href=cdn_href(),
         body_class=body_class)
 
@@ -251,8 +232,9 @@ def showcase_templates() -> list[Path]:
 
 def compose_showcase(template: Path) -> str:
     """Render one showcase (showcases/<name>.html.j2). A showcase is the skill's
-    own reference page — it exercises real macros against local assets, never a
-    user document. Title/type-name come from `{# title #}` / `{# type-name #}`
+    own reference page — it exercises real macros against the same CDN assets a
+    document uses, never a user document. Title/type-name come from
+    `{# title #}` / `{# type-name #}`
     headers (falling back to the file stem)."""
     text = template.read_text(encoding="utf-8")
     stem = template.name[:-len(".html.j2")]
@@ -267,8 +249,7 @@ def compose_showcase(template: Path) -> str:
         author="docs-html",
         date=datetime.date.today().isoformat(),
         version="",
-        skill_href=skill_href(SHOWCASES_DIR),   # showcases live one level deep
-        cdn_href="",   # skill-internal page: ALWAYS local relative refs
+        cdn_href=cdn_href(),   # same version-pinned CDN as documents — shareable as-is
         cat_blurb=category_blurbs(),   # single source: the category usage.md blurbs
         body_class="")
 
@@ -289,7 +270,7 @@ def cmd_new(args: argparse.Namespace) -> int:
         print(f"refusing to overwrite {out.name} (pass --force)")
         return 1
 
-    out.write_text(compose(type_name, args.title, out_dir), encoding="utf-8")
+    out.write_text(compose(type_name, args.title), encoding="utf-8")
     print(f"composed: {type_name} -> {out}")
     print("next: fill the placeholders")
     return 0

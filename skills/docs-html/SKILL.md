@@ -96,12 +96,11 @@ the version-pinned CDN URLs into every composed document's head:
 `https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@X.Y.Z/skills/docs-html/…`
 (the version read from `version.json` at compose time — a document is forever
 pinned to the design system it was authored against, and works anywhere on
-the internet with zero local setup). Local paths never appear in documents.
-The ONE exception is the skill's own showcases (`showcases/*.html`),
-which use local relative refs so they always show the working tree — the
-builder forces this (`cdn_href=""` in `compose_showcase`). If `version.json`
-has no `cdn` configured, composed heads fall back to local skill paths (a
-dev-only situation).
+the internet with zero local setup). Local paths never appear in any generated
+file — the skill's own showcases (`showcases/*.html`) link the same
+version-pinned CDN as documents, so every output is shareable as-is. `cdn` is
+the only asset path the builder emits; a missing `cdn` in `version.json` is a
+hard error, not a silent local fallback.
 
 **Versioning.** The design-system version lives in exactly two files at the
 skill root and NOWHERE else (not in the CSS, not in the JS): `version.json`
@@ -112,12 +111,12 @@ documented at its top). On a CDN the version is carried by the URL path
 loader's self-resolved base pin the whole asset tree to one version
 automatically. See the `release` command below.
 
-**Developing against a document.** Since document heads pin a released CDN
-version, skill changes are previewed via the gallery (local refs, always the
-working tree) or a scratch compose with `cdn` temporarily empty. A document
-picks up improvements by a deliberate head edit to a newer `@X.Y.Z` — never
-silently. The `cdn` field in `version.json` is the URL template with
-`{version}`.
+**Developing against a document.** Every generated file — documents and the
+showcase alike — pins the CDN version from `version.json`, so previewing local
+CSS/JS edits means bumping `cdn` to the version you're about to release (or
+serving the working tree yourself). A document picks up improvements by a
+deliberate head edit to a newer `@X.Y.Z` — never silently. The `cdn` field in
+`version.json` is the URL template with `{version}`.
 
 ## How documents are composed
 
