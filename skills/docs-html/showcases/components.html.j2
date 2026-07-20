@@ -196,6 +196,14 @@
     {% call c.prose() %}A card groups a few related components into one visual unit — standalone here, or as a cell inside a grid or columns.{% endcall %}
   {% endcall %}
 
+  {{ spec("Width — constrain any component to a fixed width", "width") }}
+  {% call c.width("18rem") %}
+    {% call c.callout("note") %}This callout is capped at <code>18rem</code> and left-aligned — every other block fills the column; wrap one in <code>width</code> when a fixed size reads better.{% endcall %}
+  {% endcall %}
+  {% call c.width("22rem", align="center") %}
+    {% call c.card("Centered, 22rem") %}{% call c.prose() %}Same wrapper, centered.{% endcall %}{% endcall %}
+  {% endcall %}
+
 
   {# ========================= CONTENT ========================= #}
   {{ cat("content", "Category 03 / 10", "Content") }}

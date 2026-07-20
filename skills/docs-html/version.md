@@ -14,6 +14,14 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 1.5.0 — 2026-07-20
+
+- New `layout/width` component: wrap any component to give it a fixed width
+  (`w`, default `24rem`) with optional `align` (left/center/right). Caps width,
+  never overflows. Additive.
+
+---
+
 ## 1.4.0 — 2026-07-20
 
 Layout primitives. Additive — existing documents keep working unchanged.

@@ -14,7 +14,7 @@
      (e.g. this file was copied out of the repo), fall back to the pinned CDN so
      the page still renders. Local first, CDN only if local is missing. */
   (function () {
-    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@1.4.0/skills/docs-html";
+    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@1.5.0/skills/docs-html";
     document.addEventListener("DOMContentLoaded", function () {
       var cssOk = false;
       try {
@@ -216,6 +216,20 @@
   <p>A card groups a few related components into one visual unit — standalone here, or as a cell inside a grid or columns.</p>
 </div>
   </div>
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Width — constrain any component to a fixed width</h3>
+    <span class="gx-spec-name">width</span>
+  </div>
+
+  <div class="width" style="--w: 18rem">  <aside class="note">This callout is capped at <code>18rem</code> and left-aligned — every other block fills the column; wrap one in <code>width</code> when a fixed size reads better.</aside>
+</div>
+  <div class="width width-center" style="--w: 22rem">  <div class="card">
+    <p class="card-title">Centered, 22rem</p>
+    <div class="card-body">  <p>Same wrapper, centered.</p>
+</div>
+  </div>
+</div>
 
 
     <section class="gx-cat" id="content">
