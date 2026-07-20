@@ -14,6 +14,17 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 1.6.0 — 2026-07-20
+
+- New `drawio` feature + `diagram-drawio` component: freeform draw.io /
+  diagrams.net diagrams authored as mxGraph XML (`c.diagram_drawio()`,
+  `pre.drawio`), rendered to SVG at view time by the pinned diagrams.net viewer
+  (`jgraph/drawio@24.7.17`, lazy). For architecture/network/infra with explicit
+  layout — complements Mermaid (auto-laid-out). Styled by `diagrams.css`;
+  degrades to the XML source if the viewer CDN is unreachable. Additive.
+
+---
+
 ## 1.5.0 — 2026-07-20
 
 - New `layout/width` component: wrap any component to give it a fixed width

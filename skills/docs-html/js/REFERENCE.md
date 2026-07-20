@@ -20,6 +20,7 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
     ├── math.js            feature — LaTeX formulas (selector: .math; KaTeX, lazy)
     ├── diagrams.js        feature — everything diagrams (selector: pre.mermaid)
     ├── chart.js           feature — declarative charts (selector: pre.chart; ECharts, lazy, SVG)
+    ├── drawio.js          feature — freeform draw.io diagrams (selector: pre.drawio; diagrams.net viewer, lazy, SVG)
     └── main.js       docsHtml.init() on DOM-ready — final, never edited
 ```
 
@@ -35,6 +36,7 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
 | `math.js` | feature on `.math`: LaTeX rendered by KaTeX `0.16.11` (lazy CDN, script + stylesheet). `<div class="math">` = display, `<span class="math">` = inline; CDN down → the LaTeX source stays readable (math.css) |
 | `diagrams.js` | feature on `pre.mermaid`: everything diagrams — CDN pins, `DiagramViewer` class (pan/zoom + toolbar from a declarative `BUTTONS` spec); the source editor reuses `highlight` for a colored overlay |
 | `chart.js` | feature on `pre.chart`: declarative data charts. Parses a JSON ECharts `option`, lazy-loads ECharts `5.5.1` (pinned CDN), renders **SVG** with the built-in validated `docs-html` theme; auto-fills `aria`/`tooltip`/`legend` only when unset; reflows on resize. Invalid JSON or CDN down → the spec stays a readable code box (chart.css). Rebrand the palette here, never per chart |
+| `drawio.js` | feature on `pre.drawio`: freeform draw.io diagrams. Reads the mxGraph XML source, builds a `.mxgraph` host and lazy-loads the pinned diagrams.net viewer (`jgraph/drawio@24.7.17`, ~3.6 MB), which renders **SVG** with its own zoom/lightbox. Viewer down → the XML source is restored (diagrams.css). No auto-layout — the XML carries explicit coordinates |
 | `main.js` | `docsHtml.init()` on DOM-ready — final, never edited |
 
 Features read per-document options from `data-` attributes on their own markup

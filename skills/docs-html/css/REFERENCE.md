@@ -39,7 +39,7 @@ Which `css/modules/` file styles which components:
 | `blocks.css` | requirement card, acceptance-criteria (Given/When/Then), kpi-tiles, timeline, glossary, revision-note, meter, risk-matrix, footnotes, ISO front/back matter |
 | `business.css` | finance & decision components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge, party-block |
 | `math.css` | formula blocks (`.math`) — spacing, overflow, and the readable-LaTeX fallback before/without KaTeX |
-| `diagrams.css` | diagram-mermaid: the pan/zoom viewport + glyph toolbar |
+| `diagrams.css` | diagram-mermaid: the pan/zoom viewport + glyph toolbar; diagram-drawio: the rendered `.drawio-figure` card + the mxGraph-XML source-box fallback |
 | `chart.css` | chart-echarts: the chart card (the validated `bg-soft` surface) + the readable-spec fallback before/without ECharts. The categorical palette lives in `js/modules/chart.js`, not here |
 | `presentation.css` | presentation pages (`<body class="presentation">`) |
 | `print.css` | Ctrl+P → cover page, page breaks — layered LAST |

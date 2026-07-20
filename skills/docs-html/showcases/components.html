@@ -14,26 +14,35 @@
      (e.g. this file was copied out of the repo), fall back to the pinned CDN so
      the page still renders. Local first, CDN only if local is missing. */
   (function () {
-    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@1.5.0/skills/docs-html";
-    document.addEventListener("DOMContentLoaded", function () {
-      var cssOk = false;
+    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@1.6.0/skills/docs-html";
+    function cssLoaded() {
       try {
         for (var i = 0; i < document.styleSheets.length; i++) {
           var s = document.styleSheets[i];
-          if (s.href && /\/css\/docs-html\.css(\?|$)/.test(s.href) && s.cssRules && s.cssRules.length) { cssOk = true; break; }
+          if (s.href && /\/css\/docs-html\.css(\?|$)/.test(s.href) && s.cssRules && s.cssRules.length) return true;
         }
-      } catch (e) { cssOk = true; }   /* cross-origin sheet already loaded → fine */
-      if (!cssOk) {
+      } catch (e) { return true; }   /* cross-origin sheet already loaded → fine */
+      return false;
+    }
+    /* The local loader defines docsHtml asynchronously (it injects the module
+       scripts), so it can appear a beat AFTER DOMContentLoaded — poll for up to
+       ~3.6s before deciding local is truly absent, or we'd double-load. */
+    var tries = 0;
+    function check() {
+      if (cssLoaded() && window.docsHtml) return;          // local is fine
+      if (++tries < 12) { setTimeout(check, 300); return; } // give it more time
+      if (!cssLoaded()) {                                   // give up → CDN fallback
         var l = document.createElement("link");
         l.rel = "stylesheet"; l.href = CDN + "/css/docs-html.css";
         document.head.appendChild(l);
       }
-      if (!window.docsHtml) {   /* the local loader defines this; absent → local js 404'd */
+      if (!window.docsHtml) {
         var sc = document.createElement("script");
         sc.src = CDN + "/js/docs-html.js"; sc.defer = true;
         document.head.appendChild(sc);
       }
-    });
+    }
+    document.addEventListener("DOMContentLoaded", check);
   })();
 </script>
 <style>
@@ -945,6 +954,29 @@ flowchart LR
 }
 
   </pre>
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">draw.io diagram — freeform architecture (mxGraph XML)</h3>
+    <span class="gx-spec-name">diagram-drawio</span>
+  </div>
+
+  <pre class="drawio">
+&lt;mxGraphModel&gt;
+  &lt;root&gt;
+    &lt;mxCell id=&#34;0&#34;/&gt;
+    &lt;mxCell id=&#34;1&#34; parent=&#34;0&#34;/&gt;
+    &lt;mxCell id=&#34;user&#34; value=&#34;User&#34; style=&#34;ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;&#34; vertex=&#34;1&#34; parent=&#34;1&#34;&gt;&lt;mxGeometry x=&#34;20&#34; y=&#34;70&#34; width=&#34;90&#34; height=&#34;50&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell id=&#34;app&#34; value=&#34;Web App&#34; style=&#34;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;&#34; vertex=&#34;1&#34; parent=&#34;1&#34;&gt;&lt;mxGeometry x=&#34;160&#34; y=&#34;70&#34; width=&#34;110&#34; height=&#34;50&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell id=&#34;api&#34; value=&#34;API&#34; style=&#34;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;&#34; vertex=&#34;1&#34; parent=&#34;1&#34;&gt;&lt;mxGeometry x=&#34;320&#34; y=&#34;70&#34; width=&#34;100&#34; height=&#34;50&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell id=&#34;db&#34; value=&#34;PostgreSQL&#34; style=&#34;shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;&#34; vertex=&#34;1&#34; parent=&#34;1&#34;&gt;&lt;mxGeometry x=&#34;470&#34; y=&#34;58&#34; width=&#34;90&#34; height=&#34;74&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell id=&#34;mq&#34; value=&#34;Message Queue&#34; style=&#34;shape=process;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;&#34; vertex=&#34;1&#34; parent=&#34;1&#34;&gt;&lt;mxGeometry x=&#34;310&#34; y=&#34;180&#34; width=&#34;120&#34; height=&#34;50&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell style=&#34;edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;&#34; edge=&#34;1&#34; parent=&#34;1&#34; source=&#34;user&#34; target=&#34;app&#34;&gt;&lt;mxGeometry relative=&#34;1&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell style=&#34;edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;&#34; edge=&#34;1&#34; parent=&#34;1&#34; source=&#34;app&#34; target=&#34;api&#34;&gt;&lt;mxGeometry relative=&#34;1&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell style=&#34;edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;&#34; edge=&#34;1&#34; parent=&#34;1&#34; source=&#34;api&#34; target=&#34;db&#34;&gt;&lt;mxGeometry relative=&#34;1&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+    &lt;mxCell style=&#34;edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;&#34; edge=&#34;1&#34; parent=&#34;1&#34; source=&#34;api&#34; target=&#34;mq&#34;&gt;&lt;mxGeometry relative=&#34;1&#34; as=&#34;geometry&#34;/&gt;&lt;/mxCell&gt;
+  &lt;/root&gt;
+&lt;/mxGraphModel&gt;
+</pre>
 
 
     <section class="gx-cat" id="math">

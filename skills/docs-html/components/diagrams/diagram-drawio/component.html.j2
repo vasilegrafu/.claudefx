@@ -1,0 +1,6 @@
+{# purpose: freeform draw.io / diagrams.net diagram from mxGraph XML, rendered at view time as SVG #}
+{# The mxGraph XML must be HTML-escaped so the browser keeps it as text (not parsed
+   into elements); forceescape escapes even Jinja's already-safe caller() output. #}
+{% macro diagram_drawio(xml="") %}
+  <pre class="drawio">{{ (caller() if caller else xml) | forceescape }}</pre>
+{% endmacro %}

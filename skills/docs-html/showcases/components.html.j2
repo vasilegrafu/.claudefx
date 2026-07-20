@@ -34,25 +34,34 @@
      the page still renders. Local first, CDN only if local is missing. */
   (function () {
     var CDN = "{{ cdn_fallback }}";
-    document.addEventListener("DOMContentLoaded", function () {
-      var cssOk = false;
+    function cssLoaded() {
       try {
         for (var i = 0; i < document.styleSheets.length; i++) {
           var s = document.styleSheets[i];
-          if (s.href && /\/css\/docs-html\.css(\?|$)/.test(s.href) && s.cssRules && s.cssRules.length) { cssOk = true; break; }
+          if (s.href && /\/css\/docs-html\.css(\?|$)/.test(s.href) && s.cssRules && s.cssRules.length) return true;
         }
-      } catch (e) { cssOk = true; }   /* cross-origin sheet already loaded → fine */
-      if (!cssOk) {
+      } catch (e) { return true; }   /* cross-origin sheet already loaded → fine */
+      return false;
+    }
+    /* The local loader defines docsHtml asynchronously (it injects the module
+       scripts), so it can appear a beat AFTER DOMContentLoaded — poll for up to
+       ~3.6s before deciding local is truly absent, or we'd double-load. */
+    var tries = 0;
+    function check() {
+      if (cssLoaded() && window.docsHtml) return;          // local is fine
+      if (++tries < 12) { setTimeout(check, 300); return; } // give it more time
+      if (!cssLoaded()) {                                   // give up → CDN fallback
         var l = document.createElement("link");
         l.rel = "stylesheet"; l.href = CDN + "/css/docs-html.css";
         document.head.appendChild(l);
       }
-      if (!window.docsHtml) {   /* the local loader defines this; absent → local js 404'd */
+      if (!window.docsHtml) {
         var sc = document.createElement("script");
         sc.src = CDN + "/js/docs-html.js"; sc.defer = true;
         document.head.appendChild(sc);
       }
-    });
+    }
+    document.addEventListener("DOMContentLoaded", check);
   })();
 </script>
 <style>
@@ -494,6 +503,25 @@ def rate_limited(partition: str) -> bool:
     ]
   }]
 }
+{% endraw %}{% endcall %}
+
+  {{ spec("draw.io diagram — freeform architecture (mxGraph XML)", "diagram-drawio") }}
+  {% call c.diagram_drawio() %}{% raw %}
+<mxGraphModel>
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="user" value="User" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1"><mxGeometry x="20" y="70" width="90" height="50" as="geometry"/></mxCell>
+    <mxCell id="app" value="Web App" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="160" y="70" width="110" height="50" as="geometry"/></mxCell>
+    <mxCell id="api" value="API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="320" y="70" width="100" height="50" as="geometry"/></mxCell>
+    <mxCell id="db" value="PostgreSQL" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="470" y="58" width="90" height="74" as="geometry"/></mxCell>
+    <mxCell id="mq" value="Message Queue" style="shape=process;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="310" y="180" width="120" height="50" as="geometry"/></mxCell>
+    <mxCell style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" edge="1" parent="1" source="user" target="app"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" edge="1" parent="1" source="app" target="api"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" edge="1" parent="1" source="api" target="db"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;" edge="1" parent="1" source="api" target="mq"><mxGeometry relative="1" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
 {% endraw %}{% endcall %}
 
 

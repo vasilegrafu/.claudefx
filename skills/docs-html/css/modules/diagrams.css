@@ -243,3 +243,35 @@ pre.mermaid:fullscreen .mermaid-resize { display: none; }
   .mermaid-canvas > svg { transform: none !important; }
   .mermaid-tools, .mermaid-resize, .mermaid-editor { display: none; }
 }
+
+/* ---------- diagram-drawio: draw.io / diagrams.net, rendered by the viewer ---------- */
+/* Source box before render — or forever, if the viewer CDN is unreachable: the
+   mxGraph XML shows as a code box (verbose, but the page survives). */
+pre.drawio {
+  margin: var(--block-gap) 0;
+  background: var(--code-bg);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: .9rem 1.1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: .8rem; line-height: 1.5;
+  white-space: pre;
+  color: var(--fg-soft);
+}
+pre.drawio[hidden] { display: none; }   /* rendered: source stays in the DOM, hidden */
+
+/* Rendered: the viewer fills this bounded card. */
+.drawio-figure {
+  margin: var(--block-gap) 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  padding: .3rem;
+  overflow: auto;                        /* large diagrams scroll, never break the column */
+}
+.drawio-figure svg { max-width: 100%; height: auto; }
+
+@media print {
+  .drawio-figure { break-inside: avoid; overflow: visible; }
+}
