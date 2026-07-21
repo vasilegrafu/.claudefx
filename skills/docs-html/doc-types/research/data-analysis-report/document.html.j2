@@ -25,11 +25,13 @@
     {% call c.code(lang="python") %}{% raw %}{{the key computation, if code carries the method better than prose}}{% endraw %}{% endcall %}
   {% endcall %}
   {% call c.section("results", "Results") %}
-    {% call c.diagram_mermaid() %}{% raw %}xychart-beta
-  title "{{headline chart}}"
-  x-axis [{{...}}]
-  y-axis "{{unit}}"
-  bar [{{...}}]{% endraw %}{% endcall %}
+    {% call c.chart_echarts() %}{% raw %}
+{
+  "xAxis": { "type": "category", "data": ["{{category}}"] },
+  "yAxis": { "type": "value", "name": "{{unit}}" },
+  "series": [{ "type": "bar", "name": "{{measure}}", "data": [0] }]
+}
+{% endraw %}{% endcall %}
     {{ c.table(["Metric", "Value", "Interpretation"],
         [["{{metric}}", "{{v}}", "{{meaning}}"]]) }}
   {% endcall %}
