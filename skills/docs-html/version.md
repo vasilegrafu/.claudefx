@@ -14,6 +14,99 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 3.0.0 — 2026-07-22
+
+**Charts changed their markup hook, and gained a whole component category for
+investing.** The breaking change is the first one; the second is purely
+additive.
+
+### Breaking — charts name their engine
+
+`pre.chart` alone is no longer a recognised markup hook. A chart block now wears
+two classes: `chart`, the marker every chart engine shares, and a second class
+selecting the engine.
+
+```html
+<pre class="chart">…</pre>                   <!-- 2.x -->
+<pre class="chart apache-echarts">…</pre>    <!-- 3.0 -->
+```
+
+The macro is renamed to match: `c.chart_echarts()` → `c.chart_apache_echarts()`.
+
+Why: charts had no engine seam. Everything lived in one `chart.js` — the
+validated categorical palette written directly into an **ECharts theme object**,
+the card, the source fallback, `data-height`, the resize reflow — so a second
+engine could not have reused the palette the dataviz method validated, and had
+nowhere to hook. Diagrams solved this in 1.8.0 with a shared viewport plus one
+engine file beside it; charts now use the same split.
+
+- Added: `js/modules/charts.js` — the shared, engine-agnostic chart frame,
+  `docsHtml.chart`. Owns `PALETTE` and `TOKENS` **as plain data in no engine's
+  format**, `Frame` (card, canvas, `data-height`, source hiding, toolbar), one
+  debounced resize dispatch for the whole page, and `markError`.
+- Added: `js/modules/chart-apache-echarts.js` — the engine. Owns the pinned
+  `echarts@5.5.1` CDN and *translates* the shared tokens into an ECharts theme.
+- Renamed: CSS layer `chart` → `charts`. `css/modules/chart.css` becomes
+  `charts.css` (frame, toolbar, and the `pre.chart` readable-source fallback —
+  one definition for every engine) plus `chart-apache-echarts.css`.
+- Moved: the component leaves `components/diagrams/` for a new twelfth category,
+  `components/charts/`. A chart is data; a diagram is a drawn relationship.
+- **New: a chart toolbar.** Every rendered chart now carries download-as-SVG and
+  copy-source, top-right of the card — from the shared layer, so any future
+  engine inherits them.
+- Rebrand the dataviz palette in `js/modules/charts.js` now, not in the engine.
+
+Adding a chart engine is documented in `js/REFERENCE.md` as the same five
+mechanical steps as a diagram engine.
+
+### Added — the `investing` component category (45 components)
+
+An eleventh component category for documents that must support an allocation
+decision: buy, hold, sell, size, or wait. Nothing in it is a prettier table —
+each component encodes a rule its `usage.md` enforces.
+
+- The security and the call: `security-header`, `recommendation`.
+- Company analysis: `thesis-pillars` (claim + evidence + **falsifier**),
+  `scorecard`, `metric-trend`, `valuation-multiples`, `peer-comparison`,
+  `earnings-surprise`, `valuation-range` (football field), `catalyst-timeline`,
+  `expected-value`.
+- Statements: `income-statement`, `balance-sheet` (with an explicit
+  assets = liabilities + equity check), `cash-flow-statement` (with the free
+  cash flow derivation), `dcf-summary`, `segment-reporting` (revenue share vs
+  profit share), `footnote-disclosures`. Statement lines cross-reference notes
+  via `note=` → `id="note-N"`.
+- Decomposition and valuation: `bridge` (waterfall, cumulative maths done at
+  compose time), `sensitivity-table`, `roll-forward`, `dupont`,
+  `capital-allocation`, `composite-score`, `debt-maturity`, `working-capital`.
+- Portfolio and market: `holdings-table`, `performance-table`, `exposure-bars`,
+  `risk-metrics`, `trade-log`, `attribution`, `drawdown-table`, `stress-test`.
+- Economy and strategy: `macro-indicators`, `cycle-position`, `heatmap`,
+  `five-forces`, `quadrant-map`, `funnel`, `cohort-table`, `unit-economics`,
+  `ownership-table`, `variance-analysis`, `aging-schedule`, `covenant-table`.
+
+**No new JavaScript.** Every bar width, bar offset and plot position is computed
+at compose time and carried as a `data-` attribute read by CSS `attr()`, so the
+authoring contract's ban on `style=` holds throughout; each component also
+prints its own values, so nothing becomes unreadable without `attr()`.
+
+`css/modules/investing.css` defines four shared skins rather than 45 bespoke
+ones: `table.fin` (a marker class every numeric table opts into), `.statement`,
+the labelled-bar figure row, and the level-graded cell grid. It is layered after
+`business` so `valuation-multiples` and `covenant-table` can reuse `.badge`.
+
+**Migration.** Only charts need action. In each document, change
+`<pre class="chart">` to `<pre class="chart apache-echarts">`; the JSON spec
+inside is untouched, as is every other component. A document with no chart in it
+upgrades to 3.0.0 by changing the version in its two hrefs, nothing else.
+
+Documents already published against `@1.x` or `@2.x` need no action at all: each
+pins an immutable tag and loads the assets of that tag, so it keeps its old
+markup *and* the code that understands it. Verified against
+`data-analysis-report-apple-income-fy2025.html` (pinned `@2.0.0`), which still
+renders unchanged.
+
+---
+
 ## 2.0.0 — 2026-07-21
 
 **draw.io / diagrams.net support is removed.** `pre.drawio` is no longer a

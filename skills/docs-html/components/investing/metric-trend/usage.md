@@ -26,4 +26,4 @@ to newest, left to right — never reversed. `dir` describes the METRIC, not
 whether it is good news: a falling share count is `down` and that is fine;
 the reader judges. CAGR states its own basis (%, or pp for margins). Restated
 figures carry the restatement in a footnote, not a silent overwrite. For more
-than about seven periods use `chart_echarts` — a table stops being readable.
+than about seven periods use `chart_apache_echarts` — a table stops being readable.

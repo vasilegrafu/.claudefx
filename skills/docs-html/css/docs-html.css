@@ -15,7 +15,7 @@
    those come along automatically. */
 
 @layer base, metadata, layout, toc, content, callouts, lists, blocks, business, investing,
-       code, math, diagrams, chart, presentation, print;
+       code, math, diagrams, charts, presentation, print;
 
 @import url("modules/base.css")         layer(base);
 @import url("modules/metadata.css")     layer(metadata);
@@ -31,6 +31,7 @@
 @import url("modules/code.css")         layer(code);
 @import url("modules/diagrams.css")     layer(diagrams);   /* shared viewport */
 @import url("modules/diagram-mermaid.css") layer(diagrams);
-@import url("modules/chart.css")        layer(chart);
+@import url("modules/charts.css")       layer(charts);   /* shared chart frame */
+@import url("modules/chart-apache-echarts.css") layer(charts);
 @import url("modules/presentation.css") layer(presentation);
 @import url("modules/print.css")        layer(print);

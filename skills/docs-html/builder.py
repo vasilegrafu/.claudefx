@@ -65,7 +65,8 @@ MACRO_SIG_RE = re.compile(r"\{%\s*macro\s+\w+\s*\((.*?)\)\s*%\}", re.S)
 
 # Presentation order for CATALOG.md (unknown keys append alphabetically).
 CATEGORY_ORDER = ["structure", "layout", "content", "lists", "callouts", "blocks",
-                  "business", "investing", "front-back-matter", "diagrams", "math"]
+                  "business", "investing", "front-back-matter", "diagrams",
+                  "charts", "math"]
 DOMAIN_ORDER = ["general", "software", "finance", "investing", "accounting",
                 "research", "economics", "engineering", "tools", "fallback"]
 

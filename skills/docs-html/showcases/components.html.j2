@@ -147,11 +147,12 @@
       ("investing", "Investing"),
       ("front-back-matter", "Front &amp; back matter"),
       ("diagrams", "Diagrams"),
+      ("charts", "Charts"),
       ("math", "Formulas"),
   ]) }}
 
   {# ========================= STRUCTURE ========================= #}
-  {{ cat("structure", "Category 01 / 11", "Structure") }}
+  {{ cat("structure", "Category 01 / 12", "Structure") }}
 
   {{ spec("Lead paragraph", "lead") }}
   {% call c.lead() %}The executive-summary opener: one emphasised paragraph stating what this document establishes and why it matters, before any detail.{% endcall %}
@@ -174,12 +175,12 @@
 
 
   {# ========================= LAYOUT ========================= #}
-  {{ cat("layout", "Category 02 / 11", "Layout") }}
+  {{ cat("layout", "Category 02 / 12", "Layout") }}
 
   {{ spec("Columns — side by side, with a wider cell", "columns") }}
   {% call c.columns() %}
     {% call c.column(span=2) %}
-      {% call c.chart_echarts(height=260) %}{% raw %}
+      {% call c.chart_apache_echarts(height=260) %}{% raw %}
 {
   "tooltip": { "trigger": "axis" },
   "xAxis": { "type": "category", "data": ["Q1", "Q2", "Q3", "Q4"] },
@@ -216,7 +217,7 @@
 
 
   {# ========================= CONTENT ========================= #}
-  {{ cat("content", "Category 03 / 11", "Content") }}
+  {{ cat("content", "Category 03 / 12", "Content") }}
 
   {{ spec("Plain code", "code") }}
   {% call c.code() %}{% raw %}def rate_limited(partition: str) -> bool:
@@ -267,7 +268,7 @@ def rate_limited(partition: str) -> bool:
 
 
   {# ========================= LISTS ========================= #}
-  {{ cat("lists", "Category 04 / 11", "Lists") }}
+  {{ cat("lists", "Category 04 / 12", "Lists") }}
 
   {{ spec("Bulleted list", "bullets") }}
   {{ c.bullets([
@@ -306,7 +307,7 @@ def rate_limited(partition: str) -> bool:
 
 
   {# ========================= CALLOUTS ========================= #}
-  {{ cat("callouts", "Category 05 / 11", "Callouts") }}
+  {{ cat("callouts", "Category 05 / 12", "Callouts") }}
 
   {{ spec("Note, warning, decision &amp; risk", "callout") }}
   {% call c.callout("note") %}{% call c.prose() %}Supplementary context the reader may want.{% endcall %}{% endcall %}
@@ -319,7 +320,7 @@ def rate_limited(partition: str) -> bool:
 
 
   {# ========================= BLOCKS ========================= #}
-  {{ cat("blocks", "Category 06 / 11", "Blocks") }}
+  {{ cat("blocks", "Category 06 / 12", "Blocks") }}
 
   {{ spec("Requirement card", "requirement") }}
   {{ c.requirement(id="REQ-014", title="Portfolio revaluation latency",
@@ -387,7 +388,7 @@ def rate_limited(partition: str) -> bool:
 
 
   {# ========================= BUSINESS ========================= #}
-  {{ cat("business", "Category 07 / 11", "Business &amp; finance") }}
+  {{ cat("business", "Category 07 / 12", "Business &amp; finance") }}
 
   {{ spec("Verdict badges", "badge") }}
   {% call c.prose() %}Verdicts inline: {{ c.badge("Buy", "good") }} {{ c.badge("Hold") }} {{ c.badge("Sell", "bad") }} {{ c.badge("Review", "warn") }} {{ c.badge("New", "info") }}{% endcall %}
@@ -439,7 +440,7 @@ def rate_limited(partition: str) -> bool:
 
 
   {# ========================= INVESTING ========================= #}
-  {{ cat("investing", "Category 08 / 11", "Investing") }}
+  {{ cat("investing", "Category 08 / 12", "Investing") }}
 
   {{ spec("Security header — the instrument under analysis", "security-header") }}
   {{ c.security_header(
@@ -1051,7 +1052,7 @@ def rate_limited(partition: str) -> bool:
       ]) }}
 
   {# ========================= MATTER ========================= #}
-  {{ cat("front-back-matter", "Category 09 / 11", "Front &amp; back matter") }}
+  {{ cat("front-back-matter", "Category 09 / 12", "Front &amp; back matter") }}
 
   {{ spec("References", "references") }}
   {{ c.references([
@@ -1078,7 +1079,7 @@ def rate_limited(partition: str) -> bool:
 
 
   {# ========================= DIAGRAMS ========================= #}
-  {{ cat("diagrams", "Category 10 / 11", "Diagrams") }}
+  {{ cat("diagrams", "Category 10 / 12", "Diagrams") }}
 
   {{ spec("Mermaid diagram", "diagram-mermaid") }}
   {% call c.diagram_mermaid() %}{% raw %}flowchart LR
@@ -1086,38 +1087,6 @@ def rate_limited(partition: str) -> bool:
   app --> api[API]
   api --> db[(PostgreSQL)]
   api --> mq[[Message Queue]]{% endraw %}{% endcall %}
-
-  {{ spec("Chart — bars, line &amp; legend (ECharts)", "chart-echarts") }}
-  {% call c.chart_echarts() %}{% raw %}
-{
-  "tooltip": { "trigger": "axis" },
-  "legend": {},
-  "xAxis": { "type": "category", "data": ["Q1", "Q2", "Q3", "Q4"] },
-  "yAxis": { "type": "value" },
-  "series": [
-    { "type": "bar",  "name": "Revenue",  "data": [120, 145, 132, 168] },
-    { "type": "bar",  "name": "Cost",     "data": [80, 92, 88, 101] },
-    { "type": "line", "name": "Forecast", "data": [118, 140, 138, 172] }
-  ]
-}
-{% endraw %}{% endcall %}
-
-  {{ spec("Chart — composition donut (ECharts)", "chart-echarts") }}
-  {% call c.chart_echarts(height=300) %}{% raw %}
-{
-  "tooltip": {},
-  "legend": {},
-  "series": [{
-    "type": "pie", "radius": ["42%", "70%"],
-    "data": [
-      { "name": "Equities",    "value": 48 },
-      { "name": "Bonds",       "value": 27 },
-      { "name": "Real estate", "value": 15 },
-      { "name": "Cash",        "value": 10 }
-    ]
-  }]
-}
-{% endraw %}{% endcall %}
 
   {{ spec("Mermaid diagram — grouped architecture (subgraphs)", "diagram-mermaid") }}
   {% call c.diagram_mermaid() %}{% raw %}flowchart TD
@@ -1142,8 +1111,44 @@ def rate_limited(partition: str) -> bool:
   worker -. read .-> db{% endraw %}{% endcall %}
 
 
+  {# ========================= CHARTS ========================= #}
+  {{ cat("charts", "Category 11 / 12", "Charts") }}
+
+  {{ spec("Chart — bars, line &amp; legend (ECharts)", "chart-apache-echarts") }}
+  {% call c.chart_apache_echarts() %}{% raw %}
+{
+  "tooltip": { "trigger": "axis" },
+  "legend": {},
+  "xAxis": { "type": "category", "data": ["Q1", "Q2", "Q3", "Q4"] },
+  "yAxis": { "type": "value" },
+  "series": [
+    { "type": "bar",  "name": "Revenue",  "data": [120, 145, 132, 168] },
+    { "type": "bar",  "name": "Cost",     "data": [80, 92, 88, 101] },
+    { "type": "line", "name": "Forecast", "data": [118, 140, 138, 172] }
+  ]
+}
+{% endraw %}{% endcall %}
+
+  {{ spec("Chart — composition donut (ECharts)", "chart-apache-echarts") }}
+  {% call c.chart_apache_echarts(height=300) %}{% raw %}
+{
+  "tooltip": {},
+  "legend": {},
+  "series": [{
+    "type": "pie", "radius": ["42%", "70%"],
+    "data": [
+      { "name": "Equities",    "value": 48 },
+      { "name": "Bonds",       "value": 27 },
+      { "name": "Real estate", "value": 15 },
+      { "name": "Cash",        "value": 10 }
+    ]
+  }]
+}
+{% endraw %}{% endcall %}
+
+
   {# ========================= MATH ========================= #}
-  {{ cat("math", "Category 11 / 11", "Formulas") }}
+  {{ cat("math", "Category 12 / 12", "Formulas") }}
 
   {{ spec("Display &amp; inline math", "formula") }}
   {% call c.formula() %}{% raw %}d_1 = \frac{\ln(S/K) + \left(r + \sigma^2/2\right)t}{\sigma\sqrt{t}}{% endraw %}{% endcall %}

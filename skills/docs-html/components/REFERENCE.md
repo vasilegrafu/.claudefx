@@ -23,8 +23,11 @@ are *styled* (the CSS module map, page-local CSS, rebranding) is in
 every call form + purpose; `python builder.py show <name>` prints one
 component's call form, purpose, and full `usage.md`.
 
-The eleven categories: `structure`, `layout`, `content`, `lists`, `callouts`,
-`blocks`, `business`, `investing`, `front-back-matter`, `diagrams`, `math`.
+The twelve categories: `structure`, `layout`, `content`, `lists`, `callouts`,
+`blocks`, `business`, `investing`, `front-back-matter`, `diagrams`, `charts`,
+`math`. `diagrams` and `charts` are separate on purpose: a diagram is a drawn
+relationship, a chart is data — and each has its own shared-viewport /
+per-engine CSS+JS pair (see `../js/REFERENCE.md`).
 `layout` holds the spatial primitives (`columns`/`column`, `grid`, `card`) that
 arrange the others; everything else is content. `business` carries the generic
 finance and decision artifacts (statements, journal entries, SWOT, badges);

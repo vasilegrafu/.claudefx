@@ -21,7 +21,9 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
     ├── diagrams.js        SHARED diagram viewport — docsHtml.diagram.Viewer (no feature, no engine)
     ├── diagram-mermaid.js feature — Mermaid (selector: pre.mermaid; lazy) + the ✎ source editor
     │                      …one diagram-<engine>.js per engine; add more beside it
-    ├── chart.js           feature — declarative charts (selector: pre.chart; ECharts, lazy, SVG)
+    ├── charts.js          SHARED chart frame — docsHtml.chart (no feature, no engine)
+    ├── chart-apache-echarts.js  feature — Apache ECharts (selector: pre.chart.apache-echarts; lazy, SVG)
+    │                      …one chart-<engine>.js per engine; add more beside it
     └── main.js       docsHtml.init() on DOM-ready — final, never edited
 ```
 
@@ -37,7 +39,8 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
 | `math.js` | feature on `.math`: LaTeX rendered by KaTeX `0.16.11` (lazy CDN, script + stylesheet). `<div class="math">` = display, `<span class="math">` = inline; CDN down → the LaTeX source stays readable (math.css) |
 | `diagrams.js` | **Not a feature** — the shared, engine-agnostic diagram viewport, exposed as `docsHtml.diagram.Viewer`. Owns `.diagram-figure` (bounded box), `.diagram-canvas` (pan surface), the toolbar from a declarative `BUTTONS` spec, the zoom-% readout, fit/reset/fullscreen/download-SVG/copy-source, the resize grip, and pan/zoom (a small self-contained transform — deliberately **not** an external pan library, so no engine bundle can clobber it with a global of its own). Knows nothing about any engine |
 | `diagram-mermaid.js` | feature on `pre.mermaid`: pins Mermaid `11.4.1` (lazy), renders with `useMaxWidth:false` (natural pixel size, so 100% = natural), hands the SVG to `diagram.Viewer`, and adds the ✎ **live source editor** (its only engine-specific tool — re-renders into the same SVG node so the view survives; reuses `highlight` for the colored overlay) |
-| `chart.js` | feature on `pre.chart`: declarative data charts. Parses a JSON ECharts `option`, lazy-loads ECharts `5.5.1` (pinned CDN), renders **SVG** with the built-in validated `docs-html` theme; auto-fills `aria`/`tooltip`/`legend` only when unset; reflows on resize. Invalid JSON or CDN down → the spec stays a readable code box (chart.css). Rebrand the palette here, never per chart |
+| `charts.js` | **Not a feature** — the shared, engine-agnostic chart frame, exposed as `docsHtml.chart`. Owns `PALETTE` (the validated 8-slot categorical palette) and `TOKENS` (ink/axis/grid/surface/font) as **plain data, in no engine's format**, so every engine inherits the same validated colors; `Frame` (the `.chart-figure` card, the `.chart-canvas` an engine draws into, `data-height`, hiding the source `<pre>`, and the toolbar from a declarative `BUTTONS` spec: download-SVG · copy-source); one debounced resize dispatch for the whole page via `frame.onResize(fn)`; and `markError(pre)`. Knows nothing about any engine. **Rebrand the dataviz palette here** |
+| `chart-apache-echarts.js` | feature on `pre.chart.apache-echarts`: declarative data charts. Parses every JSON `option` **first** (an all-invalid page never fetches the ~900 KB engine), lazy-loads ECharts `5.5.1` (pinned CDN), translates `chart.PALETTE`/`TOKENS` into an ECharts theme, and renders **SVG** into `frame.canvas`; auto-fills `aria`/`tooltip`/`legend` only when unset. Invalid JSON or CDN down → the spec stays a readable code box (charts.css) |
 | `main.js` | `docsHtml.init()` on DOM-ready — final, never edited |
 
 **Adding a diagram engine.** Mermaid is the only engine today, but the split is
@@ -63,6 +66,30 @@ engine-specific tool goes in via `extraButtons` (Mermaid's ✎ editor is the
 worked example). If the SVG carries a `viewBox` instead of natural pixel
 dimensions, 100% means fit-to-column-width rather than natural size — both are
 supported, the engine chooses.
+
+**Adding a chart engine.** The same split, one level over: `charts.js` is the
+frame, `chart-apache-echarts.js` is *one* engine beside it. Five mechanical
+steps, touching nothing that exists:
+
+1. `js/modules/chart-<name>.js` — `docsHtml.register({name, selector:
+   "pre.chart.<name>", init})`; parse each block's spec, then
+   `const frame = new docsHtml.chart.Frame({ pre, index, source })`, draw into
+   `frame.canvas`, and register a redraw with `frame.onResize(...)`. Load the
+   engine lazily with `docsHtml.util.loadScript(<pinned CDN url>)`, inside
+   `init`. Build the engine's theme from `docsHtml.chart.PALETTE` / `.TOKENS` —
+   never re-pick colors.
+2. `css/modules/chart-<name>.css` — engine specifics ONLY. The card, the
+   toolbar, and the `pre.chart` fallback box are already shared, selected by the
+   `chart` marker class every engine wears.
+3. Add `"chart-<name>"` to `MODULES` in `js/docs-html.js`, after `"charts"`.
+4. Add `@import url("modules/chart-<name>.css") layer(charts);` to
+   `css/docs-html.css`.
+5. `components/charts/chart-<name>/` (`component.html.j2` + `usage.md`) — the
+   macro emits `<pre class="chart <name>">` — so the builder and catalog know
+   about it.
+
+The card, the toolbar, download-SVG, copy-source, `data-height` and the resize
+dispatch come free.
 
 Features read per-document options from `data-` attributes on their own markup
 via `docsHtml.data(el, "option-name", fallback)` (e.g.

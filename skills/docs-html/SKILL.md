@@ -68,9 +68,10 @@ list order — ES modules are blocked on `file://`). The modules form a tree on
 the one `docsHtml` namespace: `core` (registry) · `util` · `icons` ·
 `layout-toggle` · `highlight` (Prism) · `math` (KaTeX) · `diagrams` (the SHARED
 diagram viewport — pan/zoom + toolbar, no engine) · `diagram-mermaid` (Mermaid +
-the ✎ editor) · `chart` (ECharts) · `main`. Adding a diagram engine = one
-`diagram-<name>.js` that produces an `<svg>` + one `diagram-<name>.css`; the
-viewport comes free. **Module roles, the feature-author guide, and
+the ✎ editor) · `charts` (the SHARED chart frame — card, toolbar, palette, no
+engine) · `chart-apache-echarts` (Apache ECharts) · `main`. Both families use
+the same split: adding an engine = one `<family>-<name>.js` + one
+`<family>-<name>.css`; the viewport/frame comes free. **Module roles, the feature-author guide, and
 the diagrams engine/editor internals are in `js/REFERENCE.md`.**
 
 **Extending**: new behaviour = new `js/modules/<name>.js` that calls
@@ -86,8 +87,10 @@ the author already writes:
 - `.doc-toolbar [data-w]` → the page / full-width **layout toggle** (adds/removes
   `class="wide"` on `<body>`; which button looks active is decided in CSS).
 - `pre.mermaid` → a **diagram**: rendered, then made **pan/zoomable**.
-- `pre.chart` → a **data chart**: a JSON ECharts `option` rendered to SVG with
-  the built-in validated `docs-html` palette (bar/line/pie/scatter/candlestick…).
+- `pre.chart.apache-echarts` → a **data chart**: a JSON ECharts `option` rendered
+  to SVG with the built-in validated `docs-html` palette
+  (bar/line/pie/scatter/candlestick…). `chart` is the marker every chart engine
+  shares; the second class picks the engine.
 
 It loads the heavy engines from CDN **only when a document actually contains a
 diagram or a chart** — a plain document fetches nothing extra. Mermaid renders each
@@ -146,7 +149,8 @@ js/
 components/
     REFERENCE.md      ← the component model (how components are organized + called)
     <category>/       structure | layout | content | lists | callouts | blocks |
-                      business | investing | front-back-matter | diagrams | math
+                      business | investing | front-back-matter | diagrams |
+                      charts | math
         usage.md           category orientation: blurb + when to use
         <name>/
             usage.md           guidance for the author: when + how, and the rules
@@ -409,8 +413,9 @@ valid. See `components/content/code-block/usage.md`.
 - Formulas are LaTeX text in `.math` elements (`c.formula()` block /
   hand-written `<span class="math">` inline), rendered at view time — never
   images of equations.
-- Charts are data, not pictures: a JSON ECharts `option` in `c.chart_echarts()`
-  (`pre.chart`), rendered to SVG at view time — never a screenshot of a chart.
+- Charts are data, not pictures: a JSON ECharts `option` in
+  `c.chart_apache_echarts()` (`pre.chart.apache-echarts`), rendered to SVG at
+  view time — never a screenshot of a chart.
   Never restyle the theme per chart (the palette is validated); one y-axis only.
   Prefer it over a Mermaid `xychart-beta` whenever the chart carries analysis.
 - Requirements and traceable items carry trace-ids (`REQ-`, `RISK-`, `TC-`); a

@@ -140,8 +140,12 @@ Call on the `c` namespace inside a doc-type body. Leaves are shown as `{{ c.x(..
 ### diagrams
 *Interactive Mermaid diagrams — pan, zoom, fit, fullscreen, a live editor and SVG export, all at view time.*
 
-- `{% call c.chart_echarts(option, height) %}…{% endcall %}` — declarative data chart (bar/line/pie/scatter/candlestick…) via Apache ECharts, view-time SVG
 - `{% call c.diagram_mermaid(code) %}…{% endcall %}` — interactive Mermaid diagram: pan, zoom, live editor
+
+### charts
+*Declarative data charts — a spec in the document, rendered to SVG at view time, never a screenshot.*
+
+- `{% call c.chart_apache_echarts(option, height) %}…{% endcall %}` — declarative data chart (bar/line/pie/scatter/candlestick…) via Apache ECharts, view-time SVG
 
 ### math
 *LaTeX mathematics — plain source in the document, rendered by KaTeX at view time with a readable fallback.*

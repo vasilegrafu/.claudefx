@@ -14,9 +14,11 @@
    docsHtml.register — see core.js), then add <name> here. Nothing else. */
 
 (function () {
-  // "diagrams" is the shared diagram viewport; the diagram-* engines follow it.
+  // "diagrams" is the shared diagram viewport and "charts" the shared chart
+  // frame; each engine module follows the shared one it builds on.
   var MODULES = ["core", "util", "icons", "layout-toggle", "highlight", "math",
-                 "diagrams", "diagram-mermaid", "chart", "main"];
+                 "diagrams", "diagram-mermaid",
+                 "charts", "chart-apache-echarts", "main"];
   var base = document.currentScript.src.replace(/docs-html\.js[^/]*$/, "");
   MODULES.forEach(function (name) {
     var s = document.createElement("script");

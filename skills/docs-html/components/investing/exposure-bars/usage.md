@@ -30,5 +30,5 @@ answers neither question. Percentages sum to 100% including cash and "Other".
 Sort descending, except where a fixed order carries meaning (credit ratings,
 maturity buckets). The `value` slot is where the LIMIT goes: an exposure with
 no stated limit cannot be breached, which is how concentration accumulates.
-Use `chart_echarts` with a donut instead when the composition itself is the
+Use `chart_apache_echarts` with a donut instead when the composition itself is the
 finding and there are fewer than six slices.

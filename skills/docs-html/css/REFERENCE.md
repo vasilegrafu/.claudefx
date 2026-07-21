@@ -12,7 +12,7 @@ the modules in `css/modules/`:
 
 ```css
 @layer base, metadata, layout, toc, content, callouts, lists, blocks, business, investing,
-       code, math, diagrams, chart, presentation, print;
+       code, math, diagrams, charts, presentation, print;
 ```
 
 `@layer` makes the cascade order explicit and independent of import order, so
@@ -42,7 +42,8 @@ Which `css/modules/` file styles which components:
 | `math.css` | formula blocks (`.math`) — spacing, overflow, and the readable-LaTeX fallback before/without KaTeX |
 | `diagrams.css` | **shared, engine-agnostic**: the `.diagram-figure` viewport, `.diagram-canvas` pan surface, `.diagram-tools` glyph toolbar, `.diagram-resize` grip, fullscreen + print |
 | `diagram-mermaid.css` | Mermaid-only: the `pre.mermaid` source-box fallback and the ✎ editor panel (surface, overlay, scrollbars). One `diagram-<engine>.css` per engine — a new engine adds a file here, it never edits `diagrams.css` |
-| `chart.css` | chart-echarts: the chart card (the validated `bg-soft` surface) + the readable-spec fallback before/without ECharts. The categorical palette lives in `js/modules/chart.js`, not here |
+| `charts.css` | **shared, engine-agnostic**: the `.chart-figure` card (the validated `bg-soft` surface), the `.chart-canvas` an engine draws into, the `.chart-tools` toolbar, and the `pre.chart` readable-spec fallback — one definition for every engine, selected by the shared `chart` marker class. The categorical palette is data, not CSS: it lives in `js/modules/charts.js` |
+| `chart-apache-echarts.css` | Apache ECharts only: containment for the wrapper div the engine generates. Deliberately small — anything a second engine would also need belongs in `charts.css`. One `chart-<engine>.css` per engine, exactly as `diagram-<engine>.css` |
 | `presentation.css` | presentation pages (`<body class="presentation">`) |
 | `print.css` | Ctrl+P → cover page, page breaks — layered LAST |
 

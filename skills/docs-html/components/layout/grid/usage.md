@@ -29,4 +29,4 @@ to one in print.
 - Give tiles similar-length content so rows stay tidy; a [[card]] per tile is the
   usual choice.
 - It's a layout, not data: a grid of numbers is still [[kpi-tiles]]; a grid of
-  chart tiles is small-multiples, each a [[chart-echarts]].
+  chart tiles is small-multiples, each a [[chart-apache-echarts]].

@@ -1,12 +1,14 @@
-# chart-echarts
+# chart-apache-echarts
 
-_Authoring guidance for the `chart-echarts` component — when to use it, how, and the rules._
+_Authoring guidance for the `chart-apache-echarts` component — when to use it, how, and the rules._
 
-Styled by: `css/chart.css`
-Rendered by: the pinned Apache ECharts CDN script, loaded by the `chart`
-feature only when the document holds a `.chart` element (see SKILL.md). No
-`<script>` tag in the document — the feature self-loads the engine, exactly
-like `math` (KaTeX). Renders **SVG** (crisp in print, one `<main>` column).
+Styled by: `css/modules/charts.css` (the shared frame) +
+`css/modules/chart-apache-echarts.css` (engine specifics)
+Rendered by: the pinned Apache ECharts CDN script, loaded by the
+`chart-apache-echarts` feature only when the document holds a matching element
+(see SKILL.md). No `<script>` tag in the document — the feature self-loads the
+engine, exactly like `math` (KaTeX). Renders **SVG** (crisp in print, one
+`<main>` column).
 
 For real data — bar, line, area, pie, scatter, heatmap, **candlestick/OHLC**,
 boxplot. Prefer this over a Mermaid `xychart-beta` whenever the chart carries
@@ -15,11 +17,15 @@ analysis (multi-series, stacked, a legend, tooltips). Keep Mermaid for
 
 ## Markup
 
+The block wears two classes: `chart` is the marker every chart engine shares
+(it selects the shared frame and the readable-source fallback), and
+`apache-echarts` selects this engine. The macro writes both.
+
 The body is a JSON ECharts `option` — data and encoding as plain, editable
 text. Use a `{% raw %}{% call %}{% endraw %}` block so the JSON reads cleanly:
 
 ```html
-{% raw %}{% call c.chart_echarts(height=320) %}{% endraw %}
+{% raw %}{% call c.chart_apache_echarts(height=320) %}{% endraw %}
 {
   "xAxis": { "type": "category", "data": ["Q1", "Q2", "Q3", "Q4"] },
   "yAxis": { "type": "value" },
@@ -32,6 +38,10 @@ text. Use a `{% raw %}{% call %}{% endraw %}` block so the JSON reads cleanly:
 - The palette, ink, axes, grid, legend, and tooltip come from the built-in
   **docs-html theme** — do NOT set `color`/`textStyle` per chart. Just describe
   the data.
+
+Every rendered chart carries a small toolbar (top-right of the card): **download
+as SVG** and **copy the spec**. Both come from the shared frame, so any future
+chart engine has them too.
 
 ## What the feature fills in for you
 
@@ -46,14 +56,16 @@ Applied only when you did not set them, so an explicit author always wins:
 ## Degradation (pure CSS + JS, automatic)
 
 Until ECharts renders — or forever, if the CDN is unreachable, or the JSON is
-invalid — the spec shows as a readable code box (`chart.css`). Invalid JSON also
-gets a red border. So write the `option` clean enough to read as text.
+invalid — the spec shows as a readable code box (`charts.css`). Invalid JSON
+also gets a red border, and a page whose specs are *all* invalid never downloads
+the engine at all. So write the `option` clean enough to read as text.
 
 ## Rules
 
 - **Never restyle the theme.** No per-chart `color`, fonts, or axis colors — the
   palette is validated (colorblind-safe on the light surface); overriding it
-  breaks that guarantee. Rebrand once in the theme (`js/modules/chart.js`).
+  breaks that guarantee. Rebrand once, in `PALETTE`/`TOKENS` in
+  `js/modules/charts.js` — the shared layer, so every engine follows.
 - **One y-axis.** No dual-axis charts (two value scales) — the #1 charting
   mistake. Two measures of different scale → two charts, or index to a common
   base. (ECharts will let you; don't.)
@@ -70,5 +82,5 @@ gets a red border. So write the `option` clean enough to read as text.
 ## When it is NOT a chart
 
 A single headline number is a [[kpi-tiles]] tile, not a one-bar chart. A 2×2
-positioning grid is [[risk-matrix]]. Composition of a whole may be a stacked bar
-rather than a pie. Pick the form for the data's job first.
+positioning grid is [[risk-matrix]] or [[quadrant-map]]. Composition of a whole
+may be a stacked bar rather than a pie. Pick the form for the data's job first.
