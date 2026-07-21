@@ -40,8 +40,7 @@ Which `css/modules/` file styles which components:
 | `business.css` | finance & decision components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge, party-block |
 | `math.css` | formula blocks (`.math`) — spacing, overflow, and the readable-LaTeX fallback before/without KaTeX |
 | `diagrams.css` | **shared, engine-agnostic**: the `.diagram-figure` viewport, `.diagram-canvas` pan surface, `.diagram-tools` glyph toolbar, `.diagram-resize` grip, fullscreen + print |
-| `diagram-mermaid.css` | Mermaid-only: the `pre.mermaid` source-box fallback and the ✎ editor panel (surface, overlay, scrollbars) |
-| `diagram-drawio.css` | draw.io-only: the `pre.drawio` mxGraph-XML source-box fallback |
+| `diagram-mermaid.css` | Mermaid-only: the `pre.mermaid` source-box fallback and the ✎ editor panel (surface, overlay, scrollbars). One `diagram-<engine>.css` per engine — a new engine adds a file here, it never edits `diagrams.css` |
 | `chart.css` | chart-echarts: the chart card (the validated `bg-soft` surface) + the readable-spec fallback before/without ECharts. The categorical palette lives in `js/modules/chart.js`, not here |
 | `presentation.css` | presentation pages (`<body class="presentation">`) |
 | `print.css` | Ctrl+P → cover page, page breaks — layered LAST |

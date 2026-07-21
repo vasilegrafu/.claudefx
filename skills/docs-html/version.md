@@ -14,6 +14,40 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 2.0.0 — 2026-07-21
+
+**draw.io / diagrams.net support is removed.** `pre.drawio` is no longer a
+recognised markup hook — this is the breaking change. Mermaid is now the only
+diagram engine.
+
+Why: draw.io diagrams are mxGraph XML with **no auto-layout** — every box needs
+an explicit `x`/`y` and every connector a hand-picked exit/entry side and a
+routed corridor. Authoring or editing one by hand (or by assistant) means
+solving a layout problem before saying anything about the system, and the
+results collide and overlap as soon as the diagram changes. Mermaid's dagre
+layout removes that entire class of work: you write relationships, it places
+them. The 3.6 MB diagrams.net bundle goes with it.
+
+- Removed: `js/modules/diagram-drawio.js`, `css/modules/diagram-drawio.css`,
+  `components/diagrams/diagram-drawio/` (`c.diagram_drawio()`), and the pinned
+  `jgraph/drawio@24.7.17` CDN dependency.
+- **Unchanged: everything else.** `pre.mermaid`, `pre.chart`, and every other
+  component keep their exact markup. A document that has no `pre.drawio` in it
+  upgrades to 2.0.0 by changing the version in its two hrefs, nothing else.
+- **The multi-engine architecture stays** — deliberately. `diagrams.js` remains
+  the shared, engine-agnostic viewport and `diagram-mermaid.js` remains *one*
+  engine beside it, not merged into it. Adding a future engine is still a new
+  `diagram-<name>.js` + `diagram-<name>.css` + two list entries and touches no
+  existing code; `js/REFERENCE.md` documents the five steps.
+
+**Migration.** Replace each `<pre class="drawio">` with a `<pre class="mermaid">`
+holding the equivalent `flowchart` — nodes become ids with shapes
+(`[box]`, `([stadium])`, `{diamond}`, `[(store)]`), connectors become
+`a --> b` / `a -. label .-> b`, draw.io groups become `subgraph`, and fill/stroke
+colours become `classDef` + `class`. Drop every coordinate.
+
+---
+
 ## 1.8.0 — 2026-07-21
 
 Diagram subsystem split into shared core + per-engine files. No authored-markup

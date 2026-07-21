@@ -16,7 +16,7 @@
 (function () {
   // "diagrams" is the shared diagram viewport; the diagram-* engines follow it.
   var MODULES = ["core", "util", "icons", "layout-toggle", "highlight", "math",
-                 "diagrams", "diagram-mermaid", "diagram-drawio", "chart", "main"];
+                 "diagrams", "diagram-mermaid", "chart", "main"];
   var base = document.currentScript.src.replace(/docs-html\.js[^/]*$/, "");
   MODULES.forEach(function (name) {
     var s = document.createElement("script");

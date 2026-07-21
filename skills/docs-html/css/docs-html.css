@@ -30,7 +30,6 @@
 @import url("modules/code.css")         layer(code);
 @import url("modules/diagrams.css")     layer(diagrams);   /* shared viewport */
 @import url("modules/diagram-mermaid.css") layer(diagrams);
-@import url("modules/diagram-drawio.css")  layer(diagrams);
 @import url("modules/chart.css")        layer(chart);
 @import url("modules/presentation.css") layer(presentation);
 @import url("modules/print.css")        layer(print);

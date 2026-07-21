@@ -20,7 +20,7 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
     ├── math.js            feature — LaTeX formulas (selector: .math; KaTeX, lazy)
     ├── diagrams.js        SHARED diagram viewport — docsHtml.diagram.Viewer (no feature, no engine)
     ├── diagram-mermaid.js feature — Mermaid (selector: pre.mermaid; lazy) + the ✎ source editor
-    ├── diagram-drawio.js  feature — draw.io (selector: pre.drawio; diagrams.net mxGraph, lazy)
+    │                      …one diagram-<engine>.js per engine; add more beside it
     ├── chart.js           feature — declarative charts (selector: pre.chart; ECharts, lazy, SVG)
     └── main.js       docsHtml.init() on DOM-ready — final, never edited
 ```
@@ -35,16 +35,34 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
 | `layout-toggle.js` | feature on `.doc-toolbar`: the ▯/▭ width switch |
 | `highlight.js` | feature on `code[data-lang]`: runtime syntax coloring (Prism core + autoloader, lazy; grammars on demand). Exposes `docsHtml.highlight.ensure()/element()` for other features |
 | `math.js` | feature on `.math`: LaTeX rendered by KaTeX `0.16.11` (lazy CDN, script + stylesheet). `<div class="math">` = display, `<span class="math">` = inline; CDN down → the LaTeX source stays readable (math.css) |
-| `diagrams.js` | **Not a feature** — the shared, engine-agnostic diagram viewport, exposed as `docsHtml.diagram.Viewer`. Owns `.diagram-figure` (bounded box), `.diagram-canvas` (pan surface), the toolbar from a declarative `BUTTONS` spec, the zoom-% readout, fit/reset/fullscreen/download-SVG/copy-source, the resize grip, and pan/zoom (a small self-contained transform — **not** `@panzoom`, because the diagrams.net bundle ships a global `Panzoom` that clobbers it). Knows nothing about any engine |
+| `diagrams.js` | **Not a feature** — the shared, engine-agnostic diagram viewport, exposed as `docsHtml.diagram.Viewer`. Owns `.diagram-figure` (bounded box), `.diagram-canvas` (pan surface), the toolbar from a declarative `BUTTONS` spec, the zoom-% readout, fit/reset/fullscreen/download-SVG/copy-source, the resize grip, and pan/zoom (a small self-contained transform — deliberately **not** an external pan library, so no engine bundle can clobber it with a global of its own). Knows nothing about any engine |
 | `diagram-mermaid.js` | feature on `pre.mermaid`: pins Mermaid `11.4.1` (lazy), renders with `useMaxWidth:false` (natural pixel size, so 100% = natural), hands the SVG to `diagram.Viewer`, and adds the ✎ **live source editor** (its only engine-specific tool — re-renders into the same SVG node so the view survives; reuses `highlight` for the colored overlay) |
-| `diagram-drawio.js` | feature on `pre.drawio`: lazy-loads the pinned diagrams.net bundle (`jgraph/drawio@24.7.17`, ~3.6 MB) and uses **only** its `mxGraph` to render the XML to SVG offscreen, stamps a `viewBox` (so 100% = fit-to-column-width, height proportional), then hands it to `diagram.Viewer`. Bad XML or CDN down → the XML source is restored. No auto-layout — the XML carries explicit coordinates |
 | `chart.js` | feature on `pre.chart`: declarative data charts. Parses a JSON ECharts `option`, lazy-loads ECharts `5.5.1` (pinned CDN), renders **SVG** with the built-in validated `docs-html` theme; auto-fills `aria`/`tooltip`/`legend` only when unset; reflows on resize. Invalid JSON or CDN down → the spec stays a readable code box (chart.css). Rebrand the palette here, never per chart |
 | `main.js` | `docsHtml.init()` on DOM-ready — final, never edited |
 
-**Adding a diagram engine** = a new `diagram-<name>.js` that turns its source
-into an `<svg>` and calls `new docsHtml.diagram.Viewer({ pre, svg, index,
-source, copyTitle, extraButtons })`, plus a `diagram-<name>.css` for its
-source-block fallback. The viewport, toolbar and pan/zoom come free.
+**Adding a diagram engine.** Mermaid is the only engine today, but the split is
+deliberate — `diagrams.js` is the viewport, `diagram-mermaid.js` is *one* engine
+beside it. A second engine is five mechanical steps, and touches nothing that
+exists:
+
+1. `js/modules/diagram-<name>.js` — `docsHtml.register({name, selector:
+   "pre.<name>", init})`; turn each block's source into an `<svg>` (offscreen if
+   the engine needs a host element) and call `new docsHtml.diagram.Viewer({ pre,
+   svg, index, source, copyTitle, extraButtons })`. Load the engine lazily with
+   `docsHtml.util.loadScript(<pinned CDN url>)`, inside `init`.
+2. `css/modules/diagram-<name>.css` — style `pre.<name>` as a readable code box
+   (the CDN-down fallback) and `pre.<name>[hidden] { display: none }`.
+3. Add `"diagram-<name>"` to `MODULES` in `js/docs-html.js`, after `"diagrams"`.
+4. Add `@import url("modules/diagram-<name>.css") layer(diagrams);` to
+   `css/docs-html.css`.
+5. `components/diagrams/diagram-<name>/` (`component.html.j2` + `usage.md`) so
+   the builder and the catalog know about it.
+
+The viewport, toolbar, pan/zoom, fullscreen, download and copy come free; an
+engine-specific tool goes in via `extraButtons` (Mermaid's ✎ editor is the
+worked example). If the SVG carries a `viewBox` instead of natural pixel
+dimensions, 100% means fit-to-column-width rather than natural size — both are
+supported, the engine chooses.
 
 Features read per-document options from `data-` attributes on their own markup
 via `docsHtml.data(el, "option-name", fallback)` (e.g.
@@ -98,18 +116,15 @@ docsHtml.register({
 
 ## Diagrams — engine & editor internals
 
-Each engine loads from a pinned CDN **only when a document actually contains
-that kind of diagram** — a diagram-free document fetches nothing extra:
+An engine loads from a pinned CDN **only when a document actually contains that
+kind of diagram** — a diagram-free document fetches nothing extra:
 
 - **Mermaid `11.4.1`** (`diagram-mermaid.js`) — renders every
   `<pre class="mermaid">` with `useMaxWidth:false` (natural pixel size; a node's
   box is the same across every diagram regardless of node count), so 100% is
   natural size.
-- **diagrams.net `jgraph/drawio@24.7.17`** (`diagram-drawio.js`) — only its
-  `mxGraph` is used, to render `<pre class="drawio">` XML to SVG offscreen; the
-  SVG gets a `viewBox`, so 100% is fit-to-column-width.
 
-Both hand their SVG to the shared `docsHtml.diagram.Viewer`, which supplies the
+It hands its SVG to the shared `docsHtml.diagram.Viewer`, which supplies the
 bounded viewport with **drag-to-pan**, **Ctrl+wheel zoom**, and one icon toolbar
 (inline SVG icons, Lucide-style strokes, no icon files): zoom out · live zoom-% ·
 zoom in │ fit-to-view · reset-100% │ fullscreen │ *engine tools* │ download-SVG ·

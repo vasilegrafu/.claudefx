@@ -3,10 +3,10 @@
    Every diagram in the system, whatever renders it, ends up as an <svg> shown
    in the same bounded viewport: pan by dragging, Ctrl+wheel to zoom, and one
    icon toolbar (zoom % · fit · reset · fullscreen · download SVG · copy source).
-   This file owns all of that and knows nothing about Mermaid or draw.io.
+   This file owns all of that and knows nothing about any particular engine.
 
-   The engine modules (diagram-mermaid.js, diagram-drawio.js) do exactly two
-   things: turn their source into an <svg>, then hand it here.
+   An engine module (today only diagram-mermaid.js; the pattern takes more) does
+   exactly two things: turn its source into an <svg>, then hand it here.
 
        new docsHtml.diagram.Viewer({ pre, svg, index, source, copyTitle,
                                      extraButtons })
@@ -17,8 +17,8 @@
    `extraButtons` lets an engine add its own tools — Mermaid's ✎ source editor.
 
    Pan/zoom is a small self-contained transform, deliberately NOT an external
-   pan library: the diagrams.net bundle ships its own global `Panzoom` that
-   clobbers @panzoom, so owning this removes both a dependency and a load race. */
+   pan library — one less dependency, one less load race, and no risk of a
+   rendering engine shipping a global that clobbers it (draw.io's bundle did). */
 
 "use strict";
 
@@ -89,8 +89,9 @@ docsHtml.diagram = (() => {
 
     zoomBy(factor) { this.scale = clamp(this.scale * factor, ZOOM.min, ZOOM.max); this.apply(); }
 
-    /** 100%: the engine's own natural presentation (Mermaid natural px,
-        draw.io fit-to-column-width via its viewBox). */
+    /** 100%: the engine's own natural presentation — whatever the SVG it handed
+        over says (Mermaid: natural px; an engine that stamps a viewBox instead
+        gets fit-to-column-width for free). */
     reset() { this.scale = 1; this.x = 0; this.y = 0; this.apply(); }
 
     /** Scale + centre the whole diagram inside the current viewport box. */

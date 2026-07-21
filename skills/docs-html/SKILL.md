@@ -68,9 +68,9 @@ list order — ES modules are blocked on `file://`). The modules form a tree on
 the one `docsHtml` namespace: `core` (registry) · `util` · `icons` ·
 `layout-toggle` · `highlight` (Prism) · `math` (KaTeX) · `diagrams` (the SHARED
 diagram viewport — pan/zoom + toolbar, no engine) · `diagram-mermaid` (Mermaid +
-the ✎ editor) · `diagram-drawio` (diagrams.net mxGraph) · `chart` (ECharts) ·
-`main`. Adding a diagram engine = one `diagram-<name>.js` that produces an
-`<svg>`; the viewport comes free. **Module roles, the feature-author guide, and
+the ✎ editor) · `chart` (ECharts) · `main`. Adding a diagram engine = one
+`diagram-<name>.js` that produces an `<svg>` + one `diagram-<name>.css`; the
+viewport comes free. **Module roles, the feature-author guide, and
 the diagrams engine/editor internals are in `js/REFERENCE.md`.**
 
 **Extending**: new behaviour = new `js/modules/<name>.js` that calls
@@ -88,11 +88,9 @@ the author already writes:
 - `pre.mermaid` → a **diagram**: rendered, then made **pan/zoomable**.
 - `pre.chart` → a **data chart**: a JSON ECharts `option` rendered to SVG with
   the built-in validated `docs-html` palette (bar/line/pie/scatter/candlestick…).
-- `pre.drawio` → a **freeform draw.io diagram**: mxGraph XML rendered to SVG by
-  the pinned diagrams.net viewer (architecture/network; explicit layout).
 
 It loads the heavy engines from CDN **only when a document actually contains a
-diagram, chart, or draw.io diagram** — a plain document fetches nothing extra. Mermaid renders each
+diagram or a chart** — a plain document fetches nothing extra. Mermaid renders each
 diagram at natural size in a bounded pan/zoom viewport with an icon toolbar
 (fit · fullscreen · ✎ source editor · download SVG · copy source); ECharts renders
 each chart as SVG. If the CDN is unreachable the Mermaid/chart **source stays
@@ -405,9 +403,9 @@ valid. See `components/content/code-block/usage.md`.
 **Content**
 - Uncertain content is always `<mark class="todo">` — never silently invented,
   never an empty section.
-- Diagrams are editable source, never exported images: Mermaid text for
-  auto-laid-out flow/sequence/ER (`c.diagram_mermaid()`), or draw.io mxGraph XML
-  for freeform architecture/network (`c.diagram_drawio()`, explicit coordinates).
+- Diagrams are editable source, never exported images: Mermaid text
+  (`c.diagram_mermaid()`) — flowchart, sequence, ER, state, class, gantt, all
+  auto-laid-out, so you write relationships and never coordinates.
 - Formulas are LaTeX text in `.math` elements (`c.formula()` block /
   hand-written `<span class="math">` inline), rendered at view time — never
   images of equations.
