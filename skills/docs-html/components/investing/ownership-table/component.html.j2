@@ -1,0 +1,30 @@
+{# purpose: who owns the company: top holders, stake, and recent change #}
+{# rows: list of (holder, type, shares, stake, change, tone) — stake is a number in percent #}
+{% macro ownership_table(rows=[], summary=[], caption="", asof="", note="") %}
+  {% if summary %}
+  <dl class="own-summary">
+    {% for label, value in summary %}
+    <div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>
+    {% endfor %}
+  </dl>
+  {% endif %}
+  <table class="fin ownership">
+  {% if caption or asof %}<caption>{{ caption }}{% if asof %} <span class="macro-asof">as of {{ asof }}</span>{% endif %}</caption>{% endif %}
+    <thead><tr><th>Holder</th><th>Type</th><th>Shares</th><th class="own-stake-head">Stake</th><th>Change</th></tr></thead>
+    <tbody>
+    {% for holder, type_, shares, stake, change, tone in rows %}
+      <tr>
+        <th scope="row">{{ holder }}</th>
+        <td class="own-type">{{ type_ }}</td>
+        <td>{{ shares }}</td>
+        <td class="own-stake">
+          <span class="own-track"><span class="own-fill" data-pct="{{ stake }}%"></span></span>
+          <span class="own-pct">{{ stake }}%</span>
+        </td>
+        <td{% if tone %} class="tone-{{ tone }}"{% endif %}>{{ change }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if note %}<p class="st-source">{{ note }}</p>{% endif %}
+{% endmacro %}

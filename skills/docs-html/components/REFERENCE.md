@@ -23,11 +23,15 @@ are *styled* (the CSS module map, page-local CSS, rebranding) is in
 every call form + purpose; `python builder.py show <name>` prints one
 component's call form, purpose, and full `usage.md`.
 
-The ten categories: `structure`, `layout`, `content`, `lists`, `callouts`,
-`blocks`, `business`, `front-back-matter`, `diagrams`, `math`. `layout` holds the
-spatial primitives (`columns`/`column`, `grid`, `card`) that arrange the others;
-everything else is content. For which CSS module styles each one, see
-`../css/REFERENCE.md`.
+The eleven categories: `structure`, `layout`, `content`, `lists`, `callouts`,
+`blocks`, `business`, `investing`, `front-back-matter`, `diagrams`, `math`.
+`layout` holds the spatial primitives (`columns`/`column`, `grid`, `card`) that
+arrange the others; everything else is content. `business` carries the generic
+finance and decision artifacts (statements, journal entries, SWOT, badges);
+`investing` carries the components that support an allocation decision — the
+security, the call, the thesis, valuation, portfolio and macro — and builds on
+`business` rather than duplicating it (`valuation_multiples` reuses `badge`).
+For which CSS module styles each one, see `../css/REFERENCE.md`.
 
 ## Adding a component
 

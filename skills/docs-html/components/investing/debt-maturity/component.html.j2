@@ -1,0 +1,19 @@
+{# purpose: the maturity wall: debt falling due by period, with coupon and share of total #}
+{# items: list of (period, amount, share, rate, instrument) — share is a number in percent of total debt #}
+{% macro debt_maturity(items=[], caption="", unit="", summary="") %}
+  <figure class="maturity">
+  {% if caption or unit %}<figcaption>{{ caption }}{% if unit %} <span class="st-unit">{{ unit }}</span>{% endif %}</figcaption>{% endif %}
+    <div class="maturity-rows">
+    {% for period, amount, share, rate, instrument in items %}
+      <div class="maturity-row">
+        <span class="maturity-period">{{ period }}</span>
+        <span class="maturity-track"><span class="maturity-fill" data-pct="{{ share }}%"></span></span>
+        <span class="maturity-amount">{{ amount }}</span>
+        <span class="maturity-rate">{{ rate }}</span>
+        <span class="maturity-instrument">{{ instrument }}</span>
+      </div>
+    {% endfor %}
+    </div>
+    {% if summary %}<p class="maturity-summary">{{ summary }}</p>{% endif %}
+  </figure>
+{% endmacro %}

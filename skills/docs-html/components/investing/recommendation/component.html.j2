@@ -1,0 +1,15 @@
+{# purpose: the investment call: action, price target, upside, horizon and conviction #}
+{# tone: good (accumulate) | neutral (hold) | bad (reduce); facts: list of (label, value) #}
+{% macro recommendation(action="", tone="neutral", facts=[], rationale="") %}
+  <aside class="reco reco-{{ tone }}">
+    <p class="reco-action">{{ action }}</p>
+    {% if facts %}
+    <dl class="reco-facts">
+      {% for label, value in facts %}
+      <div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>
+      {% endfor %}
+    </dl>
+    {% endif %}
+    {% if rationale %}<p class="reco-rationale">{{ rationale }}</p>{% endif %}
+  </aside>
+{% endmacro %}

@@ -11,8 +11,8 @@ of its own — it declares the cascade order once with `@layer`, then `@import`s
 the modules in `css/modules/`:
 
 ```css
-@layer base, metadata, layout, toc, content, callouts, lists, blocks, business, code,
-       math, diagrams, chart, presentation, print;
+@layer base, metadata, layout, toc, content, callouts, lists, blocks, business, investing,
+       code, math, diagrams, chart, presentation, print;
 ```
 
 `@layer` makes the cascade order explicit and independent of import order, so
@@ -38,6 +38,7 @@ Which `css/modules/` file styles which components:
 | `lists.css` | facts, steps, checklist, trace-id |
 | `blocks.css` | requirement card, acceptance-criteria (Given/When/Then), kpi-tiles, timeline, glossary, revision-note, meter, risk-matrix, footnotes, ISO front/back matter |
 | `business.css` | finance & decision components: financial-table, journal-entry, scenarios, pros-cons, swot-grid, badge, party-block |
+| `investing.css` | the investing category (45 components) — the largest module. Opens with ONE shared numeric-table skin selected by a `fin` marker class (`<table class="fin multiples">`), so a new table component inherits alignment, tabular figures and micro-headers for free and the skin is defined once. Three further shared skins follow: `.statement` (income-statement, balance-sheet, cash-flow-statement, dcf-summary — they differ only in which lines are mandatory, which is guidance, not styling), the labelled-bar figure row (bridge, debt-maturity, funnel), and the level-graded cell grid (heatmap, cohort-table, sensitivity-table). Every bar width, bar offset and plot position comes from a `data-` attribute via `attr()` — never `style=`. Layered after `business` so it can reuse `.badge`. |
 | `math.css` | formula blocks (`.math`) — spacing, overflow, and the readable-LaTeX fallback before/without KaTeX |
 | `diagrams.css` | **shared, engine-agnostic**: the `.diagram-figure` viewport, `.diagram-canvas` pan surface, `.diagram-tools` glyph toolbar, `.diagram-resize` grip, fullscreen + print |
 | `diagram-mermaid.css` | Mermaid-only: the `pre.mermaid` source-box fallback and the ✎ editor panel (surface, overlay, scrollbars). One `diagram-<engine>.css` per engine — a new engine adds a file here, it never edits `diagrams.css` |

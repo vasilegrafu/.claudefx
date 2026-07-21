@@ -1,0 +1,23 @@
+{# purpose: portfolio positions with a weight bar, plus whatever columns the review needs #}
+{# rows: list of (name, weight, cells, tone) — weight is a number in percent; tone tints the last cell #}
+{% macro holdings_table(headers=[], rows=[], caption="", total_row=none) %}
+  <table class="fin holdings">
+  {% if caption %}<caption>{{ caption }}</caption>{% endif %}
+    <thead><tr><th>Position</th><th class="holdings-weight-head">Weight</th>{% for h in headers %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for name, weight, cells, tone in rows %}
+      <tr>
+        <th scope="row">{{ name }}</th>
+        <td class="holdings-weight">
+          <span class="holdings-track"><span class="holdings-fill" data-pct="{{ weight }}%"></span></span>
+          <span class="holdings-pct">{{ weight }}%</span>
+        </td>
+        {% for v in cells %}<td{% if loop.last and tone %} class="tone-{{ tone }}"{% endif %}>{{ v }}</td>{% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+    {% if total_row %}
+    <tfoot><tr class="total"><th scope="row">{{ total_row[0] }}</th><td>{{ total_row[1] }}</td>{% for v in total_row[2] %}<td>{{ v }}</td>{% endfor %}</tr></tfoot>
+    {% endif %}
+  </table>
+{% endmacro %}

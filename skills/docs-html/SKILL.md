@@ -146,7 +146,7 @@ js/
 components/
     REFERENCE.md      ← the component model (how components are organized + called)
     <category>/       structure | layout | content | lists | callouts | blocks |
-                      business | front-back-matter | diagrams | math
+                      business | investing | front-back-matter | diagrams | math
         usage.md           category orientation: blurb + when to use
         <name>/
             usage.md           guidance for the author: when + how, and the rules

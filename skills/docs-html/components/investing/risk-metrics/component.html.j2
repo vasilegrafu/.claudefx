@@ -1,0 +1,18 @@
+{# purpose: risk and return statistics side by side with the benchmark #}
+{# rows: list of (metric, value, benchmark, note) #}
+{% macro risk_metrics(rows=[], benchmark_label="Benchmark", caption="") %}
+  <table class="fin riskmetrics">
+  {% if caption %}<caption>{{ caption }}</caption>{% endif %}
+    <thead><tr><th>Metric</th><th>Strategy</th><th>{{ benchmark_label }}</th><th>Reading</th></tr></thead>
+    <tbody>
+    {% for metric, value, benchmark, note in rows %}
+      <tr>
+        <th scope="row">{{ metric }}</th>
+        <td class="rm-value">{{ value }}</td>
+        <td>{{ benchmark }}</td>
+        <td class="rm-note">{{ note }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}

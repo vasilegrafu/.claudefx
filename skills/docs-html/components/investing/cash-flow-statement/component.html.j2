@@ -1,0 +1,22 @@
+{# purpose: multi-period cash flow statement with an explicit free-cash-flow derivation #}
+{# rows: list of (label, values, kind, note) — kind "" | section | detail | subtotal | total | pct #}
+{# note is a disclosure number; it links to the matching id in footnote_disclosures #}
+{% macro cash_flow_statement(periods=[], rows=[], caption="", unit="", source="", fcf="") %}
+  <table class="fin statement st-cashflow">
+  {% if caption or unit %}<caption>{{ caption }}{% if unit %} <span class="st-unit">{{ unit }}</span>{% endif %}</caption>{% endif %}
+    <thead><tr><th>{{ "" }}</th>{% for p in periods %}<th>{{ p }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for label, values, kind, note in rows %}
+      <tr class="st-{{ kind if kind else 'line' }}">
+        <th scope="row">{{ label }}{% if note %} <a class="st-note" href="#note-{{ note }}">{{ note }}</a>{% endif %}</th>
+        {% for v in values %}<td{% if v is string and (v.startswith("(") or v.startswith("-") or v.startswith("−")) %} class="neg"{% endif %}>{{ v }}</td>{% endfor %}
+        {% for _ in range(periods | length - values | length) %}<td></td>{% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if fcf %}
+    <p class="st-fcf"><span class="st-fcf-tag">Free cash flow</span> {{ fcf }}</p>
+  {% endif %}
+  {% if source %}<p class="st-source">{{ source }}</p>{% endif %}
+{% endmacro %}

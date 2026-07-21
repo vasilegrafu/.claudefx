@@ -1,0 +1,20 @@
+{# purpose: value grid with colour-graded cells — monthly returns, correlations, sector by region #}
+{# rows: list of (row_head, cells); cells: list of (display, level) — level -3..3, 0 is neutral #}
+{% macro heatmap(cols=[], rows=[], caption="", corner="", legend="") %}
+  <table class="heatmap">
+  {% if caption %}<caption>{{ caption }}</caption>{% endif %}
+    <thead><tr><th class="hm-corner">{{ corner }}</th>{% for c in cols %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for row_head, cells in rows %}
+      <tr>
+        <th scope="row">{{ row_head }}</th>
+        {% for display, level in cells %}
+        <td class="hm-cell hm-{{ 'p' if level > 0 else ('n' if level < 0 else 'z') }}{{ level | abs }}">{{ display }}</td>
+        {% endfor %}
+        {% for _ in range(cols | length - cells | length) %}<td class="hm-empty"></td>{% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if legend %}<p class="hm-legend">{{ legend }}</p>{% endif %}
+{% endmacro %}
