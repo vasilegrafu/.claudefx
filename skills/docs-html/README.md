@@ -30,7 +30,7 @@ Compose any of **84 document types** across **10 domains**, each built from
 | **general** | business case · proposal · decision record · status report · SOP · roadmap |
 | **software** | requirements spec · architecture · ADR · test plan · runbook · release notes |
 | **finance** | budget · cash-flow forecast · valuation report · net-worth statement |
-| **investing** | investment thesis · due diligence · backtest · portfolio review · watchlist |
+| **investing** | investment thesis |
 | **accounting** | invoice · credit note · expense report · financial statements |
 | **research** | research report · literature review · data-analysis report · white paper |
 | **economics** | economic analysis · industry analysis · policy brief |

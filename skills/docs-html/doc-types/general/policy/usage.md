@@ -3,7 +3,7 @@
 _Authoring guidance for the `policy` document type — audience, depth, and rules._
 
 - Audience: everyone bound by it — the formal internal rule document
-  (the investment-policy-statement is its investing cousin).
+  (an investment policy statement is its investing cousin).
 - Filename: `docs/policy-<subject>.html`.
 - Depth: full.
 - Rules: rules are `requirement` cards with POL- ids, each verifiable;

@@ -14,6 +14,61 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 3.4.0 — 2026-07-22
+
+Additive. The `investment-thesis` doc-type finally composes from the investing
+components it was built for, and the investing catalogue is cut to that one
+type.
+
+### `investment-thesis` composes a real thesis
+
+It used only generic components — `prose`, `facts`, `financial_table`,
+`callout` — so `builder.py new investment-thesis` handed you a generic business
+document and the forty-five investing components stayed invisible unless you
+knew to write the macro call yourself. It now instantiates nine:
+
+| section | components |
+|---|---|
+| Summary | `security_header` · `recommendation` |
+| Thesis | `thesis_pillars` |
+| Valuation | `valuation_multiples` · `valuation_range` |
+| Scenarios | `scenarios` · `expected_value` |
+| Catalysts | `catalyst_timeline` |
+| Risks | `risk_metrics` |
+
+The skeleton deliberately stops at what a thesis is **dishonest without** — the
+call, the claims, the price, the odds, the risks. Anything more is a document
+you spend the first ten minutes deleting. `dcf_summary`, `five_forces`,
+`peer_comparison`, `footnote_disclosures`, `bridge` and the rest are listed in
+the doc-type's `usage.md` under *when the argument needs them*, so they are
+discoverable without being imposed.
+
+Two of the instantiated components carry arithmetic nothing validates:
+`expected_value` probabilities must sum to 100%, and `valuation_range` bars must
+share one `scale_min`/`scale_max` — a football field drawn on mixed scales
+compares nothing. Both are called out in the usage.md.
+
+### `risk_metrics` gained `subject_label`
+
+The subject column was hardcoded to "Strategy" while the benchmark column was
+parameterised. That asymmetry read wrongly the first time the component was used
+in a single-stock thesis, where the column is a ticker. Default is unchanged, so
+nothing that already calls it is affected.
+
+### investing holds one doc-type
+
+The other nine — backtest-report, due-diligence-report, earnings-note,
+investment-policy-statement, market-outlook, portfolio-review,
+strategy-specification, trade-journal, watchlist — are removed. Doc-types go
+84 → 75.
+
+Removing them meant editing eight files that referenced them by name
+(`doc-types/REFERENCE.md`, `README.md`, the category blurb, and five cross
+references in other usage.md files). A document type that no longer exists but
+is still advertised is worse than one that was never there.
+
+---
+
 ## 3.3.0 — 2026-07-22
 
 Additive: sixteen new chart kinds, taking the catalogue to **117 components and

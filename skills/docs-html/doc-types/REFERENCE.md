@@ -35,9 +35,7 @@ other fields with judgment (each carries a "Beyond software" note in its
 **finance/** — budget, cash-flow-forecast, management-report,
 net-worth-statement, valuation-report
 
-**investing/** — investment-thesis, due-diligence-report, portfolio-review,
-trade-journal, investment-policy-statement, market-outlook,
-strategy-specification, backtest-report, watchlist, earnings-note
+**investing/** — investment-thesis
 
 **accounting/** — financial-statements, invoice, credit-note, expense-report,
 reconciliation-report

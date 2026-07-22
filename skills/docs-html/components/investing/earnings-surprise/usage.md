@@ -6,7 +6,7 @@ Styled by: `css/modules/investing.css`
 
 Reported against consensus for one earnings print, line by line, with the
 surprise colored by whether it helps or hurts the thesis. The opening block of
-every `earnings-note`: what was expected, what arrived, by how much.
+every note on an earnings release: what was expected, what arrived, by how much.
 
 ```jinja
 {{ c.earnings_surprise(

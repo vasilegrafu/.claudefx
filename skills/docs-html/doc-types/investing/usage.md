@@ -1,5 +1,5 @@
 # Investing — investing
 
-Investment research and portfolio management — theses, due diligence, backtests, journals and reviews.
+Investment research — the argued case for putting money into something, and what would take it back out.
 
-**Use when** analysing or tracking investments.
+**Use when** analysing an investment.

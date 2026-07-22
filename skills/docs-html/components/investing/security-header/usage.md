@@ -24,5 +24,5 @@ Rules: one per document, never repeated per section. Every price-like fact
 carries the `asof` date — an undated quote is a wrong quote within a day.
 Do not put the recommendation here; that is `recommendation`, deliberately a
 separate block so the facts and the opinion never blur together. For a
-multi-name document (portfolio review, watchlist) use `holdings_table`
+multi-name document (a portfolio review, a watchlist) use `holdings_table`
 instead — this component names one security.
