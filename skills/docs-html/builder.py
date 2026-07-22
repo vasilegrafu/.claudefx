@@ -435,6 +435,80 @@ def cmd_catalog() -> int:
     return 0
 
 
+# --------------------------------------------------------------------------
+# chart preset check
+# --------------------------------------------------------------------------
+
+SAMPLE_RE = re.compile(r"\{#\s*sample:\s*(.*?)\s*#\}", re.S)   # {# sample: a=1, b=2 #}
+CHART_PRE_RE = re.compile(r'<pre class="chart[^"]*"[^>]*>(.*?)</pre>', re.S)
+
+
+def cmd_charts() -> int:
+    """`charts` — render every chart preset and prove its spec is valid JSON.
+
+    A chart preset writes an engine spec. If that spec is malformed the page
+    does not error: the engine leaves the source visible as a code box, which
+    looks exactly like an unreachable CDN. The failure is silent by design, so
+    it needs a test rather than an eyeball.
+
+    A preset opts in with a `{# sample: ... #}` header holding the keyword
+    arguments to call it with — real enough to exercise every loop."""
+    import ast
+    import html as html_mod
+
+    components = [c for c in load_components()
+                  if c.path.parent.parent.name == "charts"]
+    env = make_env(load_components())
+    failures = 0
+    checked = 0
+
+    for comp in sorted(components):
+        text = _read(comp.path)
+        m = SAMPLE_RE.search(text)
+        if not m:
+            continue                      # the engine macro itself has no sample
+        try:
+            call = ast.parse(f"f({m.group(1)})", mode="eval").body
+            kwargs = {kw.arg: ast.literal_eval(kw.value) for kw in call.keywords}
+        except (SyntaxError, ValueError) as e:
+            print(f"  {comp.name:<16} BAD SAMPLE HEADER: {e}")
+            failures += 1
+            continue
+
+        try:
+            macro = getattr(env.globals["c"], comp.macro)
+            rendered = str(macro(**kwargs))
+        except Exception as e:                       # noqa: BLE001 — report, don't crash
+            print(f"  {comp.name:<16} RENDER FAILED: {e}")
+            failures += 1
+            continue
+
+        blocks = CHART_PRE_RE.findall(rendered)
+        if not blocks:
+            print(f"  {comp.name:<16} produced no chart block")
+            failures += 1
+            continue
+
+        for block in blocks:
+            checked += 1
+            try:
+                json.loads(html_mod.unescape(block))
+            except json.JSONDecodeError as e:
+                print(f"  {comp.name:<16} INVALID JSON: {e}")
+                failures += 1
+                break
+        else:
+            print(f"  {comp.name:<16} ok ({len(blocks)} spec"
+                  f"{'s' if len(blocks) > 1 else ''})")
+
+    print()
+    if failures:
+        print(f"{failures} chart preset(s) failed")
+        return 1
+    print(f"all chart presets emit valid JSON ({checked} spec(s) checked)")
+    return 0
+
+
 def cmd_show(args: argparse.Namespace) -> int:
     """`show <name>` — everything about ONE component or doc-type in a single
     call: its call form / purpose (or type-name + which components it uses) and
@@ -482,6 +556,8 @@ def main(argv: list[str]) -> int:
     new.add_argument("--force", action="store_true", help="overwrite an existing document")
     sub.add_parser("showcase", help="regenerate every showcases/<name>.html")
     sub.add_parser("catalog", help="regenerate CATALOG.md (quick-reference)")
+    sub.add_parser("dataviz", help="verify the chart colour tokens (contrast, CVD, ramp)")
+    sub.add_parser("charts", help="render every chart preset and validate its spec JSON")
     show = sub.add_parser("show", help="print one component/doc-type: signature + usage.md")
     show.add_argument("name", help="a component or doc-type name")
 
@@ -494,6 +570,11 @@ def main(argv: list[str]) -> int:
         return cmd_showcase()
     if args.cmd == "catalog":
         return cmd_catalog()
+    if args.cmd == "dataviz":
+        import dataviz          # colour science stays out of the composer
+        return dataviz.check()
+    if args.cmd == "charts":
+        return cmd_charts()
     if args.cmd == "show":
         return cmd_show(args)
     parser.print_help()

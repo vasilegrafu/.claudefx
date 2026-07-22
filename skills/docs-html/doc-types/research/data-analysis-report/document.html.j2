@@ -25,7 +25,7 @@
     {% call c.code(lang="python") %}{% raw %}{{the key computation, if code carries the method better than prose}}{% endraw %}{% endcall %}
   {% endcall %}
   {% call c.section("results", "Results") %}
-    {% call c.chart_apache_echarts() %}{% raw %}
+    {% call c.apache_echarts() %}{% raw %}
 {
   "xAxis": { "type": "category", "data": ["{{category}}"] },
   "yAxis": { "type": "value", "name": "{{unit}}" },

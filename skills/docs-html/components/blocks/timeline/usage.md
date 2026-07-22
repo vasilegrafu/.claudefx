@@ -42,4 +42,4 @@ release history, a roadmap, an incident timeline.
   quarter, version) — not prose.
 - One event per `<li>`; keep the body to a line or two.
 - For dependency graphs rather than a straight sequence, use a Mermaid
-  diagram ([[diagram-mermaid]]) instead.
+  diagram ([[mermaid]]) instead.

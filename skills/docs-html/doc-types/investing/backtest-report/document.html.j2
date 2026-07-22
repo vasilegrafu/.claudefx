@@ -27,7 +27,7 @@
         ]) }}
   {% endcall %}
   {% call c.section("equity", "Equity curve") %}
-    {% call c.diagram_mermaid() %}{% raw %}xychart-beta
+    {% call c.mermaid() %}{% raw %}xychart-beta
   title "Equity curve vs benchmark (indexed)"
   x-axis [{{periods}}]
   y-axis "Index"

@@ -1,0 +1,33 @@
+{# purpose: flow decomposition — how a total splits, merges or converts across stages #}
+{# nodes: list of (name, role) — role is source|stage|cost|retained #}
+{# links: list of (source, target, value) — names must match nodes #}
+{# sample: nodes=[("Revenue","source"),("Cost","cost"),("Net","retained")], links=[("Revenue","Cost",40),("Revenue","Net",60)], caption="s" #}
+{% import "components/charts/apache-echarts/component.html.j2" as engine %}
+
+{% macro sankey(nodes=[], links=[], caption="", height=420, note="") %}
+{% set roles = {"source": "palette:1", "stage": "token:muted",
+                "cost": "token:caution", "retained": "token:positive"} %}
+{# The spec is built as a DATA STRUCTURE and serialised once. Hand-written JSON
+   in a template needs manual comma bookkeeping, and a missed comma fails
+   silently — the chart simply never appears and the source box shows instead,
+   which looks exactly like an unreachable CDN. #}
+{% set node_data = [] %}
+{% for name, role in nodes %}
+{%   set _ = node_data.append({"name": name,
+                               "itemStyle": {"color": roles.get(role, "token:muted")}}) %}
+{% endfor %}
+{% set link_data = [] %}
+{% for source, target, value in links %}
+{%   set _ = link_data.append({"source": source, "target": target, "value": value}) %}
+{% endfor %}
+{% set option = {
+     "tooltip": {"trigger": "item", "triggerOn": "mousemove"},
+     "series": [{"type": "sankey", "emphasis": {"focus": "adjacency"},
+                 "data": node_data, "links": link_data}],
+   } %}
+{% if caption %}{% set _ = option.update({"title": {"text": caption}}) %}{% endif %}
+{% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
+{% if note %}
+  <p class="chart-note">{{ note }}</p>
+{% endif %}
+{% endmacro %}

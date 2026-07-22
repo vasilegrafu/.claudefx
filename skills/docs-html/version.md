@@ -14,6 +14,117 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 3.1.0 — 2026-07-22
+
+Additive: the chart layer grows a checked colour system, three chart presets,
+and two build-time checks. **No markup contract change** — a document's HTML is
+byte-identical whichever version composed it, so nothing published needs
+re-composing. Two things below are nevertheless worth reading before upgrading:
+the palette changes colour, and two authoring macros are renamed.
+
+### The categorical palette is replaced — charts will look different
+
+The old palette's comments claimed it was "validated" and colourblind-safe. The
+new `python builder.py dataviz` check proves it was not: slots 6 and 8 (orange
+and red) collapsed to a CIEDE2000 distance of **4.8** under deuteranopia, and
+only the first **three** slots were safe. Any chart with four or more series had
+confusable colours.
+
+It is now the **Okabe-Ito** reference set — the published standard for
+categorical colour under colour vision deficiency — with pure black replaced by
+the document's own ink (`#182338`), since a pure-black series reads as an axis.
+Slots are ordered by contrast on the chart surface, because the early slots are
+used most and must be the legible ones:
+
+```
+1 #0072b2 blue   2 #d55e00 vermillion  3 #009e73 bluish green  4 #cc79a7 purple
+5 #56b4e9 sky    6 #e69f00 orange      7 #182338 ink           8 #f0e442 yellow
+```
+
+Worst pair is now **11.1** and it holds at every prefix length, so four series
+are as safe as eight. Slots 4, 5, 6 and 8 sit below 3:1 and still need the
+relief rule (data labels or a table view); slots 1-3 and 7 do not.
+
+Upgrading a document changes its chart colours. That is the point, but it is
+visible — check any chart whose colours were chosen around the old palette.
+
+### Renamed authoring macros
+
+Component names dropped a prefix that only repeated their category:
+
+```jinja
+c.chart_apache_echarts(...)   ->  c.apache_echarts(...)
+c.diagram_mermaid(...)        ->  c.mermaid(...)
+```
+
+This is **not** a markup change — both emit exactly the markup they did before
+(`pre.chart.apache-echarts`, `pre.mermaid`), and no composed document contains a
+macro name. Only templates calling these macros need editing, and every
+in-repo caller was updated. The JS/CSS module filenames keep their
+`chart-`/`diagram-` prefix: that prefix is the engine convention, not a
+category echo.
+
+### New — colour system
+
+- **`RAMP`**, a sequential light-to-dark scale for continuous encodings
+  (heatmap, `visualMap`). The categorical palette implied categories where the
+  data had an order, and ECharts' stock blue-to-red default read as good/bad.
+- **`TOKENS.positive` / `.negative` / `.caution`** — semantic *direction* tones,
+  the documented exception to "status colours are reserved". Direction is not
+  identity: a candlestick's up/down, a flow's cost/retained. Never assign one to
+  a series, and never as the sole cue — positive/negative fail deuteranopia
+  separation by construction, so candlestick bodies are hollow/filled too.
+- **`docsHtml.chart.resolveColors`** — a spec may now NAME a design colour
+  instead of writing a hex: `"palette:1"`, `"token:positive"`, `"ramp:2"`. It
+  lives in the shared layer, so every engine resolves the same references and no
+  hex is ever forked into a document.
+
+### New — theme coverage
+
+`buildTheme()` styled only `line` and `bar`; everything else fell through to
+ECharts' stock colours, which collide with the reserved status hues. It now
+covers `pie`, `scatter`, `boxplot`, `candlestick`, `sankey`, `funnel`,
+`heatmap`, `radar`, `graph`, plus `visualMap`, `dataZoom`, `markPoint` and
+`markLine`.
+
+### New — chart presets
+
+Three macros that compute something, enforce a rule, or prevent a known mistake:
+
+- **`c.sankey(nodes, links, …)`** — colours nodes by ROLE (`source` / `stage` /
+  `cost` / `retained`), not by identity, so the colour count never depends on
+  the node count. Left to itself ECharts cycles the palette and a fifteen-node
+  flow gives two unrelated nodes the same hue.
+- **`c.price_history(bars, …)`** — candlestick plus volume as two stacked grids
+  sharing an axis pointer, never a dual y-axis (the charting mistake the rules
+  already forbid). Takes OHLCV as a human reads it and reorders internally.
+- **`c.drawdown_curve(series, …)`** — derives the running peak and each drawdown
+  at compose time from a level series, so the document carries the input and the
+  arithmetic is auditable.
+
+`components/charts/usage.md` is now the **approved chart-kind catalogue** —
+which kinds exist, which are presets and which are hand-written recipes
+(`risk-return`, `return-distribution`), and why. Also new: `.chart-note`, the
+one-line reading beneath a chart.
+
+### New — two checks
+
+- **`python builder.py dataviz`** — contrast on the chart surface, pairwise
+  separation under protanopia / deuteranopia / tritanopia (CIEDE2000, floor
+  10.0, calibrated just under Okabe-Ito's own 11.1), and monotonic ramp
+  luminance. Fails the build on a confusable pair. Colour science lives in
+  `dataviz.py`, out of the composer.
+- **`python builder.py charts`** — renders every preset from a `{# sample: … #}`
+  header and validates the emitted spec is JSON. This exists because the failure
+  is silent by design: a malformed spec does not raise, the engine simply leaves
+  the source visible as a code box, indistinguishable from an unreachable CDN.
+
+Presets accordingly build a data structure and serialise it once rather than
+hand-writing JSON, and delegate the markup to the engine macro. Both rules, and
+the six steps for adding a chart kind, are in `js/REFERENCE.md`.
+
+---
+
 ## 3.0.2 — 2026-07-22
 
 Bug fix. No markup contract change — safe for every document; upgrade by

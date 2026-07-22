@@ -314,6 +314,19 @@ folder; the builder discovers recursively) — the macro file's FIRST line is
 `{# purpose: … #}`. After adding either, run `python builder.py catalog` to
 regenerate CATALOG.md.
 
+**Two checks guard the chart category — run both after touching it:**
+
+- `python builder.py charts` — renders every chart preset from its
+  `{# sample: … #}` header and fails if the spec is not valid JSON. This matters
+  because a malformed spec does **not** raise: the engine leaves the source
+  visible as a code box, indistinguishable from an unreachable CDN.
+- `python builder.py dataviz` — verifies the chart colours: contrast on the
+  chart surface, pairwise separation under protanopia / deuteranopia /
+  tritanopia, and monotonic luminance of the sequential ramp.
+
+Adding a chart *kind* (a preset macro) versus adding a chart *engine* are
+different jobs with different steps — both are written out in `js/REFERENCE.md`.
+
 ### `release [major|minor|patch]` — publish a design-system version
 This skill lives in `github.com/vasilegrafu/.aifx` — a standalone public
 repo, checked out ONCE as a shared clone that solutions consume via
@@ -409,15 +422,18 @@ valid. See `components/content/code-block/usage.md`.
 - Uncertain content is always `<mark class="todo">` — never silently invented,
   never an empty section.
 - Diagrams are editable source, never exported images: Mermaid text
-  (`c.diagram_mermaid()`) — flowchart, sequence, ER, state, class, gantt, all
+  (`c.mermaid()`) — flowchart, sequence, ER, state, class, gantt, all
   auto-laid-out, so you write relationships and never coordinates.
 - Formulas are LaTeX text in `.math` elements (`c.formula()` block /
   hand-written `<span class="math">` inline), rendered at view time — never
   images of equations.
 - Charts are data, not pictures: a JSON ECharts `option` in
-  `c.chart_apache_echarts()` (`pre.chart.apache-echarts`), rendered to SVG at
+  `c.apache_echarts()` (`pre.chart.apache-echarts`), rendered to SVG at
   view time — never a screenshot of a chart.
-  Never restyle the theme per chart (the palette is validated); one y-axis only.
+  Never restyle the theme per chart (the palette is checked colour-blind-safe by
+  `python builder.py dataviz`); one y-axis only. The approved chart kinds — and
+  which are presets (`c.sankey`, `c.price_history`, `c.drawdown_curve`) versus
+  hand-written recipes — are listed in `components/charts/usage.md`.
   Prefer it over a Mermaid `xychart-beta` whenever the chart carries analysis.
 - Requirements and traceable items carry trace-ids (`REQ-`, `RISK-`, `TC-`); a
   requirement is a `requirement` card, not a bullet.

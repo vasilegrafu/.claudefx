@@ -14,7 +14,7 @@
      (e.g. this file was copied out of the repo), fall back to the pinned CDN so
      the page still renders. Local first, CDN only if local is missing. */
   (function () {
-    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@3.0.2/skills/docs-html";
+    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@3.1.0/skills/docs-html";
     function cssLoaded() {
       try {
         for (var i = 0; i < document.styleSheets.length; i++) {
@@ -3008,6 +3008,348 @@ flowchart TD
 }
 
   </pre>
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Flow — sankey, coloured by role</h3>
+    <span class="gx-spec-name">sankey</span>
+  </div>
+
+    <pre class="chart apache-echarts" data-height="420">
+{
+  "series": [
+    {
+      "data": [
+        {
+          "itemStyle": {
+            "color": "palette:1"
+          },
+          "name": "Revenue"
+        },
+        {
+          "itemStyle": {
+            "color": "token:muted"
+          },
+          "name": "Gross profit"
+        },
+        {
+          "itemStyle": {
+            "color": "token:caution"
+          },
+          "name": "Cost of sales"
+        },
+        {
+          "itemStyle": {
+            "color": "token:caution"
+          },
+          "name": "Operating expenses"
+        },
+        {
+          "itemStyle": {
+            "color": "token:caution"
+          },
+          "name": "Tax"
+        },
+        {
+          "itemStyle": {
+            "color": "token:positive"
+          },
+          "name": "Net income"
+        }
+      ],
+      "emphasis": {
+        "focus": "adjacency"
+      },
+      "links": [
+        {
+          "source": "Revenue",
+          "target": "Cost of sales",
+          "value": 210352
+        },
+        {
+          "source": "Revenue",
+          "target": "Gross profit",
+          "value": 180683
+        },
+        {
+          "source": "Gross profit",
+          "target": "Operating expenses",
+          "value": 57467
+        },
+        {
+          "source": "Gross profit",
+          "target": "Tax",
+          "value": 29749
+        },
+        {
+          "source": "Gross profit",
+          "target": "Net income",
+          "value": 93467
+        }
+      ],
+      "type": "sankey"
+    }
+  ],
+  "title": {
+    "text": "Revenue to net income ($M)"
+  },
+  "tooltip": {
+    "trigger": "item",
+    "triggerOn": "mousemove"
+  }
+}
+  </pre>
+  <p class="chart-note">Six nodes, four colours — the roles, not the node count, decide the palette.</p>
+
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Price action — candlestick with volume</h3>
+    <span class="gx-spec-name">price-history</span>
+  </div>
+
+    <pre class="chart apache-echarts" data-height="420">
+{
+  "axisPointer": {
+    "link": [
+      {
+        "xAxisIndex": "all"
+      }
+    ]
+  },
+  "grid": [
+    {
+      "containLabel": true,
+      "height": "52%",
+      "left": 8,
+      "right": 16,
+      "top": 52
+    },
+    {
+      "bottom": 8,
+      "containLabel": true,
+      "height": "18%",
+      "left": 8,
+      "right": 16
+    }
+  ],
+  "series": [
+    {
+      "data": [
+        [
+          185.2,
+          191.4,
+          183.0,
+          193.1
+        ],
+        [
+          191.4,
+          188.7,
+          186.2,
+          195.8
+        ],
+        [
+          188.7,
+          201.3,
+          187.9,
+          202.6
+        ],
+        [
+          201.3,
+          197.5,
+          194.1,
+          204.0
+        ],
+        [
+          197.5,
+          209.8,
+          196.0,
+          211.2
+        ],
+        [
+          209.8,
+          206.1,
+          202.7,
+          213.5
+        ]
+      ],
+      "name": "price",
+      "type": "candlestick",
+      "xAxisIndex": 0,
+      "yAxisIndex": 0
+    },
+    {
+      "data": [
+        421,
+        388,
+        512,
+        344,
+        468,
+        401
+      ],
+      "itemStyle": {
+        "borderRadius": 0,
+        "color": "token:muted",
+        "opacity": 0.55
+      },
+      "name": "volume",
+      "type": "bar",
+      "xAxisIndex": 1,
+      "yAxisIndex": 1
+    }
+  ],
+  "title": {
+    "text": "Share price and volume (indexed, $M)"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "cross"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": [
+    {
+      "axisLabel": {
+        "show": false
+      },
+      "data": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun"
+      ],
+      "gridIndex": 0,
+      "type": "category"
+    },
+    {
+      "data": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun"
+      ],
+      "gridIndex": 1,
+      "type": "category"
+    }
+  ],
+  "yAxis": [
+    {
+      "gridIndex": 0,
+      "scale": true,
+      "type": "value"
+    },
+    {
+      "gridIndex": 1,
+      "splitLine": {
+        "show": false
+      },
+      "splitNumber": 2,
+      "type": "value"
+    }
+  ]
+}
+  </pre>
+  <p class="chart-note">Up bars are hollow and down bars filled, so direction reads without colour.</p>
+
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Drawdown — derived at compose time</h3>
+    <span class="gx-spec-name">drawdown-curve</span>
+  </div>
+
+    <pre class="chart apache-echarts" data-height="300">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 42,
+    "right": 16,
+    "top": 52
+  },
+  "series": [
+    {
+      "areaStyle": {
+        "color": "token:negative",
+        "opacity": 0.14
+      },
+      "data": [
+        0.0,
+        0.0,
+        0.0,
+        -18.75,
+        -11.49,
+        0.0,
+        -7.15,
+        -13.8,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lineStyle": {
+        "color": "token:negative",
+        "width": 1.5
+      },
+      "markPoint": {
+        "data": [
+          {
+            "name": "max drawdown",
+            "type": "min"
+          }
+        ],
+        "itemStyle": {
+          "color": "token:negative"
+        },
+        "label": {
+          "fontSize": 10,
+          "offset": [
+            0,
+            0
+          ]
+        },
+        "symbol": "circle",
+        "symbolSize": 46
+      },
+      "name": "drawdown",
+      "showSymbol": false,
+      "type": "line"
+    }
+  ],
+  "title": {
+    "text": "Drawdown from running peak"
+  },
+  "tooltip": {
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "2023-01",
+      "2023-04",
+      "2023-07",
+      "2023-10",
+      "2024-01",
+      "2024-04",
+      "2024-07",
+      "2024-10",
+      "2025-01",
+      "2025-04",
+      "2025-07"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "max": 0,
+    "name": "drawdown %",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+  <p class="chart-note">Maximum drawdown -18.75%.</p>
+
 
 
     <section class="gx-cat" id="math">

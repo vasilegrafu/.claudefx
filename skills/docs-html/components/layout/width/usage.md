@@ -13,7 +13,7 @@ fit (`max-width: 100%`).
 ## Markup
 
 ```html
-{% raw %}{% call c.width("18rem") %}{{ c.chart_apache_echarts(...) }}{% endcall %}
+{% raw %}{% call c.width("18rem") %}{{ c.apache_echarts(...) }}{% endcall %}
 
 {% call c.width("30rem", align="center") %}
   {{ c.figure(...) }}

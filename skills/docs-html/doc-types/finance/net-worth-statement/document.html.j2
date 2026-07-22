@@ -31,7 +31,7 @@
         ]) }}
   {% endcall %}
   {% call c.section("trend", "Trend") %}
-    {% call c.diagram_mermaid() %}{% raw %}xychart-beta
+    {% call c.mermaid() %}{% raw %}xychart-beta
   title "Net worth over time"
   x-axis [{{periods}}]
   y-axis "{{currency}}"

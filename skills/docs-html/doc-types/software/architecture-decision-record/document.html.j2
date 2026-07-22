@@ -20,7 +20,7 @@
   {% call c.section("decision", "Decision") %}
     {% call c.callout(type="decision") %}{% call c.prose() %}{% raw %}{{the decision in one sentence}}{% endraw %}{% endcall %}{% endcall %}
     {% call c.prose() %}{% raw %}{{rationale}}{% endraw %}{% endcall %}
-    {% call c.diagram_mermaid() %}{% raw %}flowchart LR
+    {% call c.mermaid() %}{% raw %}flowchart LR
   {{...}}{% endraw %}{% endcall %}
   {% endcall %}
 

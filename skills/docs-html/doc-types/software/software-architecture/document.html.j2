@@ -18,14 +18,14 @@
   {% endcall %}
 
   {% call c.section("system-context", "System Context") %}
-    {% call c.diagram_mermaid() %}{% raw %}flowchart LR
+    {% call c.mermaid() %}{% raw %}flowchart LR
   user([{{User}}]) --> sys[{{System}}]
   sys --> ext[({{External system}})]{% endraw %}{% endcall %}
     {% call c.prose() %}{% raw %}{{...}}{% endraw %}{% endcall %}
   {% endcall %}
 
   {% call c.section("containers", "Containers") %}
-    {% call c.diagram_mermaid() %}{% raw %}flowchart TD
+    {% call c.mermaid() %}{% raw %}flowchart TD
   {{...}}{% endraw %}{% endcall %}
     {{ c.table(["{{col1}}", "{{col2}}"], [["{{...}}", "{{...}}"]]) }}
   {% endcall %}

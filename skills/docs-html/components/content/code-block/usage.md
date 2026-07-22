@@ -45,4 +45,4 @@ Macro form: `{% call c.code_block(path="database/session_maker.py", lang="python
   the code simply renders plain, still fully readable.
 - `data-lang` values are Prism language ids (`python`, `sql`, `json`, `bash`,
   `yaml`, `csharp`, …); grammars load on demand. Unknown ids degrade to plain.
-- Code never goes inside a [[diagram-mermaid]] block or vice versa.
+- Code never goes inside a [[mermaid]] block or vice versa.

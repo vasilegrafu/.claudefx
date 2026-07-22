@@ -13,7 +13,7 @@
     {% call c.prose() %}{% raw %}{{the system under analysis; the assets worth attacking (data, money, access)}}{% endraw %}{% endcall %}
   {% endcall %}
   {% call c.section("architecture", "Trust boundaries") %}
-    {% call c.diagram_mermaid() %}{% raw %}flowchart LR
+    {% call c.mermaid() %}{% raw %}flowchart LR
   user([User]) --> app[App]
   app --> db[(Data)]{% endraw %}{% endcall %}
     {% call c.prose() %}{% raw %}{{where trust changes: network edges, auth boundaries, third parties}}{% endraw %}{% endcall %}

@@ -25,6 +25,15 @@
 .chart-canvas { width: 100%; }
 .chart-canvas svg { max-width: 100%; }   /* never overflow the reading column */
 
+/* The one-line reading under a chart — what the shape MEANS. It sits outside
+   the card, like a figure's caption, and pulls up tight against it so the two
+   read as one block rather than a chart followed by a stray sentence. */
+.chart-note {
+  margin: calc(var(--block-gap) * -.6) 0 var(--block-gap);
+  font-size: .82rem;
+  color: var(--fg-soft);
+}
+
 /* per-chart icon toolbar, top-right inside the card — one chip holding flat
    SVG-icon buttons (injected by docs-html.js), same look as .doc-toolbar and
    .diagram-tools. It hangs off the figure, not the canvas: the canvas belongs

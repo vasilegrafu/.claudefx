@@ -20,7 +20,7 @@
           ("", ["Outflows", "{{(v)}}", "{{(v)}}", "{{(v)}}"]),
           ("total", ["Closing cash", "{{v}}", "{{v}}", "{{v}}"]),
         ]) }}
-    {% call c.diagram_mermaid() %}{% raw %}xychart-beta
+    {% call c.mermaid() %}{% raw %}xychart-beta
   title "Closing cash by period"
   x-axis [{{periods}}]
   y-axis "{{currency}}"

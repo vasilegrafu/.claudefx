@@ -15,7 +15,7 @@
   {% endcall %}
 
   {% call c.section("er-model", "ER model") %}
-    {% call c.diagram_mermaid() %}{% raw %}erDiagram
+    {% call c.mermaid() %}{% raw %}erDiagram
   {{ENTITY ||--o{ OTHER : relation}}{% endraw %}{% endcall %}
   {% endcall %}
 

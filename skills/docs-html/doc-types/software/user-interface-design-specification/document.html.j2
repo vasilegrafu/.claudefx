@@ -23,7 +23,7 @@
   {% endcall %}
 
   {% call c.section("flows", "Interaction flows") %}
-    {% call c.diagram_mermaid() %}{% raw %}flowchart LR
+    {% call c.mermaid() %}{% raw %}flowchart LR
   {{screen}} --> {{next screen}}{% endraw %}{% endcall %}
   {% endcall %}
 

@@ -13,7 +13,7 @@ engine, exactly like `math` (KaTeX). Renders **SVG** (crisp in print, one
 For real data — bar, line, area, pie, scatter, heatmap, **candlestick/OHLC**,
 boxplot. Prefer this over a Mermaid `xychart-beta` whenever the chart carries
 analysis (multi-series, stacked, a legend, tooltips). Keep Mermaid for
-*diagrams* (flow, sequence, ER); see [[diagram-mermaid]].
+*diagrams* (flow, sequence, ER); see [[mermaid]].
 
 ## Markup
 
@@ -25,7 +25,7 @@ The body is a JSON ECharts `option` — data and encoding as plain, editable
 text. Use a `{% raw %}{% call %}{% endraw %}` block so the JSON reads cleanly:
 
 ```html
-{% raw %}{% call c.chart_apache_echarts(height=320) %}{% endraw %}
+{% raw %}{% call c.apache_echarts(height=320) %}{% endraw %}
 {
   "xAxis": { "type": "category", "data": ["Q1", "Q2", "Q3", "Q4"] },
   "yAxis": { "type": "value" },
@@ -63,16 +63,23 @@ the engine at all. So write the `option` clean enough to read as text.
 ## Rules
 
 - **Never restyle the theme.** No per-chart `color`, fonts, or axis colors — the
-  palette is validated (colorblind-safe on the light surface); overriding it
-  breaks that guarantee. Rebrand once, in `PALETTE`/`TOKENS` in
-  `js/modules/charts.js` — the shared layer, so every engine follows.
+  palette is the Okabe-Ito reference set, checked colorblind-safe on the light
+  surface by `python builder.py dataviz`; overriding it breaks that guarantee.
+  Rebrand once, in `PALETTE`/`TOKENS`/`RAMP` in `js/modules/charts.js` — the
+  shared layer, so every engine follows — then re-run the check.
+- **A spec may NAME a design colour** rather than write a hex: `"palette:3"`,
+  `"token:positive"`, `"ramp:2"`. Use this when a mark genuinely needs a
+  specific tone (a target `markLine`, a role-coloured node); never to
+  hand-pick a series colour.
 - **One y-axis.** No dual-axis charts (two value scales) — the #1 charting
   mistake. Two measures of different scale → two charts, or index to a common
   base. (ECharts will let you; don't.)
-- **Legend for ≥ 2 series; direct-label ≤ 4.** Three palette hues (magenta,
-  yellow, aqua — slots 3-5) sit below 3:1 on the light surface: when you use
-  them, add visible data labels (`"label": { "show": true }`) or a table view so
-  the series is legible, not color-alone (the dataviz *relief rule*).
+- **Legend for ≥ 2 series; direct-label ≤ 4.** Four palette slots sit below 3:1
+  on the light surface — **4** (reddish purple), **5** (sky blue), **6**
+  (orange) and **8** (yellow): when you use them, add visible data labels
+  (`"label": { "show": true }`) or a table view so the series is legible, not
+  color-alone (the dataviz *relief rule*). Slots 1-3 and 7 need no relief.
+  `python builder.py dataviz` prints the current list.
 - **Categorical series cap 8**, and only the first 4 for scatter/bubble/maps;
   past that, fold to "Other", facet, or small-multiple.
 - **Charts are never images** — screenshots use [[figure]]. A chart is data.

@@ -34,10 +34,10 @@ write diagram source clean enough to read as text.
 - One Mermaid script per document, however many diagrams.
 - No diagrams → no script, and drop the `diagrams.css` link.
 
-## Charts: use [[chart-apache-echarts]], not Mermaid
+## Charts: use [[apache-echarts]], not Mermaid
 
 For real data charts — multi-series, stacked, a legend, tooltips, candlestick —
-reach for [[chart-apache-echarts]] (Apache ECharts, validated palette). Mermaid's own
+reach for [[apache-echarts]] (Apache ECharts, validated palette). Mermaid's own
 `xychart-beta` / `pie` are quick illustrations only: single-series, no legend,
 still "beta". Use them just for a throwaway curve inside a diagram-heavy page;
 anything analytical goes to `chart-apache-echarts`.

@@ -33,7 +33,7 @@ Used only inside `<body class="presentation">`.
 - Content must FIT the page — overflow is clipped by design, exactly like
   a real slide. A page that doesn't fit is two pages.
 - First page: title page. Last page: next steps / asks.
-- Other components ([[diagram-mermaid]], [[table]], [[callout]],
+- Other components ([[mermaid]], [[table]], [[callout]],
   [[checklist]]) are allowed inside pages; [[toc]] is not — presentations
   have no TOC.
 - No speaker notes (nothing to toggle them with).

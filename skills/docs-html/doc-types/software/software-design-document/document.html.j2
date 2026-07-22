@@ -12,7 +12,7 @@
   ]) }}
 
   {% call c.section("overview", "Overview") %}
-    {% call c.diagram_mermaid() %}{% raw %}flowchart LR
+    {% call c.mermaid() %}{% raw %}flowchart LR
   {{context diagram}}{% endraw %}{% endcall %}
   {% endcall %}
 
@@ -21,7 +21,7 @@
   {% endcall %}
 
   {% call c.section("data", "Data design") %}
-    {% call c.diagram_mermaid() %}{% raw %}erDiagram
+    {% call c.mermaid() %}{% raw %}erDiagram
   {{...}}{% endraw %}{% endcall %}
   {% endcall %}
 

@@ -41,7 +41,7 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
 | `math.js` | feature on `.math`: LaTeX rendered by KaTeX `0.16.11` (lazy CDN, script + stylesheet). `<div class="math">` = display, `<span class="math">` = inline; CDN down → the LaTeX source stays readable (math.css) |
 | `diagrams.js` | **Not a feature** — the shared, engine-agnostic diagram viewport, exposed as `docsHtml.diagram.Viewer`. Owns `.diagram-figure` (bounded box), `.diagram-canvas` (pan surface), the toolbar from a declarative `BUTTONS` spec, the zoom-% readout, fit/reset/fullscreen/download-SVG/copy-source, the resize grip, and pan/zoom (a small self-contained transform — deliberately **not** an external pan library, so no engine bundle can clobber it with a global of its own). Knows nothing about any engine |
 | `diagram-mermaid.js` | feature on `pre.mermaid`: pins Mermaid `11.4.1` (lazy), renders with `useMaxWidth:false` (natural pixel size, so 100% = natural), hands the SVG to `diagram.Viewer`, and adds the ✎ **live source editor** (its only engine-specific tool — re-renders into the same SVG node so the view survives; reuses `highlight` for the colored overlay) |
-| `charts.js` | **Not a feature** — the shared, engine-agnostic chart frame, exposed as `docsHtml.chart`. Owns `PALETTE` (the validated 8-slot categorical palette) and `TOKENS` (ink/axis/grid/surface/font) as **plain data, in no engine's format**, so every engine inherits the same validated colors; `Frame` (the `.chart-figure` card, the `.chart-canvas` an engine draws into, `data-height`, hiding the source `<pre>`, and the toolbar from a declarative `BUTTONS` spec: download-SVG · copy-source); one debounced resize dispatch for the whole page via `frame.onResize(fn)`; and `markError(pre)`. Knows nothing about any engine. **Rebrand the dataviz palette here** |
+| `charts.js` | **Not a feature** — the shared, engine-agnostic chart frame, exposed as `docsHtml.chart`. Owns `PALETTE` (the 8-slot categorical palette — Okabe-Ito, ordered by contrast, ink substituted for pure black), `RAMP` (sequential, for continuous encodings) and `TOKENS` (ink/axis/grid/surface/font plus the semantic `positive`/`negative`/`caution` direction tones) as **plain data, in no engine's format**, so every engine inherits the same checked colors; `resolveColors(spec)`, which substitutes `"palette:3"` / `"token:positive"` / `"ramp:2"` references so a preset never writes a hex into a document; `Frame` (the `.chart-figure` card, the `.chart-canvas` an engine draws into, `data-height`, hiding the source `<pre>`, and the toolbar from a declarative `BUTTONS` spec: download-SVG · copy-source); one debounced resize dispatch for the whole page via `frame.onResize(fn)`; and `markError(pre)`. Knows nothing about any engine. **Rebrand the dataviz palette here**, then run `python builder.py dataviz` — it verifies contrast, colour-blind separation and ramp monotonicity, and fails on a confusable pair |
 | `chart-apache-echarts.js` | feature on `pre.chart.apache-echarts`: declarative data charts. Parses every JSON `option` **first** (an all-invalid page never fetches the ~900 KB engine), lazy-loads ECharts `5.5.1` (pinned CDN), translates `chart.PALETTE`/`TOKENS` into an ECharts theme, and renders **SVG** into `frame.canvas`; auto-fills `aria`/`tooltip`/`legend` only when unset. Invalid JSON or CDN down → the spec stays a readable code box (charts.css) |
 | `main.js` | `docsHtml.init()` on DOM-ready — final, never edited |
 
@@ -86,9 +86,40 @@ steps, touching nothing that exists:
 3. Add `"chart-<name>"` to `MODULES` in `js/docs-html.js`, after `"charts"`.
 4. Add `@import url("modules/chart-<name>.css") layer(charts);` to
    `css/docs-html.css`.
-5. `components/charts/chart-<name>/` (`component.html.j2` + `usage.md`) — the
+5. `components/charts/<name>/` (`component.html.j2` + `usage.md`) — the
    macro emits `<pre class="chart <name>">` — so the builder and catalog know
-   about it.
+   about it. (The component drops the `chart-` prefix that the JS/CSS modules
+   carry: inside the `charts` category it would only repeat the category name.
+   `diagrams` does the same — `mermaid`, not `diagram-mermaid`.)
+
+**Adding a chart KIND (a preset) — the far more common job.** A kind is not an
+engine: it is a macro that writes a spec for an engine that already exists.
+`components/charts/{sankey,price-history,drawdown-curve}` are the models.
+
+1. `components/charts/<kind>/component.html.j2`. Import the engine macro and
+   delegate to it, so the engine name is written in ONE place per preset:
+   ```jinja
+   {% import "components/charts/apache-echarts/component.html.j2" as engine %}
+   {% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
+   ```
+2. **Build the spec as a data structure, then serialise it.** Never hand-write
+   JSON in the template. Manual comma bookkeeping (`{{ "," if not loop.last }}`)
+   fails silently: a malformed spec is not an error, the engine just leaves the
+   source visible as a code box, which looks exactly like an unreachable CDN.
+3. Colours by reference, never by hex — `"palette:1"`, `"token:positive"`,
+   `"ramp:2"` (`docsHtml.chart.resolveColors` substitutes them). A preset that
+   colours by role rather than by item is why a 15-node sankey does not run out
+   of colours; see `components/charts/sankey/usage.md`.
+4. Add a `{# sample: <kwargs> #}` header — real enough to exercise every loop.
+   `python builder.py charts` renders every preset with its sample and fails if
+   the spec is not valid JSON. A preset without a sample is not checked.
+5. Compute at compose time what the reader should be able to audit
+   (`drawdown-curve` derives the running peak in the macro, so the document
+   carries the input series and the arithmetic is inspectable).
+6. List the kind in `components/charts/usage.md` — the approved-kinds catalogue
+   — and say there whether it is a preset or a recipe. A preset earns its place
+   only by computing something, enforcing a rule, or preventing a known
+   mistake; otherwise document a recipe and let the author write the spec.
 
 The card, the toolbar, download-SVG, copy-source, `data-height` and the resize
 dispatch come free.

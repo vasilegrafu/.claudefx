@@ -19,7 +19,7 @@
   {% call c.section("results", "Results") %}
     {{ c.table(["Metric", "Target", "Measured", "Verdict"],
         [["{{p95 latency / throughput / error rate}}", "{{t}}", "{{m}}", "{{a c.badge() Pass/Fail}}"]]) }}
-    {% call c.diagram_mermaid() %}{% raw %}xychart-beta
+    {% call c.mermaid() %}{% raw %}xychart-beta
   title "{{latency over load}}"
   x-axis [{{load points}}]
   y-axis "{{ms}}"

@@ -23,7 +23,7 @@
   {% endcall %}
 
   {% call c.section("overall", "Overall description") %}
-    {{ c.diagram_mermaid("flowchart LR\n  user([User]) --> system[System] --> data[(Data)]") }}
+    {{ c.mermaid("flowchart LR\n  user([User]) --> system[System] --> data[(Data)]") }}
   {% endcall %}
 
   {% call c.section("functional", "Functional requirements") %}
