@@ -1,0 +1,7 @@
+{# purpose: several attributes of a few entities at once — profile shape, not precise values #}
+{# sample: indicators=[("a",None),("b",None),("c",None)], series=[("X",[1,2,3])], caption="s" #}
+{% import "components/charts/_render.html.j2" as r %}
+
+{% macro radar(indicators=[], series=[], caption="", height=380, note="") %}
+{{ r.out(chart_radar(indicators=indicators, series=series, caption=caption), height, note) }}
+{% endmacro %}

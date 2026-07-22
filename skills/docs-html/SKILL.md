@@ -139,6 +139,9 @@ directly — into a finished document:
 SKILL.md
 CATALOG.md     ← generated quick-reference (component call forms + doc-type purposes); `builder.py catalog`
 builder.py     ← Jinja compose: base + doc-type template + component macros → docs/<name>.html
+lib/           ← the Python builder.py calls (builder.py itself stays at root: it is the command)
+    chartkit.py    option builders shared by the chart components (11 kinds are one function + flags)
+    dataviz.py     verifies the chart colour tokens in js/modules/charts.js (contrast, CVD, ramp)
 css/
     docs-html.css    ← the single stylesheet (@layer + @import)
     modules/*.css    ← the modules it imports
@@ -153,6 +156,8 @@ components/
                       business | investing | front-back-matter | diagrams |
                       charts | math
         usage.md           category orientation: blurb + when to use
+        _<name>.html.j2    shared template internals — NOT a component; the builder
+                           only discovers files named component.html.j2
         <name>/
             usage.md           guidance for the author: when + how, and the rules
             component.html.j2  a Jinja macro {% macro <name>(...) %} — the callable markup

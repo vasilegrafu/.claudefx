@@ -1121,7 +1121,73 @@ def rate_limited(partition: str) -> bool:
   {# ========================= CHARTS ========================= #}
   {{ cat("charts", "Category 11 / 12", "Charts") }}
 
-  {{ spec("Chart — bars, line &amp; legend (ECharts)", "chart-apache-echarts") }}
+  {{ spec("Line, smoothed, area", "line") }}
+  {{ c.line(series=[("Revenue", [120, 145, 132, 168, 175, 190])],
+            categories=["Q1", "Q2", "Q3", "Q4", "Q5", "Q6"],
+            caption="Line — the honest default", y_name="$M") }}
+  {{ c.smoothed_line(series=[("Revenue", [120, 145, 132, 168, 175, 190])],
+                     categories=["Q1", "Q2", "Q3", "Q4", "Q5", "Q6"],
+                     caption="Smoothed — a claim that the wiggles are noise", y_name="$M") }}
+  {{ c.area(series=[("Cash", [120, 145, 132, 168, 175, 190])],
+            categories=["Q1", "Q2", "Q3", "Q4", "Q5", "Q6"],
+            caption="Area — only where the quantity beneath is real", y_name="$M") }}
+
+  {{ spec("Stacked line &amp; stacked area", "stacked-area") }}
+  {{ c.stacked_line(series=[("iPhone", [52, 55, 51, 58]), ("Services", [22, 24, 26, 28]),
+                            ("Mac", [10, 9, 11, 10])],
+                    categories=["Q1", "Q2", "Q3", "Q4"],
+                    caption="Stacked line — only the bottom band is measurable", y_name="$B") }}
+  {{ c.stacked_area(series=[("iPhone", [52, 55, 51, 58]), ("Services", [22, 24, 26, 28]),
+                            ("Mac", [10, 9, 11, 10])],
+                    categories=["Q1", "Q2", "Q3", "Q4"],
+                    caption="Stacked area — composition and total together", y_name="$B") }}
+
+  {{ spec("Bar, stacked column, horizontal, 100% stacked", "bar") }}
+  {{ c.bar(series=[("Revenue", [209, 109, 36, 34, 28])],
+           categories=["iPhone", "Services", "Wearables", "Mac", "iPad"],
+           caption="Bar — length from zero, sorted", y_name="$B") }}
+  {{ c.stacked_column(series=[("Product", [180, 195, 188]), ("Services", [85, 96, 109])],
+                      categories=["FY2023", "FY2024", "FY2025"],
+                      caption="Stacked column — parts and total", y_name="$B") }}
+  {{ c.stacked_horizontal_bar(
+       series=[("Product", [180, 195, 188]), ("Services", [85, 96, 109])],
+       categories=["FY2023", "FY2024", "FY2025"],
+       caption="Stacked horizontal — for long category names", y_name="$B") }}
+  {{ c.stacked_normalized(series=[("Product", [180, 195, 188]), ("Services", [85, 96, 109])],
+                          categories=["FY2023", "FY2024", "FY2025"],
+                          caption="100% stacked — mix, when totals differ",
+                          note="Totals disappear by design; pair with the bar above if size matters.") }}
+
+  {{ spec("Signed bar &amp; waterfall", "waterfall") }}
+  {{ c.bar_negative(series=[("Variance", [12.4, -3.1, 8.8, -6.2, 2.0])],
+                    categories=["Q1", "Q2", "Q3", "Q4", "Q5"],
+                    caption="Signed bar — coloured by direction, not identity", y_name="$M") }}
+  {{ c.waterfall(steps=[("FY2024", 391, "start"), ("Services", 13, "delta"),
+                        ("iPhone", 8, "delta"), ("Pricing", 9, "delta"),
+                        ("FX", -5, "delta"), ("FY2025", 416, "total")],
+                 caption="Waterfall — 391 + 13 + 8 + 9 − 5 = 416", y_name="$B",
+                 note="The steps reconcile; nothing in the rendering would tell you if they did not.") }}
+
+  {{ spec("Pie, funnel, gauge", "pie") }}
+  {{ c.pie(slices=[("Equities", 48), ("Bonds", 27), ("Cash", 25)],
+           caption="Donut — three parts, no more") }}
+  {{ c.funnel_chart(stages=[("Screened", 1200), ("Shortlisted", 260), ("Diligenced", 48), ("Held", 22)],
+                    caption="Funnel — nested stages",
+                    note="Each stage is a subset of the one above.") }}
+  {{ c.gauge(value=68, minimum=0, maximum=100, unit="%",
+             caption="Gauge — only when the range is as real as the value") }}
+
+  {{ spec("Scatter &amp; radar", "scatter") }}
+  {{ c.scatter(series=[("Holdings", [(12.1, 8.4, "AAPL"), (18.7, 14.2, "NVDA"),
+                                     (9.3, 5.1, "KO"), (22.4, 3.8, "TSLA")])],
+               caption="Risk against return", x_name="volatility %", y_name="return %",
+               note="Labelled points; an unlabelled cloud is a shape, not an analysis.") }}
+  {{ c.radar(indicators=[("Growth", none), ("Margin", none), ("Balance sheet", none),
+                         ("Moat", none), ("Valuation", none)],
+             series=[("Company A", [8, 7, 9, 8, 4]), ("Company B", [5, 9, 6, 7, 8])],
+             caption="Radar — read vertices, never area") }}
+
+  {{ spec("Chart — bars, line &amp; legend (ECharts)", "apache-echarts") }}
   {% call c.apache_echarts() %}{% raw %}
 {
   "tooltip": { "trigger": "axis" },

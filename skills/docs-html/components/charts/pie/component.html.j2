@@ -1,0 +1,7 @@
+{# purpose: composition of a single whole — a donut, for a handful of parts #}
+{# sample: slices=[("A",50),("B",30),("C",20)], caption="s" #}
+{% import "components/charts/_render.html.j2" as r %}
+
+{% macro pie(slices=[], caption="", height=320, note="", donut=True) %}
+{{ r.out(chart_pie(slices=slices, caption=caption, donut=donut), height, note) }}
+{% endmacro %}

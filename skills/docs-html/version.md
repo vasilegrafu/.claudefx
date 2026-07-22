@@ -14,6 +14,75 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 3.3.0 — 2026-07-22
+
+Additive: sixteen new chart kinds, taking the catalogue to **117 components and
+21 chart forms**. No markup contract change — existing documents are untouched
+and need no re-composing.
+
+### New — the common chart forms, as macros
+
+Every form now has a macro rather than requiring a hand-written spec:
+
+| over time | across categories | relationships |
+|---|---|---|
+| `c.line` | `c.bar` | `c.scatter` |
+| `c.smoothed_line` | `c.stacked_column` | `c.radar` |
+| `c.area` | `c.stacked_horizontal_bar` | `c.gauge` |
+| `c.stacked_line` | `c.stacked_normalized` | |
+| `c.stacked_area` | `c.bar_negative` | |
+| | `c.waterfall` | |
+| | `c.pie` | |
+| | `c.funnel_chart` | |
+
+Four of them compute something the author would otherwise redo by hand:
+
+- **`waterfall`** — ECharts has no waterfall series; it is a transparent
+  placeholder stack whose heights are running cumulative totals. Getting the
+  placeholder wrong still draws a chart, which is exactly why this is not left
+  to the call site.
+- **`stacked_normalized`** — each value as a share of its column total. Pass raw
+  amounts.
+- **`bar_negative`** — bars coloured by the SIGN of the value, using the
+  semantic direction tones. Colour is never the only cue: the bar's side of the
+  zero line says the same thing.
+- **`radar`** — per-indicator maxima derived from the data unless given, because
+  ad-hoc per-axis maxima let a radar draw any shape you like.
+
+`funnel_chart` carries the suffix because `funnel` is already the CSS component
+in `investing`, and component names are unique across every category.
+
+### Honest caveats, written into the components
+
+`components/charts/usage.md` now lists a **CSS twin** for five of these —
+`waterfall`/[[bridge]], `funnel-chart`/[[funnel]], `gauge`/[[meter]],
+`radar`/[[scorecard]], `pie`/[[exposure-bars]]. The twin needs no engine, prints
+cleanly, and keeps its numbers as selectable text; prefer it when the figures are
+meant to be read rather than compared by eye.
+
+`gauge`'s own usage.md opens by arguing against itself: a gauge spends a great
+deal of ink on one number, and the design system's rule is that a single
+headline number is a `kpi-tiles` tile. It earns its place only when the RANGE
+matters as much as the value. It ships with no coloured danger bands —
+deliberately, since banding the arc adds a judgement the number does not carry.
+
+### Structure
+
+- **`lib/`** — `chartkit.py` (the option builders; eleven of the kinds are one
+  function plus flags) and `dataviz.py` moved here. `builder.py` stays at the
+  root because it is the command you type. The boundary: templates hold markup,
+  `lib/` holds computation, and `components/` stays a tree the builder can walk
+  without special cases.
+- **`components/charts/_render.html.j2`** — the tail every chart component
+  shares, so the engine is named in one place for the whole family rather than
+  once per kind. The `_` prefix marks a template the builder does not discover;
+  the convention is now documented in `components/REFERENCE.md`.
+
+`python builder.py charts` covers all 21 kinds from their `{# sample: … #}`
+headers — 45 specs checked for valid JSON and the relief rule.
+
+---
+
 ## 3.2.0 — 2026-07-22
 
 Additive: two more chart kinds, and the relief rule becomes enforceable instead

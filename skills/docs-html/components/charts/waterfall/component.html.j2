@@ -1,0 +1,7 @@
+{# purpose: how a total became another total — a bridge of additive steps #}
+{# sample: steps=[("Start",100,"start"),("Up",20,"delta"),("Down",-5,"delta"),("End",115,"total")], caption="s" #}
+{% import "components/charts/_render.html.j2" as r %}
+
+{% macro waterfall(steps=[], caption="", height=360, note="", y_name="") %}
+{{ r.out(chart_waterfall(steps=steps, caption=caption, y_name=y_name), height, note) }}
+{% endmacro %}

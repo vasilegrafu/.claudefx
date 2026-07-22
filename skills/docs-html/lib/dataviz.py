@@ -36,7 +36,8 @@ import math
 import re
 from pathlib import Path
 
-CHARTS_JS = Path(__file__).resolve().parent / "js" / "modules" / "charts.js"
+SKILL_DIR = Path(__file__).resolve().parent.parent      # lib/ -> skill root
+CHARTS_JS = SKILL_DIR / "js" / "modules" / "charts.js"
 
 # The surface charts are drawn on (.chart-figure = --bg-soft), not page white.
 SURFACE = "#f7f9fb"
@@ -198,7 +199,7 @@ def check() -> int:
     semantic = _semantic_tokens(source)
     failures: list[str] = []
 
-    print(f"dataviz — {CHARTS_JS.relative_to(CHARTS_JS.parents[2])}"
+    print(f"dataviz — {CHARTS_JS.relative_to(SKILL_DIR).as_posix()}"
           f"  (surface {SURFACE})\n")
 
     # 1. categorical contrast -------------------------------------------------

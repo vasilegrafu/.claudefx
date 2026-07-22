@@ -92,35 +92,49 @@ steps, touching nothing that exists:
    carry: inside the `charts` category it would only repeat the category name.
    `diagrams` does the same — `mermaid`, not `diagram-mermaid`.)
 
-**Adding a chart KIND (a preset) — the far more common job.** A kind is not an
-engine: it is a macro that writes a spec for an engine that already exists.
-`components/charts/{sankey,price-history,drawdown-curve,return-distribution,correlation-matrix}`
-are the models.
+**Adding a chart KIND — the far more common job.** A kind is not an engine: it
+is a macro that writes a spec for an engine that already exists. There are
+twenty-one of them in `components/charts/`; `bar` is the simplest model and
+`waterfall` the most involved.
 
-1. `components/charts/<kind>/component.html.j2`. Import the engine macro and
-   delegate to it, so the engine name is written in ONE place per preset:
+1. `components/charts/<kind>/component.html.j2` — a thin macro that names the
+   kind and hands off. It never writes the `<pre>` itself:
    ```jinja
-   {% import "components/charts/apache-echarts/component.html.j2" as engine %}
-   {% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
+   {# purpose: one line — read by builder.py catalog #}
+   {# sample: series=[("A",[1,2])], categories=["x","y"], caption="s" #}
+   {% import "components/charts/_render.html.j2" as r %}
+
+   {% macro bar(series=[], categories=[], caption="", height=340, note="", y_name="") %}
+   {{ r.out(chart_cartesian(series=series, categories=categories,
+                            caption=caption, y_name=y_name, kind="bar"), height, note) }}
+   {% endmacro %}
    ```
+   `_render.html.j2` owns the engine call, so the engine is named in ONE place
+   for the whole family rather than once per kind. It is `_`-prefixed because it
+   is not a component — see `../components/REFERENCE.md`.
 2. **Build the spec as a data structure, then serialise it.** Never hand-write
-   JSON in the template. Manual comma bookkeeping (`{{ "," if not loop.last }}`)
+   JSON in a template. Manual comma bookkeeping (`{{ "," if not loop.last }}`)
    fails silently: a malformed spec is not an error, the engine just leaves the
    source visible as a code box, which looks exactly like an unreachable CDN.
+   Shared option-building lives in `lib/chartkit.py` — eleven of
+   the kinds are `chart_cartesian(...)` plus flags. Add a builder there rather
+   than restating an axis skeleton in a template.
 3. Colours by reference, never by hex — `"palette:1"`, `"token:positive"`,
-   `"ramp:2"` (`docsHtml.chart.resolveColors` substitutes them). A preset that
-   colours by role rather than by item is why a 15-node sankey does not run out
-   of colours; see `components/charts/sankey/usage.md`.
+   `"ramp:2"` (`docsHtml.chart.resolveColors` substitutes them). Colouring by
+   ROLE rather than by item is why a 15-node sankey does not run out of colours;
+   see `components/charts/sankey/usage.md`.
 4. Add a `{# sample: <kwargs> #}` header — real enough to exercise every loop.
-   `python builder.py charts` renders every preset with its sample and fails if
-   the spec is not valid JSON. A preset without a sample is not checked.
+   `python builder.py charts` renders every kind from its sample and fails if
+   the spec is not valid JSON or breaks the relief rule. A kind without a sample
+   is never checked.
 5. Compute at compose time what the reader should be able to audit
-   (`drawdown-curve` derives the running peak in the macro, so the document
-   carries the input series and the arithmetic is inspectable).
-6. List the kind in `components/charts/usage.md` — the approved-kinds catalogue
-   — and say there whether it is a preset or a recipe. A preset earns its place
-   only by computing something, enforcing a rule, or preventing a known
-   mistake; otherwise document a recipe and let the author write the spec.
+   (`drawdown-curve` derives the running peak, `waterfall` the cumulative
+   placeholder, `stacked-normalized` the column shares — so the document carries
+   the inputs and the arithmetic is inspectable).
+6. List the kind in `components/charts/usage.md` — the chart-kind catalogue —
+   under the question it answers, and name its CSS twin if one exists
+   (`waterfall`/`bridge`, `funnel-chart`/`funnel`, `gauge`/`meter`). A twin that
+   needs no engine and prints is often the better answer.
 
 The card, the toolbar, download-SVG, copy-source, `data-height` and the resize
 dispatch come free.

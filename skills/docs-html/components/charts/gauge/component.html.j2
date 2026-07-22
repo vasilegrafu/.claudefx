@@ -1,0 +1,7 @@
+{# purpose: one value against a range — a dial, for a single bounded measure #}
+{# sample: value=42, minimum=0, maximum=100, caption="s" #}
+{% import "components/charts/_render.html.j2" as r %}
+
+{% macro gauge(value=0, minimum=0, maximum=100, caption="", height=280, note="", unit="") %}
+{{ r.out(chart_gauge(value=value, minimum=minimum, maximum=maximum, caption=caption, unit=unit), height, note) }}
+{% endmacro %}

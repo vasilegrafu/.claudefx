@@ -14,7 +14,7 @@
      (e.g. this file was copied out of the repo), fall back to the pinned CDN so
      the page still renders. Local first, CDN only if local is missing. */
   (function () {
-    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@3.2.0/skills/docs-html";
+    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@3.3.0/skills/docs-html";
     function cssLoaded() {
       try {
         for (var i = 0; i < document.styleSheets.length; i++) {
@@ -2966,8 +2966,1102 @@ flowchart TD
 
 
     <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Line, smoothed, area</h3>
+    <span class="gx-spec-name">line</span>
+  </div>
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "series": [
+    {
+      "data": [
+        120,
+        145,
+        132,
+        168,
+        175,
+        190
+      ],
+      "name": "Revenue",
+      "showSymbol": true,
+      "type": "line"
+    }
+  ],
+  "title": {
+    "text": "Line \u2014 the honest default"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "line"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q5",
+      "Q6"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$M",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "series": [
+    {
+      "data": [
+        120,
+        145,
+        132,
+        168,
+        175,
+        190
+      ],
+      "name": "Revenue",
+      "showSymbol": true,
+      "smooth": true,
+      "type": "line"
+    }
+  ],
+  "title": {
+    "text": "Smoothed \u2014 a claim that the wiggles are noise"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "line"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q5",
+      "Q6"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$M",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "series": [
+    {
+      "areaStyle": {},
+      "data": [
+        120,
+        145,
+        132,
+        168,
+        175,
+        190
+      ],
+      "name": "Cash",
+      "showSymbol": true,
+      "type": "line"
+    }
+  ],
+  "title": {
+    "text": "Area \u2014 only where the quantity beneath is real"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "line"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q5",
+      "Q6"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$M",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Stacked line &amp; stacked area</h3>
+    <span class="gx-spec-name">stacked-area</span>
+  </div>
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "legend": {},
+  "series": [
+    {
+      "data": [
+        52,
+        55,
+        51,
+        58
+      ],
+      "name": "iPhone",
+      "showSymbol": true,
+      "stack": "total",
+      "type": "line"
+    },
+    {
+      "data": [
+        22,
+        24,
+        26,
+        28
+      ],
+      "name": "Services",
+      "showSymbol": true,
+      "stack": "total",
+      "type": "line"
+    },
+    {
+      "data": [
+        10,
+        9,
+        11,
+        10
+      ],
+      "name": "Mac",
+      "showSymbol": true,
+      "stack": "total",
+      "type": "line"
+    }
+  ],
+  "title": {
+    "text": "Stacked line \u2014 only the bottom band is measurable"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "line"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$B",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "legend": {},
+  "series": [
+    {
+      "areaStyle": {},
+      "data": [
+        52,
+        55,
+        51,
+        58
+      ],
+      "name": "iPhone",
+      "showSymbol": true,
+      "stack": "total",
+      "type": "line"
+    },
+    {
+      "areaStyle": {},
+      "data": [
+        22,
+        24,
+        26,
+        28
+      ],
+      "name": "Services",
+      "showSymbol": true,
+      "stack": "total",
+      "type": "line"
+    },
+    {
+      "areaStyle": {},
+      "data": [
+        10,
+        9,
+        11,
+        10
+      ],
+      "name": "Mac",
+      "showSymbol": true,
+      "stack": "total",
+      "type": "line"
+    }
+  ],
+  "title": {
+    "text": "Stacked area \u2014 composition and total together"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "line"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$B",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Bar, stacked column, horizontal, 100% stacked</h3>
+    <span class="gx-spec-name">bar</span>
+  </div>
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "series": [
+    {
+      "data": [
+        209,
+        109,
+        36,
+        34,
+        28
+      ],
+      "name": "Revenue",
+      "type": "bar"
+    }
+  ],
+  "title": {
+    "text": "Bar \u2014 length from zero, sorted"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "shadow"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "iPhone",
+      "Services",
+      "Wearables",
+      "Mac",
+      "iPad"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$B",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "legend": {},
+  "series": [
+    {
+      "data": [
+        180,
+        195,
+        188
+      ],
+      "name": "Product",
+      "stack": "total",
+      "type": "bar"
+    },
+    {
+      "data": [
+        85,
+        96,
+        109
+      ],
+      "name": "Services",
+      "stack": "total",
+      "type": "bar"
+    }
+  ],
+  "title": {
+    "text": "Stacked column \u2014 parts and total"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "shadow"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "FY2023",
+      "FY2024",
+      "FY2025"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$B",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 34,
+    "containLabel": true,
+    "left": 8,
+    "right": 16,
+    "top": 52
+  },
+  "legend": {},
+  "series": [
+    {
+      "data": [
+        180,
+        195,
+        188
+      ],
+      "name": "Product",
+      "stack": "total",
+      "type": "bar"
+    },
+    {
+      "data": [
+        85,
+        96,
+        109
+      ],
+      "name": "Services",
+      "stack": "total",
+      "type": "bar"
+    }
+  ],
+  "title": {
+    "text": "Stacked horizontal \u2014 for long category names"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "shadow"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "name": "$B",
+    "nameGap": 28,
+    "nameLocation": "middle",
+    "type": "value"
+  },
+  "yAxis": {
+    "data": [
+      "FY2023",
+      "FY2024",
+      "FY2025"
+    ],
+    "inverse": true,
+    "type": "category"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 8,
+    "right": 16,
+    "top": 52
+  },
+  "legend": {},
+  "series": [
+    {
+      "data": [
+        67.9245,
+        67.0103,
+        63.2997
+      ],
+      "label": {
+        "position": "inside",
+        "show": true
+      },
+      "name": "Product",
+      "stack": "total",
+      "type": "bar"
+    },
+    {
+      "data": [
+        32.0755,
+        32.9897,
+        36.7003
+      ],
+      "label": {
+        "position": "inside",
+        "show": true
+      },
+      "name": "Services",
+      "stack": "total",
+      "type": "bar"
+    }
+  ],
+  "title": {
+    "text": "100% stacked \u2014 mix, when totals differ"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "shadow"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "FY2023",
+      "FY2024",
+      "FY2025"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "max": 100,
+    "type": "value"
+  }
+}
+  </pre>
+  <p class="chart-note">Totals disappear by design; pair with the bar above if size matters.</p>
+
+
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Signed bar &amp; waterfall</h3>
+    <span class="gx-spec-name">waterfall</span>
+  </div>
+
+    <pre class="chart apache-echarts">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "series": [
+    {
+      "data": [
+        {
+          "itemStyle": {
+            "color": "token:positive"
+          },
+          "value": 12.4
+        },
+        {
+          "itemStyle": {
+            "color": "token:negative"
+          },
+          "value": -3.1
+        },
+        {
+          "itemStyle": {
+            "color": "token:positive"
+          },
+          "value": 8.8
+        },
+        {
+          "itemStyle": {
+            "color": "token:negative"
+          },
+          "value": -6.2
+        },
+        {
+          "itemStyle": {
+            "color": "token:positive"
+          },
+          "value": 2.0
+        }
+      ],
+      "name": "Variance",
+      "type": "bar"
+    }
+  ],
+  "title": {
+    "text": "Signed bar \u2014 coloured by direction, not identity"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "shadow"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q5"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$M",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts" data-height="360">
+{
+  "grid": {
+    "bottom": 8,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "legend": {
+    "data": [
+      "change"
+    ],
+    "show": false
+  },
+  "series": [
+    {
+      "data": [
+        0,
+        391,
+        404,
+        412,
+        416,
+        0
+      ],
+      "emphasis": {
+        "itemStyle": {
+          "color": "transparent"
+        }
+      },
+      "itemStyle": {
+        "color": "transparent"
+      },
+      "name": "placeholder",
+      "silent": true,
+      "stack": "wf",
+      "tooltip": {
+        "show": false
+      },
+      "type": "bar"
+    },
+    {
+      "data": [
+        {
+          "itemStyle": {
+            "color": "palette:1"
+          },
+          "value": 391
+        },
+        {
+          "itemStyle": {
+            "color": "token:positive"
+          },
+          "value": 13
+        },
+        {
+          "itemStyle": {
+            "color": "token:positive"
+          },
+          "value": 8
+        },
+        {
+          "itemStyle": {
+            "color": "token:positive"
+          },
+          "value": 9
+        },
+        {
+          "itemStyle": {
+            "color": "token:negative"
+          },
+          "value": 5
+        },
+        {
+          "itemStyle": {
+            "color": "palette:1"
+          },
+          "value": 416
+        }
+      ],
+      "label": {
+        "position": "top",
+        "show": true
+      },
+      "name": "change",
+      "stack": "wf",
+      "type": "bar"
+    }
+  ],
+  "title": {
+    "text": "Waterfall \u2014 391 + 13 + 8 + 9 \u2212 5 = 416"
+  },
+  "tooltip": {
+    "axisPointer": {
+      "type": "shadow"
+    },
+    "trigger": "axis"
+  },
+  "xAxis": {
+    "data": [
+      "FY2024",
+      "Services",
+      "iPhone",
+      "Pricing",
+      "FX",
+      "FY2025"
+    ],
+    "type": "category"
+  },
+  "yAxis": {
+    "name": "$B",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "type": "value"
+  }
+}
+  </pre>
+  <p class="chart-note">The steps reconcile; nothing in the rendering would tell you if they did not.</p>
+
+
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Pie, funnel, gauge</h3>
+    <span class="gx-spec-name">pie</span>
+  </div>
+
+    <pre class="chart apache-echarts" data-height="320">
+{
+  "legend": {},
+  "series": [
+    {
+      "data": [
+        {
+          "name": "Equities",
+          "value": 48
+        },
+        {
+          "name": "Bonds",
+          "value": 27
+        },
+        {
+          "name": "Cash",
+          "value": 25
+        }
+      ],
+      "itemStyle": {
+        "borderWidth": 2
+      },
+      "radius": [
+        "42%",
+        "70%"
+      ],
+      "type": "pie"
+    }
+  ],
+  "title": {
+    "text": "Donut \u2014 three parts, no more"
+  },
+  "tooltip": {
+    "trigger": "item"
+  }
+}
+  </pre>
+
+
+    <pre class="chart apache-echarts">
+{
+  "legend": {},
+  "series": [
+    {
+      "data": [
+        {
+          "name": "Screened",
+          "value": 1200
+        },
+        {
+          "name": "Shortlisted",
+          "value": 260
+        },
+        {
+          "name": "Diligenced",
+          "value": 48
+        },
+        {
+          "name": "Held",
+          "value": 22
+        }
+      ],
+      "gap": 2,
+      "label": {
+        "position": "inside",
+        "show": true
+      },
+      "left": "12%",
+      "right": "12%",
+      "sort": "descending",
+      "type": "funnel"
+    }
+  ],
+  "title": {
+    "text": "Funnel \u2014 nested stages"
+  },
+  "tooltip": {
+    "trigger": "item"
+  }
+}
+  </pre>
+  <p class="chart-note">Each stage is a subset of the one above.</p>
+
+
+    <pre class="chart apache-echarts" data-height="280">
+{
+  "series": [
+    {
+      "axisLabel": {
+        "fontSize": 10
+      },
+      "axisLine": {
+        "lineStyle": {
+          "width": 12
+        }
+      },
+      "axisTick": {
+        "show": false
+      },
+      "data": [
+        {
+          "value": 68
+        }
+      ],
+      "detail": {
+        "fontSize": 22,
+        "formatter": "{value}%",
+        "offsetCenter": [
+          0,
+          "70%"
+        ]
+      },
+      "max": 100,
+      "min": 0,
+      "pointer": {
+        "width": 4
+      },
+      "progress": {
+        "show": true,
+        "width": 12
+      },
+      "splitLine": {
+        "length": 8
+      },
+      "type": "gauge"
+    }
+  ],
+  "title": {
+    "text": "Gauge \u2014 only when the range is as real as the value"
+  }
+}
+  </pre>
+
+
+
+    <div class="gx-spec-head">
+    <h3 class="gx-spec-title">Scatter &amp; radar</h3>
+    <span class="gx-spec-name">scatter</span>
+  </div>
+
+    <pre class="chart apache-echarts" data-height="360">
+{
+  "grid": {
+    "bottom": 34,
+    "containLabel": true,
+    "left": 46,
+    "right": 16,
+    "top": 52
+  },
+  "series": [
+    {
+      "data": [
+        {
+          "label": {
+            "fontSize": 10,
+            "formatter": "{b}",
+            "position": "right",
+            "show": true
+          },
+          "name": "AAPL",
+          "value": [
+            12.1,
+            8.4
+          ]
+        },
+        {
+          "label": {
+            "fontSize": 10,
+            "formatter": "{b}",
+            "position": "right",
+            "show": true
+          },
+          "name": "NVDA",
+          "value": [
+            18.7,
+            14.2
+          ]
+        },
+        {
+          "label": {
+            "fontSize": 10,
+            "formatter": "{b}",
+            "position": "right",
+            "show": true
+          },
+          "name": "KO",
+          "value": [
+            9.3,
+            5.1
+          ]
+        },
+        {
+          "label": {
+            "fontSize": 10,
+            "formatter": "{b}",
+            "position": "right",
+            "show": true
+          },
+          "name": "TSLA",
+          "value": [
+            22.4,
+            3.8
+          ]
+        }
+      ],
+      "name": "Holdings",
+      "type": "scatter"
+    }
+  ],
+  "title": {
+    "text": "Risk against return"
+  },
+  "tooltip": {
+    "trigger": "item"
+  },
+  "xAxis": {
+    "name": "volatility %",
+    "nameGap": 28,
+    "nameLocation": "middle",
+    "scale": true,
+    "type": "value"
+  },
+  "yAxis": {
+    "name": "return %",
+    "nameGap": 46,
+    "nameLocation": "middle",
+    "nameRotate": 90,
+    "scale": true,
+    "type": "value"
+  }
+}
+  </pre>
+  <p class="chart-note">Labelled points; an unlabelled cloud is a shape, not an analysis.</p>
+
+
+    <pre class="chart apache-echarts" data-height="380">
+{
+  "legend": {},
+  "radar": {
+    "center": [
+      "50%",
+      "58%"
+    ],
+    "indicator": [
+      {
+        "max": 9.2,
+        "name": "Growth"
+      },
+      {
+        "max": 10.35,
+        "name": "Margin"
+      },
+      {
+        "max": 10.35,
+        "name": "Balance sheet"
+      },
+      {
+        "max": 9.2,
+        "name": "Moat"
+      },
+      {
+        "max": 9.2,
+        "name": "Valuation"
+      }
+    ],
+    "radius": "62%"
+  },
+  "series": [
+    {
+      "data": [
+        {
+          "name": "Company A",
+          "value": [
+            8,
+            7,
+            9,
+            8,
+            4
+          ]
+        },
+        {
+          "name": "Company B",
+          "value": [
+            5,
+            9,
+            6,
+            7,
+            8
+          ]
+        }
+      ],
+      "type": "radar"
+    }
+  ],
+  "title": {
+    "text": "Radar \u2014 read vertices, never area"
+  },
+  "tooltip": {
+    "trigger": "item"
+  }
+}
+  </pre>
+
+
+
+    <div class="gx-spec-head">
     <h3 class="gx-spec-title">Chart — bars, line &amp; legend (ECharts)</h3>
-    <span class="gx-spec-name">chart-apache-echarts</span>
+    <span class="gx-spec-name">apache-echarts</span>
   </div>
 
   <pre class="chart apache-echarts">

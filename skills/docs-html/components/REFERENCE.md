@@ -23,6 +23,25 @@ are *styled* (the CSS module map, page-local CSS, rebranding) is in
 every call form + purpose; `python builder.py show <name>` prints one
 component's call form, purpose, and full `usage.md`.
 
+### The one exception: `_`-prefixed templates
+
+`builder.py` discovers components by rglobbing for the exact filename
+`component.html.j2`, so any *other* `.j2` file in this tree is invisible to it —
+no macro on `c`, no `CATALOG.md` entry, no `usage.md` expected. That is the
+escape hatch for **shared template internals**, and such files are named with a
+leading underscore to say so at a glance:
+
+| file | what it holds |
+|---|---|
+| `charts/_render.html.j2` | the tail every chart component shares — hand the built option to the engine, then print the `chart-note` |
+
+Use one only when several components in a category would otherwise repeat the
+same markup, and keep it to markup. If the shared thing is *logic* it belongs in
+`lib/` instead (`lib/chartkit.py` builds the chart option dicts,
+`lib/dataviz.py` verifies the colour tokens) — that is the dividing line:
+templates hold markup, `lib/` holds computation, and `components/` stays a tree
+the builder can walk without special cases.
+
 The twelve categories: `structure`, `layout`, `content`, `lists`, `callouts`,
 `blocks`, `business`, `investing`, `front-back-matter`, `diagrams`, `charts`,
 `math`. `diagrams` and `charts` are separate on purpose: a diagram is a drawn

@@ -148,6 +148,10 @@ def make_env(components: list[Component]) -> Environment:
                       trim_blocks=True, lstrip_blocks=True,   # tidy whitespace
                       keep_trailing_newline=True, autoescape=False)
     env.filters["boxstats"] = boxstats
+    # Option builders shared by the chart component family (chartkit.py) — the
+    # sixteen chart macros would otherwise each restate the same skeleton.
+    from lib import chartkit
+    env.globals.update(chartkit.EXPORTS)
     c = SimpleNamespace()
     for component in components:
         module = env.get_template(
@@ -676,7 +680,7 @@ def main(argv: list[str]) -> int:
     if args.cmd == "catalog":
         return cmd_catalog()
     if args.cmd == "dataviz":
-        import dataviz          # colour science stays out of the composer
+        from lib import dataviz   # colour science stays out of the composer
         return dataviz.check()
     if args.cmd == "charts":
         return cmd_charts()

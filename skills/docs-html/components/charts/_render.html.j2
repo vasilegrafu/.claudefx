@@ -1,0 +1,15 @@
+{# Shared tail for every chart component: hand the built option to the engine
+   and print the reading beneath it.
+
+   NOT a component — the file is not named component.html.j2, so the builder
+   never registers it and it never appears in CATALOG.md. It exists so that
+   sixteen chart macros do not each repeat the engine call, and so a second
+   engine changes one line rather than sixteen. #}
+{% import "components/charts/apache-echarts/component.html.j2" as engine %}
+
+{% macro out(option, height=340, note="") %}
+{% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
+{% if note %}
+  <p class="chart-note">{{ note }}</p>
+{% endif %}
+{% endmacro %}

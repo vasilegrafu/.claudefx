@@ -1,0 +1,7 @@
+{# purpose: two measures per entity — where the relationship between them is the finding #}
+{# sample: series=[("A",[(1,2,"p"),(3,4,"q")])], caption="s" #}
+{% import "components/charts/_render.html.j2" as r %}
+
+{% macro scatter(series=[], caption="", height=360, note="", x_name="", y_name="") %}
+{{ r.out(chart_scatter(series=series, caption=caption, x_name=x_name, y_name=y_name), height, note) }}
+{% endmacro %}

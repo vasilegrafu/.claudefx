@@ -1,0 +1,8 @@
+{# purpose: a measure over time with the region beneath filled — magnitude, not just direction #}
+{# sample: series=[("A",[1,2,3]),("B",[3,2,1])], categories=["x","y","z"], caption="s" #}
+{% import "components/charts/_render.html.j2" as r %}
+
+{% macro area(series=[], categories=[], caption="", height=340, note="", y_name="") %}
+{{ r.out(chart_cartesian(series=series, categories=categories, caption=caption,
+                          y_name=y_name, kind="line", area=True), height, note) }}
+{% endmacro %}
