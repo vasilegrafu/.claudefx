@@ -304,12 +304,29 @@ def compose_showcase(template: Path) -> str:
 
 
 def cmd_new(args: argparse.Namespace) -> int:
-    """`new <type> <title>` — compose and write docs/<slug>.html."""
+    """`new <type> <title>` — compose and write docs/<subject>-<type>.html.
+
+    The SUBJECT leads and the report kind follows: `amd-investment-thesis.html`.
+    One subject's reports then sort together, which is what you want when a
+    folder holds several reports about the same thing.
+
+    `--slug` sets the subject independently of the title, because the two want
+    different things: the title is prose the reader sees ("AMD — Advanced Micro
+    Devices"), the subject is an identifier ("amd"). Without it the filename
+    inherits the whole title and grows unreadable. Defaults to the title's slug.
+
+    The kind of report is in the filename because a rule in each doc-type's
+    usage.md was not enough — nothing applied it, and two investment theses
+    ended up named after their subject alone."""
     type_name = resolve_type(args.type)
     out_dir = Path(args.docs).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    out = out_dir / f"{slug(args.title)}.html"
+    stem = slug(args.slug) if args.slug else slug(args.title)
+    # Do not repeat the type when the subject already ends with it.
+    if not stem.endswith(type_name):
+        stem = f"{stem}-{type_name}"
+    out = out_dir / f"{stem}.html"
     if out.exists() and not args.force:     # never clobber a hand-edited doc
         print(f"refusing to overwrite {out.name} (pass --force)")
         return 1
@@ -662,6 +679,9 @@ def main(argv: list[str]) -> int:
     new.add_argument("type", help="doc-type name")
     new.add_argument("title", help="document title (quote it)")
     new.add_argument("--docs", default="docs", help="output directory (default: ./docs)")
+    new.add_argument("--slug", default="",
+                     help="subject for the filename (e.g. a ticker); "
+                          "defaults to the title's slug")
     new.add_argument("--force", action="store_true", help="overwrite an existing document")
     sub.add_parser("showcase", help="regenerate every showcases/<name>.html")
     sub.add_parser("catalog", help="regenerate CATALOG.md (quick-reference)")

@@ -17,8 +17,12 @@ cannot do — gather the material, read it, and write it up.
 ```bash
 cd <skill>/            # .claude/skills/docs-html
 python builder.py new investment-thesis "<TICKER> — <Company name>" \
-       --docs <project>/docs/stocks/<TICKER>
+       --slug <TICKER> --docs <project>/docs/stocks/<TICKER>
 ```
+
+`--slug` sets the filename's subject independently of the title, giving
+`<ticker>-investment-thesis.html` while the document keeps the full company
+name. Omit it and the filename inherits the whole title.
 
 **2. Read `doc-types/investing/investment-thesis/usage.md`.** Its rules bind
 you. So does `python builder.py show <component>` for any component you touch.

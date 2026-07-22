@@ -404,11 +404,22 @@ Report findings; offer fixes.
 **Naming (slug algorithm — deterministic)**
 1. Lowercase the title; replace every run of non-alphanumerics with one hyphen;
    trim edge hyphens. No stopword removal, no abbreviations.
-2. Filename = `<slug>.html`. Same title → same filename, always.
-3. ADRs only: `architecture-decision-record-NNN-<slug>.html`, NNN = zero-padded
+2. Filename = **`<subject>-<doc-type>.html`** — `amd-investment-thesis.html`.
+   The subject leads so one subject's reports sort together; the kind follows so
+   every file says what it is without being opened. `builder.py new` applies
+   this; it is not left to whoever runs it. (The suffix is skipped when the
+   subject already ends with the type.)
+   Pass **`--slug <subject>`** when the title is prose and the subject is an
+   identifier — `--slug AMD` with the title `AMD — Advanced Micro Devices` gives
+   `amd-investment-thesis.html` while the document keeps the full title. Without
+   `--slug` the filename inherits the whole title and grows unreadable.
+3. The report's kind also appears **inside** the document — in `<title>` and in
+   the `.doc-type` line under the heading — both written by `base.html.j2` from
+   the doc-type's `{# type-name: … #}`. Nothing to do by hand.
+4. ADRs only: `architecture-decision-record-NNN-<slug>.html`, NNN = zero-padded
    next number (scan existing ADRs in `docs/`). The number is identity, not
    ordering.
-4. Template and doc-type names are full words, never abbreviations.
+5. Template and doc-type names are full words, never abbreviations.
 
 **Metadata**
 Every document starts with the metadata-header: doc-type kicker

@@ -4,7 +4,9 @@ _Authoring guidance for the `investment-thesis` document type — audience, dept
 
 - Audience: yourself in six months, or an investment partner — someone who
   must judge the bet without you in the room.
-- Filename: `docs/investment-thesis-<asset>.html`
+- Filename: `<ticker>-investment-thesis.html`, written by `builder.py new` when
+  you pass `--slug <TICKER>` — the doc-type suffix is automatic. Put it under
+  `docs/stocks/<TICKER>/`, so that folder collects every report on the name.
 - Depth: ask. Full means reading filings/data; draft means skeleton + todos.
 - Rules: the thesis states the VARIANT view (why the market is wrong), never
   a description of the company; scenarios carry explicit price/return
