@@ -11,12 +11,6 @@
 
 /* ---------- financial-table: numeric report table ---------- */
 table.business-financial { border-collapse: collapse; width: 100%; margin: var(--block-gap) 0; font-size: .92rem; }
-table.business-financial caption {
-  text-align: left; padding-bottom: .4rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 table.business-financial th, table.business-financial td {
   border: none; border-bottom: 1px solid var(--border);
   padding: .4rem .8rem .4rem 0;

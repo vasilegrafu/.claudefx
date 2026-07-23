@@ -14,6 +14,61 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 4.2.0 — 2026-07-24
+
+**Minor.** The exhibit title becomes a title, and `financial-profile` gains two
+exhibits. No markup contract change: a 4.1.0 document upgrades by repointing its
+two head links, and will look different in one specific way — see below.
+
+### A table caption now outranks the row beneath it
+
+**This is the only change that alters existing documents.** Table captions and
+leading figure captions were set at `.72rem`, bold, uppercase, `.12em` tracked,
+in the muted tone. The column-header row directly beneath them was set at
+`.70rem`, bold, uppercase, `.10em` tracked, in the muted tone — a difference of
+`.02rem` and `.02em`. The title carried no rank of its own and read as a second
+header row, while the chart title beside it was already 15px bold ink.
+
+One treatment now, in `foundational/content.css`, matched to that chart title:
+
+```css
+caption, figcaption:first-child { font-size: .95rem; font-weight: 700; color: var(--fg); }
+```
+
+`:first-child` carries the distinction: **a figcaption that LEADS its figure is
+a title, one that FOLLOWS is a caption**, and the softer `.85rem` rule still
+styles the latter. Verified across the showcase: 42 of 43 titled exhibits at
+15.2px. The one exception is `figure.code > figcaption`, a code header with a
+language badge rather than a title.
+
+Adding the rule was not the fix — **deleting fifteen copies of it was.** The
+same four declarations were restated in `investing.css` and `business.css`, and
+because `content` sits before `business` and `investing` in the `@layer` order,
+those copies would have won. Nothing restates the treatment now, which is why
+changing it in one place changes every exhibit.
+
+Two smaller consequences: `.investing-st-unit` carried `text-transform: none`
+and `letter-spacing: 0` resets that existed only because the caption was
+uppercase — dead, and replaced with a proper subordinate treatment; and
+`.change-history` no longer keeps its own `.68rem` variant.
+
+### `financial-profile` gains a balance-sheet sankey and a stacked area
+
+The **balance-sheet sankey** puts assets on the left, `Total assets` in the
+middle, and the claims on the right — liabilities as `cost`, equity as
+`retained`. It answers in one look what the table answers with arithmetic: how
+much of what it owns does the company actually own? A caveat rides with it, in
+both `sankey/usage.md` and the doc-type's: **a balance sheet is a stock, not a
+flow.** Nothing moves along those ribbons, and a reader who has just read two
+flow sankeys will otherwise read movement into this one.
+
+The **stacked area** goes between the segment table and the 100% mix chart, so
+the evolution section runs totals → shares → attribution. A reader who sees
+composition shift before seeing the total move cannot tell growth from
+substitution.
+
+---
+
 ## 4.1.0 — 2026-07-23
 
 **Minor.** A new document type, and the chart title area gains a single owner.

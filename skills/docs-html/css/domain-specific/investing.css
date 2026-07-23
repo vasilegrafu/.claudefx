@@ -30,12 +30,6 @@ table.investing-fin {
   margin: var(--block-gap) 0;
   font-size: .92rem;
 }
-table.investing-fin caption {
-  text-align: left; padding-bottom: .4rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 table.investing-fin th, table.investing-fin td {
   border: none; border-bottom: 1px solid var(--border);
   padding: .4rem .8rem .4rem 0;
@@ -211,12 +205,6 @@ table.investing-peers tr.investing-subject th:first-child { box-shadow: inset 3p
 
 /* ---------- valuation-range: the football field ---------- */
 .investing-valrange { margin: var(--block-gap) 0; padding: 0; }
-.investing-valrange figcaption {
-  padding-bottom: .5rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 .investing-valrange-row {
   display: grid;
   grid-template-columns: minmax(8rem, 14rem) 1fr minmax(6rem, auto);
@@ -336,12 +324,6 @@ table.investing-perf tr.investing-excess th, table.investing-perf tr.investing-e
 
 /* ---------- exposure-bars: one allocation dimension ---------- */
 .investing-exposure { margin: var(--block-gap) 0; padding: 0; }
-.investing-exposure figcaption {
-  padding-bottom: .5rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 .investing-exposure-row {
   display: grid;
   grid-template-columns: minmax(8rem, 14rem) 1fr minmax(8rem, auto);
@@ -454,7 +436,11 @@ table.investing-tradelog tr.investing-trade-note td {
    st-section / st-detail / st-line / st-subtotal / st-total / st-pct. */
 table.investing-statement { font-variant-numeric: tabular-nums; }
 table.investing-statement thead th:first-child { width: 40%; }
-.investing-st-unit { font-weight: 500; text-transform: none; letter-spacing: 0; }
+/* The unit rides inside the caption, so it must read as subordinate to it —
+   lighter and softer, not a second title. It used to also reset
+   `text-transform` and `letter-spacing`, which were only needed while the
+   caption was uppercase and tracked; both are dead now. */
+.investing-st-unit { font-weight: 500; font-size: .85rem; color: var(--fg-soft); }
 
 table.investing-statement tr.investing-st-section th {
   padding-top: .85rem;
@@ -548,12 +534,6 @@ table.investing-statement tr.investing-st-pct td {
 
 /* ---------- footnote-disclosures ---------- */
 .investing-disclosures { margin: var(--block-gap) 0; }
-.investing-disclosures-caption {
-  margin: 0 0 .5rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 .investing-disclosure {
   padding: .55rem 0 .6rem;
   border-bottom: 1px solid var(--border);
@@ -593,12 +573,6 @@ table.investing-statement tr.investing-st-pct td {
    bridge, debt-maturity and funnel all draw a label, a track and a value.
    Only the track geometry differs, so the row grammar is defined once. */
 .investing-bridge, .investing-maturity, .investing-funnel, .investing-quadrant { margin: var(--block-gap) 0; padding: 0; }
-.investing-bridge figcaption, .investing-maturity figcaption, .investing-funnel figcaption, .investing-quadrant figcaption {
-  padding-bottom: .5rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 .investing-bridge-note, .investing-maturity-summary, .investing-funnel-summary, .investing-quadrant-note, .investing-sens-note {
   margin: .5rem 0 0;
   font-size: .85rem;
@@ -652,12 +626,6 @@ table.investing-sens {
   margin: var(--block-gap) 0;
   font-size: .88rem;
 }
-table.investing-sens caption {
-  text-align: left; padding-bottom: .4rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 table.investing-sens th, table.investing-sens td {
   padding: .35rem .5rem;
   text-align: center;
@@ -702,12 +670,6 @@ table.investing-heatmap {
   width: 100%;
   margin: var(--block-gap) 0;
   font-size: .82rem;
-}
-table.investing-heatmap caption {
-  text-align: left; padding-bottom: .4rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
 }
 table.investing-heatmap th, table.investing-heatmap td {
   padding: .3rem .35rem;
@@ -953,12 +915,6 @@ table.investing-stress thead th:last-child { text-align: left; }
 
 /* ---------- five-forces ---------- */
 .investing-forces { margin: var(--block-gap) 0; }
-.investing-forces-caption {
-  margin: 0 0 .5rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 .investing-forces-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -1089,12 +1045,6 @@ table.investing-cohorts {
   margin: var(--block-gap) 0;
   font-size: .82rem;
 }
-table.investing-cohorts caption {
-  text-align: left; padding-bottom: .4rem;
-  font-size: .72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-}
 table.investing-cohorts th, table.investing-cohorts td {
   padding: .3rem .35rem;
   text-align: center;
@@ -1138,4 +1088,14 @@ table.investing-uniteco thead th:last-child { text-align: left; }
   .investing-quadrant, .investing-composite { break-inside: avoid; }
   .investing-st-check, .investing-st-fcf { break-inside: avoid; break-before: avoid; }
   table.investing-fin, table.investing-heatmap, table.investing-cohorts, table.investing-sens { break-inside: auto; }
+}
+
+/* These two exhibit titles sit on a <p>, not a caption or figcaption, so the
+   element rule in foundational/content.css cannot reach them. One rule for
+   both, matching that treatment — if the exhibit title changes there, change
+   it here too. */
+.investing-disclosures-caption, .investing-forces-caption {
+  margin: 0 0 .45rem;
+  font-size: .95rem; font-weight: 700; line-height: 1.35;
+  letter-spacing: -.004em; color: var(--fg);
 }

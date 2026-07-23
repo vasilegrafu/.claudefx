@@ -22,11 +22,64 @@ where the money comes from, where it goes, then what changed:
 
 | section | components |
 |---|---|
-| Snapshot | [[security-header]] · [[lead]] |
+| Snapshot | [[security-header]] · basis of preparation ([[facts]] in a [[callout]]) · [[lead]] |
 | Where the money comes from | [[sankey]] (income statement) · [[segment-reporting]] |
 | Where the money goes | [[sankey]] (cash deployment) |
-| How it evolved | [[metric-trend]] ×2 · [[stacked-normalized]] · [[bridge]] |
+| What it owns and owes | [[sankey]] (balance sheet) · [[balance-sheet]] · [[composite-score]] |
+| Per share | [[roll-forward]] · [[metric-trend]] |
+| How it evolved | [[metric-trend]] ×2 · [[stacked-area]] · [[stacked-normalized]] · [[bridge]] |
+| How it compares | [[peer-comparison]] |
 | Reading | [[callout]] |
+
+### As-of discipline — the failure that embarrasses
+
+Every figure in a profile is stale by construction: a filing describes a period
+that has already ended. **State the report date**, and measure everything
+against it. Four dates matter and are routinely collapsed into one:
+
+| date | why it is different |
+|---|---|
+| report date | today — the reference for every other date |
+| period end | what the numbers describe |
+| filing date | when they became public; weeks after the period end |
+| price date | a market price is not a filing date |
+
+The trap is the gap between the last *audited year* and the last *reported
+quarter*. A profile built on the annual report alone can be two quarters — and
+a double-digit percentage — behind the business. Put trailing-twelve-month
+figures in the Snapshot and say plainly which exhibits use the fiscal year and
+why.
+
+**Never mix periods inside one exhibit.** Where an annual disclosure has no
+quarterly equivalent — product-line revenue is the common one — keep that
+exhibit on the fiscal year and label it, rather than splicing.
+
+### Per share is not optional
+
+The section most profiles omit, and the one that explains shareholder returns.
+A company can grow revenue slowly while growing revenue *per share* quickly by
+retiring stock, and the totals never show it. Put [[roll-forward]] on the share
+count next to the per-share record, and the gap between the two growth rates
+is the buyback, quantified.
+
+### Derived figures must show their working
+
+[[composite-score]] takes the inputs, the coefficients and the contributions —
+not just the result. A score whose workings are hidden is an opinion wearing a
+decimal point, and a reader cannot check it against the balance sheet above.
+Compute it from the figures the document already states rather than quoting a
+provider's number you cannot reproduce.
+
+### Peers are chosen, not screened
+
+A peer list from an API is not a peer group — it will return companies that
+share a keyword, not a business. Name the set, say why those names, and state
+each one's fiscal year end: they rarely align, and a six-month offset means the
+rows span different macro conditions.
+
+`peer_comparison` emits the **Company** column itself. `headers` lists only the
+metric columns; passing "Company" again shifts every value one column left and
+leaves the last blank — a perfectly tidy wrong table.
 
 ### Two sankeys, because "spending" means two different things
 
@@ -43,6 +96,36 @@ the reader did not ask.
 In the cash sankey, **gross up investing rather than netting it**, so capital
 expenditure stays a visible node instead of vanishing inside a single "net
 investing" ribbon.
+
+### The third sankey — a stock, not a flow
+
+The balance-sheet sankey puts assets on the left, `Total assets` in the middle
+and the claims on the right, and the four roles fit it better than they fit
+anything else here: a liability really is a claim that will consume value
+(`cost`), and equity really is the residual left for owners (`retained`). It
+answers in one look the question the table answers with arithmetic — **how much
+of what it owns does the company actually own?**
+
+**But a balance sheet is a stock.** Nothing moves along those ribbons. The roles
+encode direction and there is no direction; the diagram shows composition and
+claim. Say so in the `note`, because a reader who has just read two flow
+sankeys above will otherwise read movement into this one.
+
+Feed it from the same figures as the [[balance-sheet]] table. If the picture and
+the table are built from separate literals they will eventually disagree, and
+the one that is wrong will be whichever the reader trusts.
+
+### Totals before shares
+
+[[stacked-area]] then [[stacked-normalized]], in that order. The first shows the
+business getting bigger and which band did it; the second shows only the mix. A
+reader who sees composition shift before seeing the total move cannot tell
+growth from substitution.
+
+In a stacked area only the **bottom band and the top edge** are readable by eye
+— the middle bands are not. That is why the normalised chart follows it rather
+than replacing it, and it is worth saying in the `note` so nobody tries to read
+a middle band off the wrong chart.
 
 ### CONSERVATION — the one thing this document type can get silently wrong
 
@@ -84,13 +167,13 @@ every draft:
 | when the profile turns on… | add |
 |---|---|
 | geography, not product | a second [[segment-reporting]] |
-| the balance sheet | [[balance-sheet]], [[debt-maturity]], [[working-capital]] |
+| a maturity wall | [[debt-maturity]] — needs a maturity schedule, which a data feed rarely carries |
+| the cash conversion cycle | [[working-capital]] |
 | why returns are what they are | [[dupont]] |
-| named comparables | [[peer-comparison]] |
 | subscription or vintage economics | [[cohort-table]], [[unit-economics]] |
 | the market's view over the same window | [[price-history]], [[drawdown-curve]] |
 | accounting that needs flagging | [[footnote-disclosures]] |
-| share count and buyback effect | [[roll-forward]] |
+| quarterly seasonality | [[metric-trend]] on quarters rather than years |
 
 The full set is in `../../../components/domain-specific/investing/usage.md` and
 `CATALOG.md`.

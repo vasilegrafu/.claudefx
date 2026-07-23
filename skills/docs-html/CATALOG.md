@@ -261,7 +261,7 @@ Compose with `python builder.py new <type> "<title>"`.
 ### investing
 *Investment research — the argued case for putting money into something, and what would take it back out.*
 
-- `financial-profile` — where a company's money comes from, where it goes, and how that shape changed
+- `financial-profile` — where a company's money comes from, where it goes, what it owns, and how that shape changed
 - `investment-thesis` — argued case for buying/holding an investment
 
 ### accounting

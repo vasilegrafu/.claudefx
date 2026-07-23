@@ -43,6 +43,29 @@ figure { margin: var(--block-gap) 0; }
 figure img { border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); }
 figcaption { font-size: .85rem; color: var(--fg-soft); margin-top: .6rem; }
 
+/* ---------- exhibit title ---------- */
+/* A table's `caption` and a figure's LEADING `figcaption` do the same job as
+   the title a chart engine draws: they name the exhibit. They used to be set
+   at .72rem uppercase soft-grey — within .02rem and .02em of the column-header
+   row directly beneath them — so the title carried no rank of its own and read
+   as a second header row. This is one treatment, matched to the chart title
+   (15px, bold, ink), so a table and a chart look like peers.
+
+   `:first-child` is the whole distinction: a figcaption that LEADS its figure
+   is a title, one that FOLLOWS is a caption, and the rule above still styles
+   the latter. Every titled exhibit in the system inherits this — nothing
+   restates it, which is why changing it here changes all of them. */
+caption, figcaption:first-child {
+  text-align: left;
+  margin-top: 0;
+  padding-bottom: .45rem;
+  font-size: .95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -.004em;
+  color: var(--fg);
+}
+
 /* ---------- collapsible ---------- */
 details {
   margin: var(--block-gap) 0;

@@ -57,6 +57,20 @@ nodes.
 documented exception to *status colours are reserved*. It is not a judgement:
 cost of sales is not a bad thing, it is an outgoing thing.
 
+## It also serves a stock — at a price
+
+The roles describe a flow, but the shape works for a **balance sheet** too:
+assets in on the left, `Total assets` as the stage, liabilities (`cost`) and
+equity (`retained`) as the claims on the right. The accounting equation is a
+conservation law, so the diagram balances by construction, and it answers *how
+much of what it owns does the company actually own?* at a glance.
+
+The price is that **nothing moves**. A stock has no direction, so the source →
+cost reading that makes an income sankey legible is a metaphor here. Say so in
+the `note`, especially when a flow sankey appears earlier in the same document
+— a reader trained on that one will read movement into this one. Do not reach
+for this shape for a stock whose parts do not sum to a meaningful whole.
+
 ## Rules
 
 - **Conservation.** Inflows must equal outflows at every intermediate node. A

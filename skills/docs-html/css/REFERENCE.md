@@ -85,6 +85,34 @@ Where a class name arrives as a **macro argument** — `financial_table` takes
 rows of `("subtotal", …)` from 11 doc-types — the macro adds the prefix, so
 authoring keeps its plain vocabulary and only the emitted markup is namespaced.
 
+## The exhibit title
+
+A table's `<caption>`, a figure's **leading** `<figcaption>` and the title a
+chart engine draws all do one job: they name the exhibit. They are styled once,
+in `foundational/content.css`:
+
+```css
+caption, figcaption:first-child { font-size: .95rem; font-weight: 700; color: var(--fg); }
+```
+
+`:first-child` carries the whole distinction: **a figcaption that leads its
+figure is a title; one that follows is a caption**, and the softer `.85rem`
+rule above it still styles the latter. A component gets the treatment by
+emitting the right element — nothing opts in, and nothing may restate it.
+
+That rule matters because the treatment used to be restated in every domain
+file: the same four declarations appeared **15 times**, at `.72rem` uppercase
+soft-grey — within `.02rem` and `.02em` of the column-header row directly
+beneath them. The title had no rank of its own and read as a second header row.
+Since `content` sits before `business` and `investing` in the layer order,
+those copies won; deleting them was the fix, not adding a rule.
+
+Two exceptions are deliberate: `figure.code > figcaption` is a code header with
+a language badge rather than a title (and its `code` layer sits after
+`content`), and `.investing-disclosures-caption` / `.investing-forces-caption`
+sit on a `<p>`, which no element selector can reach — they share one rule in
+`investing.css` that mirrors this one.
+
 ## Page-specific CSS
 
 Shared modules are for styles used across MANY documents. CSS that styles

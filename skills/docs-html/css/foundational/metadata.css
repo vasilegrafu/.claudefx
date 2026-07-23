@@ -59,13 +59,6 @@
   text-transform: uppercase; letter-spacing: .1em;
   color: var(--fg-soft);
 }
-.change-history caption {
-  text-align: left;
-  font-size: .68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .12em;
-  color: var(--fg-soft);
-  padding-bottom: .4rem;
-}
 
 /* ---------- approval-block: signature grid for sign-off documents ---------- */
 table.approvals { border-collapse: collapse; width: 100%; margin: var(--block-gap) 0; }
