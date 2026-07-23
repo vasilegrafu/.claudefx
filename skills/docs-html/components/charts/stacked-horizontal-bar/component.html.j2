@@ -1,8 +1,9 @@
 {# purpose: parts summing to a whole, laid on their side — for long category names #}
+{# unit: axis — one measured axis (horizontal); y_name names it #}
 {# sample: series=[("A",[1,2,3]),("B",[3,2,1])], categories=["x","y","z"], caption="s" #}
 {% import "components/charts/_render.html.j2" as r %}
 
-{% macro stacked_horizontal_bar(series=[], categories=[], caption="", height=340, note="", y_name="") %}
+{% macro stacked_horizontal_bar(series=[], categories=[], caption="", height=340, note="", y_name="", unit="") %}
 {# Built as data and serialised once — see the note in line/component.html.j2. #}
 {% set built = [] %}
 {% for name, values in series %}
@@ -22,17 +23,13 @@
 {% set option = {
      "tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}},
      "grid": {"left": 8, "right": 16,
-              "top": (52 if caption else 16),
               "bottom": (34 if y_name else 8), "containLabel": true},
      "xAxis": value_axis,
      "yAxis": {"type": "category", "data": categories, "inverse": true},
      "series": built,
    } %}
-{% if caption %}
-{%   set _ = option.update({"title": {"text": caption}}) %}
-{% endif %}
 {% if built | length > 1 %}
 {%   set _ = option.update({"legend": {}}) %}
 {% endif %}
-{{ r.out(option, height, note) }}
+{{ r.out(option, height, note, caption, unit) }}
 {% endmacro %}

@@ -11,7 +11,7 @@ yours, and it will read the same next year as it does today.
 
 - **Standalone HTML, zero lock-in** — no Word, no LaTeX, no export step. Open
   it, edit it, send it, print it.
-- **One system, consistent everywhere** — 74 document types and 116 components
+- **One system, consistent everywhere** — 75 document types and 116 components
   that already look right together; restyle every document by editing one file.
 - **Renders what real documents need** — interactive diagrams, proper math,
   syntax-highlighted code, tables, KPIs, timelines, callouts.
@@ -23,7 +23,7 @@ yours, and it will read the same next year as it does today.
 
 ## What you can do with it
 
-Compose any of **74 document types** across **10 domains**, each built from
+Compose any of **75 document types** across **10 domains**, each built from
 **116 reusable components**:
 
 | Domain | A few of the types |
@@ -149,7 +149,7 @@ docs-html/
 ├── components/
 │   └── <group>/        116 building blocks, grouped by scope then category
 ├── doc-types/
-│   └── <domain>/       74 document types, grouped by domain
+│   └── <domain>/       75 document types, grouped by domain
 └── showcases/
     └── components.html  the live component gallery
 ```

@@ -34,7 +34,16 @@ leading underscore to say so at a glance:
 
 | file | what it holds |
 |---|---|
-| `charts/_render.html.j2` | the tail every chart component shares — hand the built option to the engine, then print the `chart-note` |
+| `charts/_render.html.j2` | the tail every chart component shares — title the chart from `caption`/`unit`, reserve the room that title needs, hand the option to the engine, then print the `chart-note` |
+
+`_render.html.j2` is worth reading before adding a chart, because it owns more
+than a call: **the whole title area belongs to it.** Each chart used to set its
+own title and separately guess its own top margin, and the copies drifted —
+sixteen repeated one clearance literal while `sankey` drew its caption through
+the ribbons and four other kinds reserved nothing at all. A chart component now
+builds its `option` and passes `caption` and `unit`; where the title, the
+legend and the margin land is not its business. `builder.py check` enforces
+that structurally.
 
 Use one only when several components in a category would otherwise repeat the
 same markup, and keep it to **markup**. A partial that returns a value is not

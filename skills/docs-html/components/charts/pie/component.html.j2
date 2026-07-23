@@ -1,8 +1,9 @@
 {# purpose: composition of a single whole — a donut, for a handful of parts #}
+{# unit: required — a slice is a bare number with no axis to label #}
 {# sample: slices=[("A",50),("B",30),("C",20)], caption="s" #}
 {% import "components/charts/_render.html.j2" as r %}
 
-{% macro pie(slices=[], caption="", height=320, note="", donut=True) %}
+{% macro pie(slices=[], caption="", height=320, note="", donut=True, unit="") %}
 {# Built as data and serialised once — see the note in line/component.html.j2. #}
 {% set data = [] %}
 {% for name, value in slices %}
@@ -18,10 +19,7 @@
                  "itemStyle": {"borderWidth": 2},
                  "data": data}],
    } %}
-{% if caption %}
-{%   set _ = option.update({"title": {"text": caption}}) %}
-{% endif %}
 {# Every slice is a separate colour, so the legend is not optional here. #}
 {% set _ = option.update({"legend": {}}) %}
-{{ r.out(option, height, note) }}
+{{ r.out(option, height, note, caption, unit) }}
 {% endmacro %}

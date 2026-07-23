@@ -1,9 +1,10 @@
 {# purpose: peak-to-trough decline over time — the shape of the losing periods, not the gains #}
+{# unit: none — the axis is already named `drawdown %` #}
 {# series: list of (date, value) — the macro derives the running peak and the drawdown #}
 {# sample: series=[("a",100),("b",120),("c",90)], caption="s" #}
-{% import "components/charts/apache-echarts/component.html.j2" as engine %}
+{% import "components/charts/_render.html.j2" as r %}
 
-{% macro drawdown_curve(series=[], caption="", height=300, note="") %}
+{% macro drawdown_curve(series=[], caption="", height=300, note="", unit="") %}
 {# Drawdown is computed HERE, at compose time: the document carries the level
    series it was given, and the arithmetic that turned it into a decline is
    auditable in the rendered spec rather than hidden in a script. #}
@@ -22,7 +23,7 @@
    size it truncates, and a marker showing a wrong number is worse than none. #}
 {% set option = {
      "tooltip": {"trigger": "axis"},
-     "grid": {"left": 42, "right": 16, "top": (52 if caption else 16),
+     "grid": {"left": 42, "right": 16,
               "bottom": 8, "containLabel": true},
      "xAxis": {"type": "category", "data": dates},
      "yAxis": {"type": "value", "max": 0, "name": "drawdown %",
@@ -37,11 +38,10 @@
                      "data": [{"type": "min", "name": "max drawdown"}]},
        "data": values}],
    } %}
-{% if caption %}{% set _ = option.update({"title": {"text": caption}}) %}{% endif %}
-{% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
-{% if note %}
-  <p class="chart-note">{{ note }}</p>
-{% else %}
-  <p class="chart-note">Maximum drawdown {{ ns.trough }}%.</p>
-{% endif %}
+{# The only chart with a DEFAULT reading: the worst drawdown is the one number
+   a reader always wants, and it has already been computed above. Resolve it
+   here so the shared tail still owns the title and the clearance. #}
+{{ r.out(option, height,
+         note if note else "Maximum drawdown %s%%." | format(ns.trough),
+         caption, unit) }}
 {% endmacro %}

@@ -1,4 +1,5 @@
 {# purpose: one value against a range — a dial, for a single bounded measure #}
+{# unit: required — the value is read alone, against nothing #}
 {# sample: value=42, minimum=0, maximum=100, caption="s" #}
 {% import "components/charts/_render.html.j2" as r %}
 
@@ -18,8 +19,5 @@
                             "formatter": "{value}" ~ unit},
                  "data": [{"value": value}]}],
    } %}
-{% if caption %}
-{%   set _ = option.update({"title": {"text": caption}}) %}
-{% endif %}
-{{ r.out(option, height, note) }}
+{{ r.out(option, height, note, caption, unit) }}
 {% endmacro %}

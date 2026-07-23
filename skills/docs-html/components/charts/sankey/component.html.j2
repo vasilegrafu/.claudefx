@@ -1,10 +1,11 @@
 {# purpose: flow decomposition — how a total splits, merges or converts across stages #}
+{# unit: required — a ribbon is a bare number with no axis to label #}
 {# nodes: list of (name, role) — role is source|stage|cost|retained #}
 {# links: list of (source, target, value) — names must match nodes #}
 {# sample: nodes=[("Revenue","source"),("Cost","cost"),("Net","retained")], links=[("Revenue","Cost",40),("Revenue","Net",60)], caption="s" #}
-{% import "components/charts/apache-echarts/component.html.j2" as engine %}
+{% import "components/charts/_render.html.j2" as r %}
 
-{% macro sankey(nodes=[], links=[], caption="", height=420, note="", label_room=150) %}
+{% macro sankey(nodes=[], links=[], caption="", height=420, note="", label_room=150, unit="") %}
 {% set roles = {"source": "palette:1", "stage": "token:muted",
                 "cost": "token:caution", "retained": "token:positive"} %}
 {# The spec is built as a DATA STRUCTURE and serialised once. Hand-written JSON
@@ -34,9 +35,5 @@
                            "textBorderWidth": 3},
                  "data": node_data, "links": link_data}],
    } %}
-{% if caption %}{% set _ = option.update({"title": {"text": caption}}) %}{% endif %}
-{% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
-{% if note %}
-  <p class="chart-note">{{ note }}</p>
-{% endif %}
+{{ r.out(option, height, note, caption, unit) }}
 {% endmacro %}

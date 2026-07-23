@@ -1169,9 +1169,9 @@ def rate_limited(partition: str) -> bool:
 
   {{ spec("Pie, funnel, gauge", "pie") }}
   {{ c.pie(slices=[("Equities", 48), ("Bonds", 27), ("Cash", 25)],
-           caption="Donut — three parts, no more") }}
+           caption="Donut — three parts, no more", unit="% of portfolio") }}
   {{ c.funnel_chart(stages=[("Screened", 1200), ("Shortlisted", 260), ("Diligenced", 48), ("Held", 22)],
-                    caption="Funnel — nested stages",
+                    caption="Funnel — nested stages", unit="companies",
                     note="Each stage is a subset of the one above.") }}
   {{ c.gauge(value=68, minimum=0, maximum=100, unit="%",
              caption="Gauge — only when the range is as real as the value") }}
@@ -1228,7 +1228,7 @@ def rate_limited(partition: str) -> bool:
               ("Gross profit", "Operating expenses", 57467),
               ("Gross profit", "Tax", 29749),
               ("Gross profit", "Net income", 93467)],
-       caption="Revenue to net income ($M)",
+       caption="Revenue to net income", unit="$M",
        note="Six nodes, four colours — the roles, not the node count, decide the palette.") }}
 
   {{ spec("Price action — candlestick with volume", "price-history") }}
@@ -1239,7 +1239,7 @@ def rate_limited(partition: str) -> bool:
              ("Apr", 201.3, 197.5, 194.1, 204.0, 344),
              ("May", 197.5, 209.8, 196.0, 211.2, 468),
              ("Jun", 209.8, 206.1, 202.7, 213.5, 401)],
-       caption="Share price and volume (indexed, $M)",
+       caption="Share price and volume", unit="indexed, $M",
        note="Up bars are hollow and down bars filled, so direction reads without colour.") }}
 
   {{ spec("Distribution — box plot, outliers drawn", "return-distribution") }}

@@ -14,7 +14,7 @@
      (e.g. this file was copied out of the repo), fall back to the pinned CDN so
      the page still renders. Local first, CDN only if local is missing. */
   (function () {
-    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@4.0.0/skills/docs-html";
+    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@4.1.0/skills/docs-html";
     function cssLoaded() {
       try {
         for (var i = 0; i < document.styleSheets.length; i++) {
@@ -3149,9 +3149,11 @@ flowchart TD
     "containLabel": true,
     "left": 46,
     "right": 16,
-    "top": 52
+    "top": 76
   },
-  "legend": {},
+  "legend": {
+    "top": 30
+  },
   "series": [
     {
       "data": [
@@ -3226,9 +3228,11 @@ flowchart TD
     "containLabel": true,
     "left": 46,
     "right": 16,
-    "top": 52
+    "top": 76
   },
-  "legend": {},
+  "legend": {
+    "top": 30
+  },
   "series": [
     {
       "areaStyle": {},
@@ -3364,9 +3368,11 @@ flowchart TD
     "containLabel": true,
     "left": 46,
     "right": 16,
-    "top": 52
+    "top": 76
   },
-  "legend": {},
+  "legend": {
+    "top": 30
+  },
   "series": [
     {
       "data": [
@@ -3424,9 +3430,11 @@ flowchart TD
     "containLabel": true,
     "left": 8,
     "right": 16,
-    "top": 52
+    "top": 76
   },
-  "legend": {},
+  "legend": {
+    "top": 30
+  },
   "series": [
     {
       "data": [
@@ -3484,15 +3492,18 @@ flowchart TD
     "containLabel": true,
     "left": 8,
     "right": 16,
-    "top": 52
+    "top": 76
   },
-  "legend": {},
+  "legend": {
+    "top": 30
+  },
   "series": [
     {
+      "barMaxWidth": 44,
       "data": [
-        67.9245,
-        67.0103,
-        63.2997
+        67.9,
+        67.0,
+        63.3
       ],
       "label": {
         "position": "inside",
@@ -3503,10 +3514,11 @@ flowchart TD
       "type": "bar"
     },
     {
+      "barMaxWidth": 44,
       "data": [
-        32.0755,
-        32.9897,
-        36.7003
+        32.1,
+        33.0,
+        36.7
       ],
       "label": {
         "position": "inside",
@@ -3633,13 +3645,14 @@ flowchart TD
     "containLabel": true,
     "left": 46,
     "right": 16,
-    "top": 52
+    "top": 76
   },
   "legend": {
     "data": [
       "change"
     ],
-    "show": false
+    "show": false,
+    "top": 30
   },
   "series": [
     {
@@ -3755,7 +3768,9 @@ flowchart TD
 
     <pre class="chart apache-echarts" data-height="320">
 {
-  "legend": {},
+  "legend": {
+    "top": 48
+  },
   "series": [
     {
       "data": [
@@ -3779,10 +3794,12 @@ flowchart TD
         "42%",
         "70%"
       ],
+      "top": 94,
       "type": "pie"
     }
   ],
   "title": {
+    "subtext": "% of portfolio",
     "text": "Donut \u2014 three parts, no more"
   },
   "tooltip": {
@@ -3794,7 +3811,9 @@ flowchart TD
 
     <pre class="chart apache-echarts">
 {
-  "legend": {},
+  "legend": {
+    "top": 48
+  },
   "series": [
     {
       "data": [
@@ -3823,10 +3842,12 @@ flowchart TD
       "left": "12%",
       "right": "12%",
       "sort": "descending",
+      "top": 94,
       "type": "funnel"
     }
   ],
   "title": {
+    "subtext": "companies",
     "text": "Funnel \u2014 nested stages"
   },
   "tooltip": {
@@ -3852,6 +3873,10 @@ flowchart TD
       "axisTick": {
         "show": false
       },
+      "center": [
+        "50%",
+        "62%"
+      ],
       "data": [
         {
           "value": 68
@@ -3881,6 +3906,7 @@ flowchart TD
     }
   ],
   "title": {
+    "subtext": "%",
     "text": "Gauge \u2014 only when the range is as real as the value"
   }
 }
@@ -3990,11 +4016,13 @@ flowchart TD
 
     <pre class="chart apache-echarts" data-height="380">
 {
-  "legend": {},
+  "legend": {
+    "top": 30
+  },
   "radar": {
     "center": [
       "50%",
-      "58%"
+      "60%"
     ],
     "indicator": [
       {
@@ -4191,12 +4219,13 @@ flowchart TD
       "nodeGap": 18,
       "nodeWidth": 14,
       "right": 150,
-      "top": 14,
+      "top": 70,
       "type": "sankey"
     }
   ],
   "title": {
-    "text": "Revenue to net income ($M)"
+    "subtext": "$M",
+    "text": "Revenue to net income"
   },
   "tooltip": {
     "trigger": "item",
@@ -4205,6 +4234,7 @@ flowchart TD
 }
   </pre>
   <p class="chart-note">Six nodes, four colours — the roles, not the node count, decide the palette.</p>
+
 
 
     <div class="gx-spec-head">
@@ -4227,7 +4257,7 @@ flowchart TD
       "height": "52%",
       "left": 8,
       "right": 16,
-      "top": 52
+      "top": 70
     },
     {
       "bottom": 8,
@@ -4303,7 +4333,8 @@ flowchart TD
     }
   ],
   "title": {
-    "text": "Share price and volume (indexed, $M)"
+    "subtext": "indexed, $M",
+    "text": "Share price and volume"
   },
   "tooltip": {
     "axisPointer": {
@@ -4360,6 +4391,7 @@ flowchart TD
   <p class="chart-note">Up bars are hollow and down bars filled, so direction reads without colour.</p>
 
 
+
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Distribution — box plot, outliers drawn</h3>
     <span class="gx-spec-name">return-distribution</span>
@@ -4372,7 +4404,7 @@ flowchart TD
     "containLabel": true,
     "left": 46,
     "right": 16,
-    "top": 52
+    "top": 70
   },
   "series": [
     {
@@ -4419,6 +4451,7 @@ flowchart TD
     }
   ],
   "title": {
+    "subtext": "% per month",
     "text": "Monthly returns, n=9 per series"
   },
   "tooltip": {
@@ -4443,6 +4476,7 @@ flowchart TD
 }
   </pre>
   <p class="chart-note">B is steadier on average and carries the only tail that matters — drawn, not absorbed into a whisker.</p>
+
 
 
     <div class="gx-spec-head">
@@ -4651,6 +4685,7 @@ flowchart TD
   <p class="chart-note">REITs are an equity position wearing a different name.</p>
 
 
+
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Drawdown — derived at compose time</h3>
     <span class="gx-spec-name">drawdown-curve</span>
@@ -4746,6 +4781,7 @@ flowchart TD
 }
   </pre>
   <p class="chart-note">Maximum drawdown -18.75%.</p>
+
 
 
 

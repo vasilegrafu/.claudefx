@@ -14,6 +14,73 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 4.1.0 — 2026-07-23
+
+**Minor.** A new document type, and the chart title area gains a single owner.
+Purely additive: every 4.0.0 document keeps working untouched, and **the
+published CSS and JS are byte-identical to 4.0.0** — nothing in `css/` or `js/`
+changed, so this release only affects documents composed from now on.
+
+### New doc-type: `financial-profile`
+
+`investing/financial-profile` — where a company's money comes from, where it
+goes, and how that shape changed. It answers the question that comes *before*
+[[investment-thesis]]: understand the business, without making a call on it.
+
+Five sections, and **two sankeys on purpose**, because "how the money is spent"
+has two honest answers that disagree. The first is accounting — revenue
+consumed by cost of revenue, R&D, SG&A and tax. The second is cash — capex,
+buybacks, dividends, debt repayment. For a mature company the second routinely
+dwarfs the first and appears nowhere on the income statement.
+
+Doc-type count 74 → 75. No new components: it composes existing ones.
+
+### The chart title area has one owner
+
+`components/charts/_render.html.j2` now sets the title, places the legend clear
+of it, and reserves the top margin — for all 21 chart kinds, from one rule.
+
+Each chart used to set its own title and separately guess its own clearance,
+and the copies drifted: sixteen repeated the literal `(52 if caption else 16)`,
+while `sankey` pinned its series at 14 and drew its caption straight through
+the ribbons. `pie`, `funnel` and `gauge` reserved nothing at all — the gauge
+arc ran under its own caption. Five kinds bypassed the shared tail entirely,
+and four of those five duplicated it byte for byte.
+
+Radial charts (`radar`, `gauge`) now derive their centre from the height they
+were given instead of two hand-tuned percentages.
+
+### `unit` — required by shape, not everywhere
+
+Every chart accepts `unit`, rendered as a subtext line under the caption in the
+theme's muted tone (`title.subtextStyle` was already in the registered theme,
+unused). But a unit is only *required* where there is nowhere else to read it.
+Each chart declares its family in a `{# unit: … #}` header:
+
+| family | kinds | where the unit lives |
+|---|---|---|
+| `required` | sankey, pie, funnel, gauge, price-history, distribution | the subtext — a ribbon or a slice is a bare number |
+| `axis` | bar, line, area, the stacked forms, waterfall | the axis name (`y_name`) |
+| `multi` | scatter | per axis — two measures, two units |
+| `none` | correlation matrix, 100% stacked, drawdown, radar | nothing; the scale is fixed by construction |
+
+### `builder.py check` gained a chart audit
+
+Structural rules rendering cannot catch: every chart declares a known family
+and satisfies it, and none sets its own title. For a `required` kind the
+**showcase demo** must also state a unit — the showcase is the reference
+example, and a demo that omits one teaches every copy to omit it.
+
+### Bar width
+
+`stacked_normalized` derives its `barMaxWidth` from the widest label it is
+about to draw, rather than taking the theme's 44px cap that is right for bars
+read by length but not for a column read by the text inside it. Its share
+labels also round to one decimal — `52.4779` inside a bar is noise around the
+one digit that matters.
+
+---
+
 ## 4.0.0 — 2026-07-23
 
 **Major.** Four markup contract changes, and the tree reorganised so its layout

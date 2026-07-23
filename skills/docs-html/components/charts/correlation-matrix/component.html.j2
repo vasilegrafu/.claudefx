@@ -1,10 +1,11 @@
 {# purpose: pairwise relationships across a set — a heatmap on the sequential ramp, not the categorical palette #}
+{# unit: none — a correlation coefficient, −1 to 1, is unitless #}
 {# labels: list of names; matrix: list of rows, matrix[i][j] is the value for labels[i] vs labels[j] #}
 {# sample: labels=["A","B"], matrix=[[1,0.4],[0.4,1]], caption="s" #}
-{% import "components/charts/apache-echarts/component.html.j2" as engine %}
+{% import "components/charts/_render.html.j2" as r %}
 
 {% macro correlation_matrix(labels=[], matrix=[], caption="", height=380, note="",
-                            vmin=-1, vmax=1) %}
+                            vmin=-1, vmax=1, unit="") %}
 {# ECharts heatmap wants [x, y, value] triples. Row i is flipped onto the y
    axis so the matrix reads the way it is written — first label top-left. #}
 {% set cells = [] %}
@@ -21,7 +22,7 @@
    judgement — a -0.8 correlation is not "bad", it is informative. #}
 {% set option = {
      "tooltip": {"position": "top"},
-     "grid": {"left": 8, "right": 16, "top": (52 if caption else 16),
+     "grid": {"left": 8, "right": 16,
               "bottom": 72, "containLabel": true},
      "xAxis": {"type": "category", "data": labels, "splitArea": {"show": true}},
      "yAxis": {"type": "category", "data": y_labels, "splitArea": {"show": true}},
@@ -32,9 +33,5 @@
      "series": [{"type": "heatmap", "name": "correlation", "data": cells,
                  "label": {"show": true, "fontSize": 10}}],
    } %}
-{% if caption %}{% set _ = option.update({"title": {"text": caption}}) %}{% endif %}
-{% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
-{% if note %}
-  <p class="chart-note">{{ note }}</p>
-{% endif %}
+{{ r.out(option, height, note, caption, unit) }}
 {% endmacro %}

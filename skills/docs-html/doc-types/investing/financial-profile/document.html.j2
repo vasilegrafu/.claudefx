@@ -1,0 +1,117 @@
+{# type-name: Financial Profile #}
+{# purpose: where a company's money comes from, where it goes, and how that shape changed #}
+{% extends "doc-types/base.html.j2" %}
+{% block content %}
+  {{ c.toc([
+      ("snapshot", "Snapshot"),
+      ("income", "Where the money comes from"),
+      ("cash", "Where the money goes"),
+      ("evolution", "How it evolved"),
+      ("reading", "Reading"),
+  ]) }}
+  {% call c.section("snapshot", "Snapshot") %}
+    {{ c.security_header(ticker="{{TICKER}}", name="{{Company name}}",
+        exchange="{{exchange}}", asof="{{FY end date}}",
+        facts=[("Price", "{{px}}"), ("Market cap", "{{mcap}}"),
+               ("Revenue", "{{FY revenue}}"), ("Net income", "{{FY net income}}"),
+               ("Sector", "{{sector}}")]) }}
+    {% call c.lead() %}{% raw %}{{one paragraph: what the business sells, to whom, and the one structural fact about its economics a reader should carry into the rest of the document}}{% endraw %}{% endcall %}
+  {% endcall %}
+  {% call c.section("income", "Where the money comes from") %}
+    {# CONSERVATION. Inflows must equal outflows at EVERY intermediate node, and
+       nothing in the rendering checks it — an unbalanced sankey draws perfectly
+       and lies. Check three sums by hand before publishing: segments = revenue,
+       cost of revenue + gross profit = revenue, and each operating split.
+       Roles carry the colour (source/stage/cost/retained) — never colour a node. #}
+    {{ c.sankey(
+        nodes=[("{{Segment A}}", "source"), ("{{Segment B}}", "source"),
+               ("{{Segment C}}", "source"),
+               ("Revenue", "stage"), ("Cost of revenue", "cost"),
+               ("Gross profit", "stage"), ("R&D", "cost"),
+               ("SG&A", "cost"), ("Operating income", "stage"),
+               ("Tax", "cost"), ("Net income", "retained")],
+        links=[("{{Segment A}}", "Revenue", 50), ("{{Segment B}}", "Revenue", 30),
+               ("{{Segment C}}", "Revenue", 20),
+               ("Revenue", "Cost of revenue", 55), ("Revenue", "Gross profit", 45),
+               ("Gross profit", "R&D", 8), ("Gross profit", "SG&A", 7),
+               ("Gross profit", "Operating income", 30),
+               ("Operating income", "Tax", 6),
+               ("Operating income", "Net income", 24)],
+        height=460,
+        caption="{{Company}} {{FY}} — revenue to net income ({{unit}})",
+        note="{{one sentence: what the shape says — where the margin is made and what consumes it}}") }}
+    {{ c.segment_reporting(caption="{{revenue and profit by segment}}",
+        unit="{{$M}}",
+        rows=[("{{Segment A}}", "{{rev}}", 50, "{{profit}}", 55, "{{margin}}", "{{growth}}"),
+              ("{{Segment B}}", "{{rev}}", 30, "{{profit}}", 30, "{{margin}}", "{{growth}}"),
+              ("{{Segment C}}", "{{rev}}", 20, "{{profit}}", 15, "{{margin}}", "{{growth}}")],
+        source="{{filing and page}}") }}
+    {% call c.prose() %}{% raw %}{{which segment actually pays for the company — revenue share and profit share are rarely the same number, and the gap is the point}}{% endraw %}{% endcall %}
+  {% endcall %}
+  {% call c.section("cash", "Where the money goes") %}
+    {# The section above is ACCOUNTING; this one is CASH, and they disagree.
+       Buybacks, dividends and debt repayment consume real money and appear
+       nowhere on the income statement. Gross up investing rather than netting
+       it, so capital expenditure stays a visible node instead of vanishing
+       inside "net investing". Sources must equal uses. #}
+    {{ c.sankey(
+        nodes=[("Operating cash flow", "source"), ("{{Other sources}}", "source"),
+               ("Cash available", "stage"),
+               ("Capital expenditure", "cost"), ("Buybacks", "cost"),
+               ("Dividends", "cost"), ("Debt repayment", "cost"),
+               ("Cash retained", "retained")],
+        links=[("Operating cash flow", "Cash available", 80),
+               ("{{Other sources}}", "Cash available", 20),
+               ("Cash available", "Capital expenditure", 15),
+               ("Cash available", "Buybacks", 45),
+               ("Cash available", "Dividends", 20),
+               ("Cash available", "Debt repayment", 12),
+               ("Cash available", "Cash retained", 8)],
+        height=400,
+        caption="{{Company}} {{FY}} — cash generated and deployed ({{unit}})",
+        note="{{one sentence: what management actually did with the money, and what that reveals about its priorities}}") }}
+    {% call c.prose() %}{% raw %}{{reinvestment versus return of capital — how much went back into the business against how much went to shareholders, and whether the mix is changing}}{% endraw %}{% endcall %}
+  {% endcall %}
+  {% call c.section("evolution", "How it evolved") %}
+    {# Two trend tables, because they answer different questions: the first is
+       where growth CAME FROM, the second is whether spending discipline held.
+       A single-year view hides both. #}
+    {{ c.metric_trend(
+        periods=["{{FY-4}}", "{{FY-3}}", "{{FY-2}}", "{{FY-1}}", "{{FY0}}"],
+        caption="{{revenue by segment, five fiscal years ({{unit}})}}",
+        rows=[("{{Segment A}}", ["{{v}}", "{{v}}", "{{v}}", "{{v}}", "{{v}}"], "{{x%}}", "up"),
+              ("{{Segment B}}", ["{{v}}", "{{v}}", "{{v}}", "{{v}}", "{{v}}"], "{{x%}}", "down"),
+              ("{{Segment C}}", ["{{v}}", "{{v}}", "{{v}}", "{{v}}", "{{v}}"], "{{x%}}", "flat"),
+              ("Total revenue", ["{{v}}", "{{v}}", "{{v}}", "{{v}}", "{{v}}"], "{{x%}}", "up")]) }}
+    {{ c.stacked_normalized(
+        categories=["{{FY-4}}", "{{FY-3}}", "{{FY-2}}", "{{FY-1}}", "{{FY0}}"],
+        series=[("{{Segment A}}", [50, 50, 50, 50, 50]),
+                ("{{Segment B}}", [30, 30, 30, 30, 30]),
+                ("{{Segment C}}", [20, 20, 20, 20, 20])],
+        caption="{{revenue mix — each year as 100%}}",
+        note="{{one sentence: is this the same business it was five years ago?}}") }}
+    {# The bridge prices the mix shift: growth is rarely spread evenly, and one
+       segment usually paid for all of it. Steps must sum from start to end. #}
+    {{ c.bridge(
+        scale_min=0, scale_max=120,
+        caption="{{revenue bridge, {{FY-4}} to {{FY0}} ({{unit}})}}",
+        steps=[("{{FY-4}} revenue", 80, "start", "{{v}}"),
+               ("{{Segment A}}", 25, "up", "{{+v}}"),
+               ("{{Segment B}}", -8, "down", "{{-v}}"),
+               ("{{Segment C}}", 3, "up", "{{+v}}"),
+               ("{{FY0}} revenue", 100, "end", "{{v}}")],
+        note="{{one sentence: which segment produced the growth, and what share of it}}") }}
+    {{ c.metric_trend(
+        periods=["{{FY-4}}", "{{FY-3}}", "{{FY-2}}", "{{FY-1}}", "{{FY0}}"],
+        caption="{{margins and returns, five fiscal years}}",
+        rows=[("Gross margin", ["{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}"], "{{bps}}", "up"),
+              ("R&amp;D / revenue", ["{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}"], "{{bps}}", "up"),
+              ("SG&amp;A / revenue", ["{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}"], "{{bps}}", "flat"),
+              ("Operating margin", ["{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}"], "{{bps}}", "up"),
+              ("Return on invested capital", ["{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}", "{{pct}}"], "{{bps}}", "up")]) }}
+    {% call c.prose() %}{% raw %}{{what the two tables say together: whether growth came with operating leverage or bought it with spending}}{% endraw %}{% endcall %}
+  {% endcall %}
+  {% call c.section("reading", "Reading") %}
+    {% call c.callout("note") %}{% call c.prose() %}{% raw %}{{the three or four sentences a reader should leave with — the shape of the earnings, the shape of the spending, and what changed. State what would change this reading.}}{% endraw %}{% endcall %}{% endcall %}
+  {% endcall %}
+{% endblock %}

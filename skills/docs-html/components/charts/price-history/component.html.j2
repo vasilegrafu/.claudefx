@@ -1,9 +1,10 @@
 {# purpose: price action over time — candlestick with volume beneath, one shared time axis #}
+{# unit: required — the chart is ABOUT price, and neither panel names its axis #}
 {# bars: list of (date, open, close, low, high, volume) #}
 {# sample: bars=[("Jan",1,2,0.5,2.5,10),("Feb",2,1.5,1,2.6,12)], caption="s" #}
-{% import "components/charts/apache-echarts/component.html.j2" as engine %}
+{% import "components/charts/_render.html.j2" as r %}
 
-{% macro price_history(bars=[], caption="", height=420, note="") %}
+{% macro price_history(bars=[], caption="", height=420, note="", unit="") %}
 {# Built as data, serialised once — see the note in sankey/component.html.j2. #}
 {% set dates = [] %}{% set candles = [] %}{% set volumes = [] %}
 {% for date, open, close, low, high, volume in bars %}
@@ -15,15 +16,16 @@
 {% endfor %}
 {# Two panels sharing a time axis, NOT two y-axes on one panel: unrelated
    scales on a shared axis let any correlation be implied by choosing them.
-   The top offset clears the title only when there is one.
+   Only the FIRST grid takes the title clearance — the shared tail sets it, and
+   the volume panel below stays anchored to the bottom.
    No axis names: the legend already says which panel is price and which is
-   volume, and the caption carries the units. containLabel reserves room for
-   tick labels but NOT for an axis name, so one would clip off the card. #}
+   volume, and `unit` states the units. containLabel reserves room for tick
+   labels but NOT for an axis name, so one would clip off the card. #}
 {% set option = {
      "tooltip": {"trigger": "axis", "axisPointer": {"type": "cross"}},
      "axisPointer": {"link": [{"xAxisIndex": "all"}]},
      "grid": [
-       {"left": 8, "right": 16, "top": (52 if caption else 16), "height": "52%", "containLabel": true},
+       {"left": 8, "right": 16, "height": "52%", "containLabel": true},
        {"left": 8, "right": 16, "bottom": 8, "height": "18%", "containLabel": true}],
      "xAxis": [
        {"type": "category", "gridIndex": 0, "axisLabel": {"show": false}, "data": dates},
@@ -38,9 +40,5 @@
         "itemStyle": {"color": "token:muted", "opacity": 0.55, "borderRadius": 0},
         "data": volumes}],
    } %}
-{% if caption %}{% set _ = option.update({"title": {"text": caption}}) %}{% endif %}
-{% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
-{% if note %}
-  <p class="chart-note">{{ note }}</p>
-{% endif %}
+{{ r.out(option, height, note, caption, unit) }}
 {% endmacro %}

@@ -374,6 +374,92 @@ def _blame(exc: BaseException) -> str:
     return f" [{name}:{deepest.lineno}]"
 
 
+UNIT_RE = re.compile(r"\{#\s*unit:\s*(\w+)")
+
+# Where a unit has to be written depends on the chart's SHAPE — on where the
+# reader's eye lands on the number — not on the chart's name. Each component
+# declares its family in a `{# unit: … #}` header, so a new chart states what it
+# is and nothing here needs editing.
+UNIT_FAMILIES = {
+    # one quantity and no axis: the subtext is the only place a unit can go, so
+    # without it the reader has a bare number and nothing to interpret it with.
+    "required": "must accept `unit`, and the showcase demo must pass one",
+    # one measured axis: the axis name sits right next to the numbers, which is
+    # a better home than a subtext. `unit` stays allowed, just not required.
+    "axis": "must accept `y_name` or `x_name`",
+    # two measured dimensions: a single subtext for two different units would
+    # be a lie, so each axis must be nameable independently.
+    "multi": "must accept both `x_name` and `y_name`",
+    # fixed by construction — a correlation coefficient, a 100% column. Nagging
+    # for a unit here would train authors to write something meaningless.
+    "none": "nothing required",
+}
+
+
+def chart_audit() -> list[str]:
+    """Structural rules every chart component must obey. Returns the breaches.
+
+    Rendering cannot catch these. A chart that states no unit draws perfectly
+    and leaves the reader guessing whether a bar means dollars or percent; a
+    chart that sets its own title draws it wherever the engine likes, which is
+    how `sankey` came to print its caption straight through the ribbons while
+    sixteen other charts each repeated the same clearance literal.
+
+    The rules guard the COMPONENTS rather than the authors, with one exception:
+    for a `required` chart the SHOWCASE demo must also state a unit, because
+    the showcase is the reference example and a canonical demo that omits it
+    teaches every copy to omit it.
+
+    An absent or unknown `{# unit: … #}` is itself a failure — a new chart
+    cannot skip the decision by saying nothing."""
+    problems = []
+    showcase_src = "\n".join(_read(t) for t in showcase_templates())
+
+    for path in sorted((COMPONENTS_DIR / "charts").glob("*/component.html.j2")):
+        name = path.parent.name
+        if name == "apache-echarts":             # the engine, not a chart
+            continue
+        src = _read(path)
+        match = re.search(r"\{% macro (\w+)\((.*?)\) %\}", src, re.S)
+        if not match:
+            problems.append(f"{name}: no macro signature")
+            continue
+        macro, params = match.group(1), match.group(2)
+
+        # universal: the shared tail owns the whole title area
+        if '"title"' in src:
+            problems.append(f"{name}: sets its own title — use r.out(…, caption, unit)")
+        if "caption=" not in params:
+            problems.append(f"{name}: macro takes no `caption`")
+
+        declared = UNIT_RE.search(src)
+        family = declared.group(1) if declared else None
+        if family not in UNIT_FAMILIES:
+            problems.append(f"{name}: {'unknown' if family else 'missing'} "
+                            f"`{{# unit: … #}}` header{f' ({family})' if family else ''}"
+                            f" — one of {', '.join(UNIT_FAMILIES)}")
+            continue
+
+        if family == "required":
+            if "unit=" not in params:
+                problems.append(f"{name}: declared `required` but takes no `unit`")
+            # the demo call in the showcase, up to its closing paren
+            demo = re.search(rf"c\.{macro}\((?:[^()]|\([^()]*\))*\)", showcase_src)
+            if not demo:
+                problems.append(f"{name}: declared `required` but has no showcase demo")
+            elif not re.search(r'\bunit\s*=\s*"[^"]+"', demo.group(0)):
+                problems.append(f"{name}: showcase demo states no unit")
+        elif family == "axis":
+            if "y_name=" not in params and "x_name=" not in params:
+                problems.append(f"{name}: declared `axis` but names no axis")
+        elif family == "multi":
+            missing = [p for p in ("x_name=", "y_name=") if p not in params]
+            if missing:
+                problems.append(f"{name}: declared `multi` but takes no "
+                                f"{', '.join(p.rstrip('=') for p in missing)}")
+    return problems
+
+
 def cmd_check() -> int:
     """`check` — compose every doc-type and confirm nothing is left unrendered.
 
@@ -391,15 +477,19 @@ def cmd_check() -> int:
     2. Every doc-type is rendered through the same context `compose()` uses,
        then searched for a surviving `{% ... %}`.
     3. Every showcase is rendered the same way. This is what makes the check
-       complete rather than merely broad: doc-types call only 43 of the
+       complete rather than merely broad: doc-types call well under half the
        components, because the rest are a library an author reaches for by
-       hand. The showcase calls 115. Together they run all 117, so a RUNTIME
-       fault — bad tuple arity, a wrong unpack, `loop.parent` — is caught in a
-       component no doc-type happens to use. Parsing alone would not find it.
+       hand, and the showcase calls the rest. Together they run every one, so
+       a RUNTIME fault — bad tuple arity, a wrong unpack, `loop.parent` — is
+       caught in a component no doc-type happens to use. Parsing alone would
+       not find it.
+
+    4. `chart_audit()` — structural rules the charts must obey, which no
+       amount of rendering can catch. See its docstring.
 
     Only `{% %}` counts as a defect. `{{ ... }}` in the output is BY DESIGN —
     a composed skeleton carries content placeholders for the author to fill,
-    and treating those as failures makes the check cry wolf on all 75."""
+    and treating those as failures makes the check cry wolf on every one."""
     start = time.perf_counter()
     try:
         env = make_env(load_components())
@@ -445,14 +535,32 @@ def cmd_check() -> int:
             print(f"  {template.name:<38} UNRENDERED: {left.group(0)!r}")
             failures += 1
 
+    charts = chart_audit()
+    for problem in charts:
+        print(f"  {problem}")
+
     elapsed = time.perf_counter() - start
     print()
-    if failures:
-        print(f"{failures} template(s) failed")
+    if failures or charts:
+        if failures:
+            print(f"{failures} template(s) failed")
+        if charts:
+            print(f"{len(charts)} chart rule(s) broken")
         return 1
     print(f"{len(load_components())} components executed via {len(types)} doc-types "
           f"+ {len(shows)} showcase(s), all clean ({elapsed:.1f}s)")
+    print(f"charts: {_family_tally()}, none titles itself")
     return 0
+
+
+def _family_tally() -> str:
+    """`required 5 · axis 11 · multi 1 · none 4` — what the audit just checked."""
+    counts = dict.fromkeys(UNIT_FAMILIES, 0)
+    for path in (COMPONENTS_DIR / "charts").glob("*/component.html.j2"):
+        found = UNIT_RE.search(_read(path))
+        if found and found.group(1) in counts:
+            counts[found.group(1)] += 1
+    return " · ".join(f"{k} {v}" for k, v in counts.items())
 
 
 # --------------------------------------------------------------------------

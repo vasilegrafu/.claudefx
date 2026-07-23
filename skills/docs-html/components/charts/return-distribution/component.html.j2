@@ -1,7 +1,8 @@
 {# purpose: the SPREAD of an outcome rather than its average — box plot with outliers #}
+{# unit: required — the box plot names no axis; the unit is the subtext #}
 {# series: list of (label, [raw values]) — quartiles and whiskers are derived here #}
 {# sample: series=[("A",[1,2,3,4,5,20]),("B",[2,2,3,3,4])], caption="s" #}
-{% import "components/charts/apache-echarts/component.html.j2" as engine %}
+{% import "components/charts/_render.html.j2" as r %}
 
 {% macro return_distribution(series=[], caption="", height=340, note="", unit="%") %}
 {# Raw observations go in; the five-number summary comes out HERE, at compose
@@ -21,7 +22,7 @@
 {% endfor %}
 {% set option = {
      "tooltip": {"trigger": "item"},
-     "grid": {"left": 46, "right": 16, "top": (52 if caption else 16),
+     "grid": {"left": 46, "right": 16,
               "bottom": 8, "containLabel": true},
      "xAxis": {"type": "category", "data": labels, "boundaryGap": true},
      "yAxis": {"type": "value", "name": unit, "nameLocation": "middle",
@@ -32,9 +33,5 @@
         "itemStyle": {"color": "token:negative", "opacity": 0.8},
         "data": outliers}],
    } %}
-{% if caption %}{% set _ = option.update({"title": {"text": caption}}) %}{% endif %}
-{% call engine.apache_echarts(height=height) %}{{ option | tojson(indent=2) }}{% endcall %}
-{% if note %}
-  <p class="chart-note">{{ note }}</p>
-{% endif %}
+{{ r.out(option, height, note, caption, unit) }}
 {% endmacro %}

@@ -56,6 +56,53 @@ Anything the catalogue does not cover, write directly as an ECharts `option`
 through [[apache-echarts]]. The macros are a shortcut to the common forms, not a
 fence around the engine.
 
+## Where the unit goes — the shape decides
+
+A unit belongs wherever the reader's eye lands on the number, and that is a
+property of the chart's **shape**, not its name. So the rule is not "always
+state a unit" — it is *state it where there is nowhere else to read it*.
+
+| family | kinds | where the unit lives |
+|---|---|---|
+| `required` | sankey, pie, funnel, gauge, price-history, distribution | the **subtext**. There is nowhere else — a ribbon, a slice, a stage is a bare number with no axis beside it. |
+| `axis` | bar, line, area, their stacked forms, waterfall | the **axis name** (`y_name`), which sits right next to the numbers. `unit` still allowed when it genuinely helps. |
+| `multi` | scatter | **per axis** (`x_name` *and* `y_name`). Two measures, two units — one subtext for both would be a lie. |
+| `none` | correlation matrix, 100% stacked, drawdown, radar | **nothing.** The scale is fixed by construction — a coefficient is −1…1, a mix column is always 100% — and demanding a unit here only teaches authors to write something meaningless. |
+
+```jinja
+{{ c.sankey(caption="Apple FY2025 — revenue to net income", unit="$ millions", …) }}
+{{ c.bar(caption="Revenue by quarter", y_name="$M", …) }}
+{{ c.scatter(caption="Risk against return", x_name="volatility %", y_name="return %", …) }}
+```
+
+Every kind accepts `unit` regardless of family — the API stays uniform, and the
+family governs what is *required*, not what is *allowed*.
+
+### Each chart declares its own family
+
+The family is a `{# unit: … #}` header in the component, beside `purpose` and
+`sample`:
+
+```jinja
+{# purpose: flow decomposition — how a total splits, merges or converts #}
+{# unit: required — a ribbon is a bare number with no axis to label #}
+```
+
+`builder.py check` reads that declaration and enforces the matching rule —
+including, for a `required` kind, that **the showcase demo states a unit**,
+because the showcase is the reference example and a demo that omits one teaches
+every copy to omit it. A missing or unknown header is itself a failure, so a new
+chart cannot skip the decision by saying nothing.
+
+### The title area has one owner
+
+`_render.html.j2` sets the title, positions the legend clear of it, and
+reserves the top margin — for every kind, from one rule. Do not set `title` in
+a chart component and do not hand-tune a `top`: pass `caption` and `unit` to
+`r.out(option, height, note, caption, unit)` and let it place them. When each
+component did this for itself the copies drifted, and the sankey ended up
+drawing its caption straight through the ribbons.
+
 ## Where the maths happens
 
 Four kinds compute something at compose time, so the rendered spec carries the
