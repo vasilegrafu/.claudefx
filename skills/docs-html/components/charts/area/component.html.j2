@@ -3,6 +3,34 @@
 {% import "components/charts/_render.html.j2" as r %}
 
 {% macro area(series=[], categories=[], caption="", height=340, note="", y_name="") %}
-{{ r.out(chart_cartesian(series=series, categories=categories, caption=caption,
-                          y_name=y_name, kind="line", area=True), height, note) }}
+{# Built as data and serialised once — see the note in line/component.html.j2. #}
+{% set built = [] %}
+{% for name, values in series %}
+{# The fill claims the quantity BENEATH the line is real, so this kind belongs
+   to measures with a meaningful zero. Overlapping fills hide one another; past
+   two series, stack them instead. #}
+{%   set _ = built.append({"type": "line", "name": name, "areaStyle": {},
+                           "showSymbol": categories | length <= 24,
+                           "data": values}) %}
+{% endfor %}
+{% set y_axis = {"type": "value"} %}
+{% if y_name %}
+{%   set _ = y_axis.update({"name": y_name, "nameLocation": "middle",
+                            "nameGap": 46, "nameRotate": 90}) %}
+{% endif %}
+{% set option = {
+     "tooltip": {"trigger": "axis", "axisPointer": {"type": "line"}},
+     "grid": {"left": (46 if y_name else 8), "right": 16,
+              "top": (52 if caption else 16), "bottom": 8, "containLabel": true},
+     "xAxis": {"type": "category", "data": categories},
+     "yAxis": y_axis,
+     "series": built,
+   } %}
+{% if caption %}
+{%   set _ = option.update({"title": {"text": caption}}) %}
+{% endif %}
+{% if built | length > 1 %}
+{%   set _ = option.update({"legend": {}}) %}
+{% endif %}
+{{ r.out(option, height, note) }}
 {% endmacro %}

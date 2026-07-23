@@ -19,7 +19,7 @@ other fields with judgment (each carries a "Beyond software" note in its
 |---|---|
 | Initiation & Planning | business-case, project-charter, feasibility-study, statement-of-work, proposal, project-management-plan, roadmap, risk-register |
 | Governance & Operations | decision-record, policy, standard-operating-procedure, change-request, incident-postmortem, service-level-agreement, user-guide |
-| Communication | status-report, meeting-minutes, presentation |
+| Communication | status-report, meeting-minutes |
 
 **software/** — SDLC
 

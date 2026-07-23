@@ -13,7 +13,7 @@
    the CDN is unreachable — or the JSON is invalid — the spec stays visible as a
    readable code box; the page never breaks.
 
-   The theme below is a TRANSLATION of the design system's dataviz tokens
+   The theme below is a TRANSLATION of the design system's chart tokens
    (docsHtml.chart.PALETTE / .TOKENS) into ECharts' theme shape. Change the
    colors in charts.js, never here and never per chart. */
 
@@ -135,8 +135,8 @@
             copyTitle: "copy ECharts spec",
           });
 
-          // Nudge every chart toward the accessible defaults the dataviz method
-          // requires, without overriding an author who set them explicitly.
+          // Nudge every chart toward accessible defaults, without overriding
+          // an author who set them explicitly.
           if (option.aria === undefined) option.aria = { enabled: true };
           if (option.tooltip === undefined) option.tooltip = {};
           if (option.legend === undefined && Array.isArray(option.series)

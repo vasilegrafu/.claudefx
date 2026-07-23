@@ -29,11 +29,10 @@ shareable as-is.
 """
 
 import argparse
-import datetime
 import json
 import re
-import subprocess
 import sys
+import time
 from pathlib import Path
 from types import SimpleNamespace
 from typing import NamedTuple
@@ -59,14 +58,33 @@ CATALOG_OUTPUT = SKILL_DIR / "CATALOG.md"
 
 TYPE_NAME_RE = re.compile(r"\{#\s*type-name:\s*(.*?)#\}")       # {# type-name: X #}
 TITLE_RE = re.compile(r"\{#\s*title:\s*(.*?)#\}")              # {# title: X #}
-BODY_CLASS_RE = re.compile(r"\{#\s*body-class:\s*(.*?)#\}")     # {# body-class: presentation #}
 PURPOSE_RE = re.compile(r"\{#\s*purpose:\s*(.*?)\s*#\}")        # {# purpose: X #}
 MACRO_SIG_RE = re.compile(r"\{%\s*macro\s+\w+\s*\((.*?)\)\s*%\}", re.S)
 
 # Presentation order for CATALOG.md (unknown keys append alphabetically).
-CATEGORY_ORDER = ["structure", "layout", "content", "lists", "callouts", "blocks",
-                  "business", "investing", "front-back-matter", "diagrams",
-                  "charts", "math"]
+# Categories are listed GROUP BY GROUP: the catalog bands by group, so a
+# category out of its group's run would split that band in two.
+CATEGORY_ORDER = ["structure", "layout", "content", "lists", "callouts",
+                  "blocks", "front-back-matter",               # foundational
+                  "business", "investing",                     # domain-specific
+                  "math", "diagrams", "charts"]                # subsystems
+
+# The first folder under components/ — what a component's scope is, stated by
+# where it lives. `math`, `diagrams` and `charts` are each their own group AND
+# their own category: single-category subsystems that need no extra level.
+GROUP_BLURBS = {
+    "foundational": "Domain-neutral — any document may use these, and nothing "
+                    "here knows what the document is about.",
+    "domain-specific": "Owned by one business domain. Their CSS classes carry "
+                       "the domain name, so markup says who owns it.",
+    "math": "The formula subsystem: LaTeX in the document, rendered by KaTeX "
+            "at view time.",
+    "diagrams": "The diagram subsystem: an engine-agnostic viewport plus one "
+                "engine.",
+    "charts": "The chart subsystem: an engine-agnostic frame plus one engine. "
+              "A chart is data, not a picture.",
+}
+
 DOMAIN_ORDER = ["general", "software", "finance", "investing", "accounting",
                 "research", "economics", "engineering", "tools", "fallback"]
 
@@ -148,10 +166,6 @@ def make_env(components: list[Component]) -> Environment:
                       trim_blocks=True, lstrip_blocks=True,   # tidy whitespace
                       keep_trailing_newline=True, autoescape=False)
     env.filters["boxstats"] = boxstats
-    # Option builders shared by the chart component family (chartkit.py) — the
-    # sixteen chart macros would otherwise each restate the same skeleton.
-    from lib import chartkit
-    env.globals.update(chartkit.EXPORTS)
     c = SimpleNamespace()
     for component in components:
         module = env.get_template(
@@ -208,16 +222,6 @@ def slug(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-") or "document"
 
 
-def git_user() -> str:
-    """Document author defaults to git config user.name (empty if no git)."""
-    try:
-        result = subprocess.run(["git", "config", "user.name"],
-                                capture_output=True, text=True, timeout=10)
-        return result.stdout.strip() if result.returncode == 0 else ""
-    except OSError:
-        return ""
-
-
 def cdn_href() -> str:
     """CDN prefix (version-pinned) baked into the head's fallback URLs.
 
@@ -251,19 +255,11 @@ def compose(type_name: str, title: str) -> str:
     display_name = (match.group(1).strip() if match
                     else type_name.replace("-", " ").title())
 
-    # Optional {# body-class: ... #} — presentations set "presentation".
-    match = BODY_CLASS_RE.search(template_src)
-    body_class = match.group(1).strip() if match else ""
-
     components = load_components()
     return make_env(components).get_template(template_rel).render(
         title=title,
         type_name=display_name,
-        author=git_user(),
-        date=datetime.date.today().isoformat(),
-        version="0.1",
-        cdn_href=cdn_href(),
-        body_class=body_class)
+        cdn_href=cdn_href())
 
 
 def showcase_templates() -> list[Path]:
@@ -289,13 +285,9 @@ def compose_showcase(template: Path) -> str:
     return make_env(load_components()).get_template(rel).render(
         title=title,
         type_name=type_name,
-        author="docs-html",
-        date=datetime.date.today().isoformat(),
-        version="",
         cdn_href="..",              # base links the LOCAL tree (../css, ../js) — previews the current tree
         cdn_fallback=cdn_href(),    # …and the page's own block head falls back to this pinned CDN if local is absent
-        cat_blurb=category_blurbs(),   # single source: the category usage.md blurbs
-        body_class="")
+        cat_blurb=category_blurbs())   # single source: the category usage.md blurbs
 
 
 # --------------------------------------------------------------------------
@@ -363,6 +355,106 @@ def cmd_showcase() -> int:
     return 0
 
 
+def _blame(exc: BaseException) -> str:
+    """Which TEMPLATE actually raised — the part of a Jinja traceback worth
+    printing.
+
+    Jinja rewrites tracebacks so template frames appear as real frames whose
+    filename is the .j2 path. The failure surfaces at the top-level template
+    being rendered (a showcase calls 115 components), so without this the
+    report names `components.html.j2` and leaves the reader to find which of
+    the 115 broke. The DEEPEST .j2 frame is the culprit."""
+    import traceback
+    frames = [f for f in traceback.extract_tb(exc.__traceback__)
+              if f.filename.endswith(".j2")]
+    if not frames:
+        return ""
+    deepest = frames[-1]
+    name = Path(deepest.filename).parent.name          # the component's folder
+    return f" [{name}:{deepest.lineno}]"
+
+
+def cmd_check() -> int:
+    """`check` — compose every doc-type and confirm nothing is left unrendered.
+
+    The skill's one automated guard, and it exists because the failures it
+    catches are SILENT. A component whose template no longer parses, or a
+    doc-type calling a macro that has changed shape, is not discovered at
+    compose time by anything else — it is discovered by the next person who
+    runs `new` and gets a broken document, or worse, does not notice.
+
+    Three things are checked, and between them they EXECUTE every component:
+
+    1. `make_env` parses EVERY component template to expose its macro, so a
+       syntax error anywhere in components/ fails here before a doc-type is
+       touched.
+    2. Every doc-type is rendered through the same context `compose()` uses,
+       then searched for a surviving `{% ... %}`.
+    3. Every showcase is rendered the same way. This is what makes the check
+       complete rather than merely broad: doc-types call only 43 of the
+       components, because the rest are a library an author reaches for by
+       hand. The showcase calls 115. Together they run all 117, so a RUNTIME
+       fault — bad tuple arity, a wrong unpack, `loop.parent` — is caught in a
+       component no doc-type happens to use. Parsing alone would not find it.
+
+    Only `{% %}` counts as a defect. `{{ ... }}` in the output is BY DESIGN —
+    a composed skeleton carries content placeholders for the author to fill,
+    and treating those as failures makes the check cry wolf on all 75."""
+    start = time.perf_counter()
+    try:
+        env = make_env(load_components())
+    except Exception as e:                       # noqa: BLE001 — report, don't crash
+        print(f"component templates failed to load: {type(e).__name__}: {e}")
+        return 1
+
+    types = doc_type_dirs()
+    failures = 0
+
+    for name, directory in sorted(types.items()):
+        rel = (directory.relative_to(SKILL_DIR) / "document.html.j2").as_posix()
+        try:
+            src = (SKILL_DIR / rel).read_text(encoding="utf-8")
+            match = TYPE_NAME_RE.search(src)
+            out = env.get_template(rel).render(
+                title="Check Probe",
+                type_name=(match.group(1).strip() if match
+                           else name.replace("-", " ").title()),
+                cdn_href=cdn_href())
+        except Exception as e:                   # noqa: BLE001 — report, don't crash
+            print(f"  {name:<30} FAILED{_blame(e)}: {type(e).__name__}: {e}")
+            failures += 1
+            continue
+
+        left = re.search(r"\{%.{0,60}", out, re.S)
+        if left:
+            print(f"  {name:<38} UNRENDERED: {left.group(0)!r}")
+            failures += 1
+
+    # The showcases, through the same function `showcase` uses — so the check
+    # exercises the real code path rather than a copy of it. Nothing is written.
+    shows = showcase_templates()
+    for template in shows:
+        try:
+            out = compose_showcase(template)
+        except Exception as e:                   # noqa: BLE001 — report, don't crash
+            print(f"  {template.name:<30} FAILED{_blame(e)}: {type(e).__name__}: {e}")
+            failures += 1
+            continue
+        left = re.search(r"\{%.{0,60}", out, re.S)
+        if left:
+            print(f"  {template.name:<38} UNRENDERED: {left.group(0)!r}")
+            failures += 1
+
+    elapsed = time.perf_counter() - start
+    print()
+    if failures:
+        print(f"{failures} template(s) failed")
+        return 1
+    print(f"{len(load_components())} components executed via {len(types)} doc-types "
+          f"+ {len(shows)} showcase(s), all clean ({elapsed:.1f}s)")
+    return 0
+
+
 # --------------------------------------------------------------------------
 # CATALOG.md — the generated quick-reference
 # --------------------------------------------------------------------------
@@ -402,9 +494,22 @@ def _blurb(text: str) -> str:
 
 
 def category_blurbs() -> dict[str, str]:
-    """category folder name -> blurb, from components/<category>/usage.md."""
-    return {p.parent.name: _blurb(_read(p))
-            for p in COMPONENTS_DIR.glob("*/usage.md")}
+    """category folder name -> blurb, from the category's own usage.md.
+
+    Derived from the loaded components rather than globbed at a fixed depth,
+    because the categories do not all sit at the same depth: `charts` and
+    `diagrams` are top-level groups holding components directly, while
+    `foundational` and `domain-specific` hold a category level first. Walking
+    up from each component finds the category wherever it is, and cannot drift
+    from what `load_components` actually discovered."""
+    blurbs = {}
+    for comp in load_components():
+        category_dir = comp.path.parent.parent
+        if category_dir.name not in blurbs:
+            usage = category_dir / "usage.md"
+            if usage.exists():
+                blurbs[category_dir.name] = _blurb(_read(usage))
+    return blurbs
 
 
 def domain_blurbs() -> dict[str, str]:
@@ -431,10 +536,15 @@ def compose_catalog() -> str:
     components = load_components()
     cat_blurb, dom_blurb = category_blurbs(), domain_blurbs()
     by_cat: dict[str, list[tuple[str, str]]] = {}
+    cat_group: dict[str, str] = {}
     for comp in components:
         category = comp.path.parent.parent.name
         by_cat.setdefault(category, []).append(
             (_component_call(comp), _purpose(_read(comp.path))))
+        # The group is the first folder under components/. For `charts` and
+        # `diagrams` that is the category itself — they are single-category
+        # subsystems and need no extra level.
+        cat_group[category] = comp.path.relative_to(COMPONENTS_DIR).parts[0]
 
     types = doc_type_dirs()
     by_dom: dict[str, list[tuple[str, str]]] = {}
@@ -459,9 +569,17 @@ def compose_catalog() -> str:
     out.append("Call on the `c` namespace inside a doc-type body. Leaves are "
                "shown as `{{ c.x(...) }}`; containers that wrap content as "
                "`{% call c.x(...) %}…{% endcall %}`.")
+    shown_group = None
     for cat in _ordered(by_cat, CATEGORY_ORDER):
+        group = cat_group.get(cat, "")
+        if group != shown_group:
+            shown_group = group
+            out.append("")
+            out.append(f"### {group}")
+            out.append("")
+            out.append(f"*{GROUP_BLURBS.get(group, '')}*")
         out.append("")
-        out.append(f"### {cat}")
+        out.append(f"#### {cat}")
         if cat_blurb.get(cat):
             out.append(f"*{cat_blurb[cat]}*")
         out.append("")
@@ -489,149 +607,6 @@ def cmd_catalog() -> int:
     """`catalog` — regenerate CATALOG.md from the templates."""
     CATALOG_OUTPUT.write_text(compose_catalog(), encoding="utf-8")
     print(f"composed catalog -> {CATALOG_OUTPUT}")
-    return 0
-
-
-# --------------------------------------------------------------------------
-# chart preset check
-# --------------------------------------------------------------------------
-
-SAMPLE_RE = re.compile(r"\{#\s*sample:\s*(.*?)\s*#\}", re.S)   # {# sample: a=1, b=2 #}
-CHART_PRE_RE = re.compile(r'<pre class="chart[^"]*"[^>]*>(.*?)</pre>', re.S)
-
-
-# Slots 1-3 and 7 clear 3:1 on the chart surface; 4, 5, 6 and 8 do not (run
-# `python builder.py dataviz`). Colours are handed out in order, so the moment a
-# chart needs a FOURTH automatic colour it has reached a slot that requires
-# relief. Keep this in step with PALETTE in js/modules/charts.js.
-RELIEF_FREE_SLOTS = 3
-
-
-def relief_violations(spec: dict) -> str | None:
-    """The dataviz *relief rule*, checked: a series drawn in a low-contrast slot
-    must not be identified by colour alone — it needs visible data labels.
-
-    Only AUTOMATIC colours count. A series or item that sets its own colour is
-    not drawing from the rotating palette at all, which is why a role-coloured
-    sankey with fifteen nodes is fine and a four-series bar chart is not.
-
-    Returns a description of the violation, or None."""
-    series = spec.get("series")
-    if not isinstance(series, list):
-        return None
-
-    def labelled(obj: dict) -> bool:
-        label = obj.get("label")
-        return isinstance(label, dict) and label.get("show") is True
-
-    # Multi-series: one automatic colour per series.
-    auto = [s for s in series
-            if isinstance(s, dict) and not (s.get("itemStyle") or {}).get("color")
-            and not (s.get("lineStyle") or {}).get("color")]
-    if len(auto) > RELIEF_FREE_SLOTS and not any(labelled(s) for s in auto):
-        return (f"{len(auto)} series take automatic palette colours "
-                f"(slots past {RELIEF_FREE_SLOTS} need relief) and none show labels")
-
-    # Single categorical series (pie, funnel, treemap): one colour per ITEM.
-    # These draw labels by default, so the violation is switching them OFF.
-    for s in series:
-        if not isinstance(s, dict) or s.get("type") not in {"pie", "funnel", "treemap"}:
-            continue
-        items = [d for d in (s.get("data") or [])
-                 if isinstance(d, dict) and not (d.get("itemStyle") or {}).get("color")]
-        label = s.get("label")
-        hidden = isinstance(label, dict) and label.get("show") is False
-        if len(items) > RELIEF_FREE_SLOTS and hidden:
-            return (f"{s['type']} has {len(items)} auto-coloured slices "
-                    f"with labels switched off")
-    return None
-
-
-def cmd_charts() -> int:
-    """`charts` — render every chart preset, then check two things about every
-    spec (the presets' and the showcase's alike).
-
-    1. It is valid JSON. If a spec is malformed the page does not error: the
-       engine leaves the source visible as a code box, which looks exactly like
-       an unreachable CDN. The failure is silent by design, so it needs a test
-       rather than an eyeball.
-    2. It satisfies the dataviz relief rule — see `relief_violations`.
-
-    A preset opts in with a `{# sample: ... #}` header holding the keyword
-    arguments to call it with — real enough to exercise every loop."""
-    import ast
-    import html as html_mod
-
-    components = [c for c in load_components()
-                  if c.path.parent.parent.name == "charts"]
-    env = make_env(load_components())
-    failures = 0
-    checked = 0
-
-    for comp in sorted(components):
-        text = _read(comp.path)
-        m = SAMPLE_RE.search(text)
-        if not m:
-            continue                      # the engine macro itself has no sample
-        try:
-            call = ast.parse(f"f({m.group(1)})", mode="eval").body
-            kwargs = {kw.arg: ast.literal_eval(kw.value) for kw in call.keywords}
-        except (SyntaxError, ValueError) as e:
-            print(f"  {comp.name:<16} BAD SAMPLE HEADER: {e}")
-            failures += 1
-            continue
-
-        try:
-            macro = getattr(env.globals["c"], comp.macro)
-            rendered = str(macro(**kwargs))
-        except Exception as e:                       # noqa: BLE001 — report, don't crash
-            print(f"  {comp.name:<16} RENDER FAILED: {e}")
-            failures += 1
-            continue
-
-        blocks = CHART_PRE_RE.findall(rendered)
-        if not blocks:
-            print(f"  {comp.name:<16} produced no chart block")
-            failures += 1
-            continue
-
-        for block in blocks:
-            checked += 1
-            try:
-                spec = json.loads(html_mod.unescape(block))
-            except json.JSONDecodeError as e:
-                print(f"  {comp.name:<20} INVALID JSON: {e}")
-                failures += 1
-                break
-            bad = relief_violations(spec)
-            if bad:
-                print(f"  {comp.name:<20} RELIEF RULE: {bad}")
-                failures += 1
-                break
-        else:
-            print(f"  {comp.name:<20} ok ({len(blocks)} spec"
-                  f"{'s' if len(blocks) > 1 else ''})")
-
-    # The showcase's hand-written specs are held to the same rule — the gallery
-    # is the system's own dogfood, and a demo that breaks a rule teaches it.
-    for page in sorted(SHOWCASES_DIR.glob("*.html")):
-        for block in CHART_PRE_RE.findall(_read(page)):
-            try:
-                spec = json.loads(html_mod.unescape(block))
-            except json.JSONDecodeError:
-                continue                  # rendered-source noise, not a spec
-            checked += 1
-            bad = relief_violations(spec)
-            if bad:
-                print(f"  {page.name:<20} RELIEF RULE: {bad}")
-                failures += 1
-
-    print()
-    if failures:
-        print(f"{failures} chart spec(s) failed")
-        return 1
-    print(f"all chart specs are valid JSON and satisfy the relief rule "
-          f"({checked} spec(s) checked)")
     return 0
 
 
@@ -685,8 +660,7 @@ def main(argv: list[str]) -> int:
     new.add_argument("--force", action="store_true", help="overwrite an existing document")
     sub.add_parser("showcase", help="regenerate every showcases/<name>.html")
     sub.add_parser("catalog", help="regenerate CATALOG.md (quick-reference)")
-    sub.add_parser("dataviz", help="verify the chart colour tokens (contrast, CVD, ramp)")
-    sub.add_parser("charts", help="render every chart preset and validate its spec JSON")
+    sub.add_parser("check", help="compose every doc-type; fail on unrendered Jinja")
     show = sub.add_parser("show", help="print one component/doc-type: signature + usage.md")
     show.add_argument("name", help="a component or doc-type name")
 
@@ -699,11 +673,8 @@ def main(argv: list[str]) -> int:
         return cmd_showcase()
     if args.cmd == "catalog":
         return cmd_catalog()
-    if args.cmd == "dataviz":
-        from lib import dataviz   # colour science stays out of the composer
-        return dataviz.check()
-    if args.cmd == "charts":
-        return cmd_charts()
+    if args.cmd == "check":
+        return cmd_check()
     if args.cmd == "show":
         return cmd_show(args)
     parser.print_help()

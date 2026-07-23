@@ -3,6 +3,54 @@
 {% import "components/charts/_render.html.j2" as r %}
 
 {% macro stacked_normalized(series=[], categories=[], caption="", height=340, note="", y_name="") %}
-{{ r.out(chart_cartesian(series=series, categories=categories, caption=caption,
-                          y_name=y_name, kind="bar", stack=True, normalize=True), height, note) }}
+{# The shares are computed HERE, at compose time, so the rendered spec carries
+   the percentages and a reader can check them against the source numbers. The
+   author passes raw values; converting them by hand is the one step that
+   silently produces a chart which draws perfectly and means nothing.
+
+   Totals use the ABSOLUTE value, so a category containing a negative still
+   sums to a whole rather than to something smaller than its parts. #}
+{% set totals = [] %}
+{% for index in range(categories | length) %}
+{%   set ns = namespace(total=0) %}
+{%   for name, values in series %}
+{%     set ns.total = ns.total + (values[index] | abs) %}
+{%   endfor %}
+{%   set _ = totals.append(ns.total) %}
+{% endfor %}
+{% set built = [] %}
+{% for name, values in series %}
+{%   set shares = [] %}
+{%   for index in range(categories | length) %}
+{%     set _ = shares.append((100 * values[index] / totals[index]) | round(4)
+                             if totals[index] else 0) %}
+{%   endfor %}
+{# Labels are not optional here: once every column is the same height the only
+   way to read a segment is its number. #}
+{%   set _ = built.append({"type": "bar", "name": name, "stack": "total",
+                           "label": {"show": true, "position": "inside"},
+                           "data": shares}) %}
+{% endfor %}
+{# `max: 100` pins the axis. Without it ECharts fits the axis to the data, and
+   a column that rounds to 99.99 quietly rescales the whole chart. #}
+{% set y_axis = {"type": "value", "max": 100} %}
+{% if y_name %}
+{%   set _ = y_axis.update({"name": y_name, "nameLocation": "middle",
+                            "nameGap": 46, "nameRotate": 90}) %}
+{% endif %}
+{% set option = {
+     "tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}},
+     "grid": {"left": (46 if y_name else 8), "right": 16,
+              "top": (52 if caption else 16), "bottom": 8, "containLabel": true},
+     "xAxis": {"type": "category", "data": categories},
+     "yAxis": y_axis,
+     "series": built,
+   } %}
+{% if caption %}
+{%   set _ = option.update({"title": {"text": caption}}) %}
+{% endif %}
+{% if built | length > 1 %}
+{%   set _ = option.update({"legend": {}}) %}
+{% endif %}
+{{ r.out(option, height, note) }}
 {% endmacro %}

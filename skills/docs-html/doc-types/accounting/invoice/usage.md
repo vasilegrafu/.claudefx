@@ -8,4 +8,4 @@ _Authoring guidance for the `invoice` document type — audience, depth, and rul
 - Rules: an issued invoice is IMMUTABLE — corrections happen via credit note
   (a new invoice with negative amounts), never by editing; check local legal
   requirements for mandatory fields (tax ids, VAT breakdown); Ctrl+P gives
-  the PDF to send (print.css).
+  the PDF to send.

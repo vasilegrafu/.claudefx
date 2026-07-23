@@ -168,8 +168,17 @@
       for (const pre of pres) sources.set(pre, pre.textContent.trim());
 
       await docsHtml.util.loadScript(MERMAID);
+      // Mermaid draws its own SVG and cannot read our tokens, so it has to be
+      // told which way the page goes. `color-scheme` is the one token that
+      // says so in a single word, and css/modules/theme.css sets it — so
+      // retheming that file to dark carries the diagrams with it, with nothing
+      // to remember here. Mermaid has only "default" and "dark"; the
+      // alternative is a full themeVariables map, which would duplicate the
+      // palette in a second place.
+      const scheme = getComputedStyle(document.documentElement).colorScheme;
       window.mermaid.initialize({
         startOnLoad: false,
+        theme: scheme.includes("dark") ? "dark" : "default",
         flowchart: { useMaxWidth: false }, sequence: { useMaxWidth: false },
         er: { useMaxWidth: false }, class: { useMaxWidth: false },
         state: { useMaxWidth: false }, gantt: { useMaxWidth: false },

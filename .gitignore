@@ -1,4 +1,4 @@
-# Python bytecode — builder.py and dataviz.py are run in place from the repo,
-# so these appear next to the sources. They are build artifacts, never content.
+# Python bytecode — builder.py is run in place from the repo, so these appear
+# next to the sources. They are build artifacts, never content.
 __pycache__/
 *.py[cod]

@@ -53,8 +53,13 @@ or `REFERENCE.md` (to extend the system).
 ## The two assets
 
 **`css/docs-html.css`** — the single stylesheet. It sets the cascade order once
-with `@layer`, then `@import`s the modules in `css/modules/`. A document links
+with `@layer`, then `@import`s the modules from `css/<group>/`. A document links
 only this file.
+
+**Every colour lives in `css/foundational/theme.css`** — one file, `:root` custom
+properties, nothing else. That is the file to edit to retheme the whole system:
+components, syntax highlighting, data ramps and charts all read from it. No
+other module may hardcode a colour.
 
 `@layer` makes the cascade order explicit and independent of import order, so
 modules can be added or reordered without specificity surprises; a document
@@ -139,28 +144,31 @@ directly — into a finished document:
 SKILL.md
 CATALOG.md     ← generated quick-reference (component call forms + doc-type purposes); `builder.py catalog`
 builder.py     ← Jinja compose: base + doc-type template + component macros → docs/<name>.html
-lib/           ← the Python builder.py calls (builder.py itself stays at root: it is the command)
-    chartkit.py    option builders shared by the chart components (11 kinds are one function + flags)
-    dataviz.py     verifies the chart colour tokens in js/modules/charts.js (contrast, CVD, ramp)
-css/
+css/                 ← grouped by SCOPE; components/ uses the same five groups
     docs-html.css    ← the single stylesheet (@layer + @import)
-    modules/*.css    ← the modules it imports
-    REFERENCE.md     ← CSS architecture: @layer order, module map, page-local CSS, rebranding
+    foundational/    theme, base, metadata, layout, toc, content, callouts,
+                     lists, blocks, code — any document may use these
+    domain-specific/ business, investing — classes namespaced with the domain
+    math/            math — KaTeX                   ┐ rendering subsystems: each
+    diagrams/        diagrams + diagram-mermaid     │ pairs with a lazy CDN
+    charts/          charts + chart-apache-echarts  ┘ engine in js/modules/
+    REFERENCE.md     ← CSS architecture: @layer order, module map, namespacing, theme
 js/
     docs-html.js     ← the single script: entry/loader (MODULES list)
     modules/*.js     ← the modules it loads (core, util, icons, features, main)
     REFERENCE.md     ← JS internals: module roles, feature-author guide, diagrams engine/editor
 components/
     REFERENCE.md      ← the component model (how components are organized + called)
-    <category>/       structure | layout | content | lists | callouts | blocks |
-                      business | investing | front-back-matter | diagrams |
-                      charts | math
-        usage.md           category orientation: blurb + when to use
-        _<name>.html.j2    shared template internals — NOT a component; the builder
-                           only discovers files named component.html.j2
-        <name>/
-            usage.md           guidance for the author: when + how, and the rules
-            component.html.j2  a Jinja macro {% macro <name>(...) %} — the callable markup
+    <group>/          foundational | domain-specific | math | diagrams | charts
+        <category>/   e.g. foundational/lists, domain-specific/investing
+                      (math, diagrams and charts hold their components
+                       directly — each is a single-category subsystem)
+            usage.md           category orientation: blurb + when to use
+            _<name>.html.j2    shared template internals — NOT a component; the builder
+                               only discovers files named component.html.j2
+            <name>/
+                usage.md           guidance for the author: when + how, and the rules
+                component.html.j2  a Jinja macro {% macro <name>(...) %} — the callable markup
 showcases/
     <name>.html.j2    source template for a showcase (edit this)
     <name>.html       generated showcase — run `python builder.py showcase`
@@ -192,8 +200,8 @@ first `new` creates `docs/` if missing.
 
 ## View modes — the layout toggle
 
-Every non-presentation document carries a small fixed toolbar top-right with two
-glyph buttons, injected by `base.html.j2`:
+Every document carries a small fixed toolbar top-right with two glyph buttons,
+injected by `base.html.j2`:
 
 - **▯ Page width** (default) — content sits in a centered 1024px column
   (the `<main>` wrapper carries the geometry; see Layout invariants below).
@@ -203,7 +211,7 @@ glyph buttons, injected by `base.html.j2`:
 The buttons carry only `data-w="page"|"wide"` — no inline handler.
 `docs-html.js` attaches one click listener; which button looks active is decided
 purely in CSS from the body class. The toolbar is excluded from the reading
-column, hidden in print, and omitted from presentations.
+column and hidden in print.
 
 ## CATALOG.md — read this first
 
@@ -241,9 +249,29 @@ or run `python builder.py --list`. For the curated taxonomy — types grouped by
 SDLC stage / theme, the † universal-pattern markers, and the abbreviation map —
 see `doc-types/REFERENCE.md`.
 
-## Commands
+## CLI — `python builder.py <cmd>`
 
-### `new <type> "<title>"` — create a document
+Five subcommands; that is the whole builder. Everything under **Procedures**
+below is something *you* carry out — there is no `builder.py modify`,
+`builder.py release` or `builder.py audit`.
+
+| command | does |
+|---|---|
+| `new <type> "<title>"` | compose a document → `docs/<subject>-<type>.html`. `--slug S` sets the filename's subject (e.g. a ticker), `--docs DIR` the output folder, `--force` overwrites |
+| `check` | compose every doc-type; fail on unrendered Jinja — **run after touching any template** |
+| `catalog` | regenerate `CATALOG.md` |
+| `showcase` | regenerate `showcases/<name>.html` |
+| `show <name>` | print one component/doc-type: call form, purpose, full `usage.md` |
+| `--list` | list every doc-type name |
+
+`check` is the skill's only automated guard. It parses every component template
+and composes every doc-type — the whole tree, in about a second — and fails on
+a surviving `{% … %}`, never on `{{ … }}`, which is the placeholder a composed
+skeleton is *supposed* to carry. Nothing else verifies that a template works.
+
+## Procedures — what to do when the user asks
+
+### Create a document
 Pick the type from the catalog (`CATALOG.md`, or `python builder.py --list`).
 The builder accepts only full type names — when the user gives an abbreviation
 (ADR, SRS, PRD, SOW, RTM, SLA, retro, changelog…), translate it to the full name
@@ -271,7 +299,7 @@ fits, use `generic-document` and offer to promote it via `new type`.
 5. **Self-check**: no `style=` attributes, no `<style>` blocks, no `<script>`
    blocks and no inline event handlers (all behaviour comes from
    `docs-html.js`), the two version-pinned CDN head links present, no leftover
-   `{{...}}` placeholders, TOC entries match sections exactly, metadata complete.
+   `{{...}}` placeholders, TOC entries match sections exactly.
    Fix before reporting done.
 
 To grow a document later, copy the markup pattern from the component's `usage.md`
@@ -281,18 +309,19 @@ edits are hand edits.
 Later section-by-section filling: "fill the X section" → research only what that
 section needs, replace its todo-mark, report remaining todo count.
 
-### `modify <doc> …`
+### Modify a document
 Read the current file FIRST (manual edits are part of the truth — merge, never
 regenerate). Targeted edits using only catalog components. Section changes update
-the TOC in the same edit. Bump version, update date, append a change-history row
-(add the table if missing). Renames: update every referring link in other
-documents — never rename without the sweep.
+the TOC in the same edit. Append a change-history row (add the table if missing)
+— that table is where a document's version and dates live; the cover carries
+none. Renames: update every referring link in other documents — never rename
+without the sweep.
 
-### `update <doc>`
+### Update a document
 Re-read the code/state the document describes; propose refresh edits as targeted
-changes; version bump + change-history row.
+changes; add a change-history row.
 
-### `new type <name>`
+### Add a doc-type
 Extend the skill: add `doc-types/<domain>/<full-name>/usage.md` +
 `document.html.j2` (pick the domain folder from the catalog; a genuinely new
 domain gets a new folder — the builder discovers recursively).
@@ -319,25 +348,22 @@ folder; the builder discovers recursively) — the macro file's FIRST line is
 `{# purpose: … #}`. After adding either, run `python builder.py catalog` to
 regenerate CATALOG.md.
 
-**Two checks guard the chart category — run both after touching it:**
+**Nothing checks a chart automatically — open one after touching it.** A
+malformed spec does **not** raise: the engine leaves the source visible as a
+code box, indistinguishable from an unreachable CDN, so a broken chart looks
+like a network problem and a document composes "successfully" with a hole in
+it. Compose a document that uses the kind and look at it in a browser.
 
-- `python builder.py charts` — renders every chart preset from its
-  `{# sample: … #}` header, then checks every spec (presets' and the showcase's)
-  on two counts: that it is **valid JSON**, and that it satisfies the **relief
-  rule** (more than three automatically-coloured series reaches a palette slot
-  below 3:1, so it needs visible data labels). The JSON check matters because a
-  malformed spec does **not** raise: the engine leaves the source visible as a
-  code box, indistinguishable from an unreachable CDN. Explicitly coloured
-  series and items are exempt from the relief check — they are not drawing from
-  the rotating palette at all.
-- `python builder.py dataviz` — verifies the chart colours: contrast on the
-  chart surface, pairwise separation under protanopia / deuteranopia /
-  tritanopia, and monotonic luminance of the sequential ramp.
+Two rules the rendering will not enforce for you: the spec must be **valid
+JSON**, and it must satisfy the **relief rule** — more than three
+automatically-coloured series reaches a palette slot below 3:1 contrast, so it
+needs visible data labels. Series and items that set their own colour are
+exempt; they are not drawing from the rotating palette at all.
 
 Adding a chart *kind* (a preset macro) versus adding a chart *engine* are
 different jobs with different steps — both are written out in `js/REFERENCE.md`.
 
-### `release [major|minor|patch]` — publish a design-system version
+### Release a design-system version
 This skill lives in `github.com/vasilegrafu/.aifx` — a standalone public
 repo, checked out ONCE as a shared clone that solutions consume via
 junctions/symlinks into their `.claude/skills/`; the same repo is ALSO the CDN
@@ -358,13 +384,16 @@ Never bump the version as a side effect of other work — only on an explicit
 release. Day-to-day skill commits to `main` are fine without a release; tags
 pin what documents fall back to.
 
-### PDF
-Open the document and Ctrl+P → Save as PDF — `print.css` produces clean
-paginated output (diagrams freeze to static, fully-visible images; the toolbar
-and diagram tools are hidden); presentations print one page per sheet.
+### Export to PDF
+Open the document and Ctrl+P → Save as PDF. **There is no print stylesheet** —
+paper size, margins and pagination are the browser's defaults, set in the print
+dialog. The only print CSS is the `@media print` block each module keeps for
+itself: the floating toolbar and diagram tools are hidden, diagrams freeze to
+static fully-visible images, and columns collapse to one. Those stop
+screen-only UI reaching the paper; they impose no layout of their own.
 
-### `audit`
-Grep/Read over the `*.html` documents in `docs/`:
+### Audit the documents in `docs/`
+Grep/Read over the `*.html` documents there:
 - contract violations (see Authoring contract), leftover `{{...}}` placeholders;
 - TOC entries match the document's sections exactly (ids and titles);
 - the two head links present and resolving;
@@ -422,12 +451,14 @@ Report findings; offer fixes.
 5. Template and doc-type names are full words, never abbreviations.
 
 **Metadata**
-Every document starts with the metadata-header: doc-type kicker
-(`<p class="doc-type">` — the document type in full words), title, author, ISO
-date, and version. A document type may add fields it needs (Owner, Reviewers,
-Release, Sponsor, Severity, etc.). The organization line is injected by
-brand.css, never written into documents. Documents past v0.x carry a
-change-history table; every modification appends a row.
+Every document starts with the metadata-header: a doc-type kicker
+(`<p class="doc-type">` — the document type in full words) and the title.
+Nothing else is composed into it. A document may add a `<dl>` of facts it
+genuinely carries and someone will keep current (Owner, Reviewers, Release,
+Sponsor, Severity, Supersedes…), but an unmaintained fact is worse than an
+absent one. A document that tracks revisions carries a change-history table;
+every modification appends a row, and that table — not the cover — is where
+versions and dates belong.
 
 **Code**
 Documents hold code as **plain text** — never token `<span>`s, never
@@ -451,8 +482,8 @@ valid. See `components/content/code-block/usage.md`.
 - Charts are data, not pictures: a JSON ECharts `option` in
   `c.apache_echarts()` (`pre.chart.apache-echarts`), rendered to SVG at
   view time — never a screenshot of a chart.
-  Never restyle the theme per chart (the palette is checked colour-blind-safe by
-  `python builder.py dataviz`); one y-axis only. The approved chart kinds — and
+  Never restyle the theme per chart (the palette is the colour-blind-safe
+  Okabe-Ito set); one y-axis only. The approved chart kinds — and
   which are presets (`c.sankey`, `c.price_history`, `c.drawdown_curve`,
   `c.return_distribution`, `c.correlation_matrix`) versus
   hand-written recipes — are listed in `components/charts/usage.md`.
@@ -481,7 +512,7 @@ valid. See `components/content/code-block/usage.md`.
 
 ## Page-specific CSS
 
-Shared `css/modules/` are for styles used across MANY documents; CSS that styles
+Shared modules are for styles used across MANY documents; CSS that styles
 ONE page lives in that page, in a `{% block head %}` `<style>` (the base shell
 exposes `{% block head %}` just before `</head>`, after the design-system link,
 so the page reads the same tokens). Worked example + mechanics:

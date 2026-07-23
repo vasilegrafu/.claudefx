@@ -3,6 +3,41 @@
 {% import "components/charts/_render.html.j2" as r %}
 
 {% macro line(series=[], categories=[], caption="", height=340, note="", y_name="") %}
-{{ r.out(chart_cartesian(series=series, categories=categories, caption=caption,
-                          y_name=y_name, kind="line"), height, note) }}
+{# The spec is built as a DATA STRUCTURE and serialised once. Hand-written JSON
+   needs manual comma bookkeeping, and a missed comma fails silently — the chart
+   simply never appears and the source box shows instead, which looks exactly
+   like an unreachable CDN. #}
+{% set built = [] %}
+{% for name, values in series %}
+{# Symbols stop being readable once the points crowd; past 24 the line alone
+   carries the shape. #}
+{%   set _ = built.append({"type": "line", "name": name,
+                           "showSymbol": categories | length <= 24,
+                           "data": values}) %}
+{% endfor %}
+{# A named value axis sits MID-axis and rotated: ECharts puts the name at the
+   END by default, which is exactly where the title is. containLabel reserves
+   room for tick labels but NOT for an axis name, so the left margin has to
+   widen too — otherwise the name renders off the card and disappears. #}
+{% set y_axis = {"type": "value"} %}
+{% if y_name %}
+{%   set _ = y_axis.update({"name": y_name, "nameLocation": "middle",
+                            "nameGap": 46, "nameRotate": 90}) %}
+{% endif %}
+{% set option = {
+     "tooltip": {"trigger": "axis", "axisPointer": {"type": "line"}},
+     "grid": {"left": (46 if y_name else 8), "right": 16,
+              "top": (52 if caption else 16), "bottom": 8, "containLabel": true},
+     "xAxis": {"type": "category", "data": categories},
+     "yAxis": y_axis,
+     "series": built,
+   } %}
+{% if caption %}
+{%   set _ = option.update({"title": {"text": caption}}) %}
+{% endif %}
+{# Identity is never colour alone: from two series up, name them in a legend. #}
+{% if built | length > 1 %}
+{%   set _ = option.update({"legend": {}}) %}
+{% endif %}
+{{ r.out(option, height, note) }}
 {% endmacro %}

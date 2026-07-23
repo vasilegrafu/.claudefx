@@ -14,6 +14,130 @@ A published version is immutable: any change, however small, is a new version.
 
 ---
 
+## 4.0.0 — 2026-07-23
+
+**Major.** Four markup contract changes, and the tree reorganised so its layout
+states what each part is for. Documents pinned to `@3.x` are unaffected; a
+document upgrades by editing its two head links, and will need the migration
+notes at the end of this entry.
+
+### The cover carries only the type and the title
+
+`metadata_header(type_name, title)` — the `<dl>` of **Author / Date / Version**
+and the **organization line** above it are gone.
+
+Those four facts were composed into every document whether or not they meant
+anything: the author was whatever `git config user.name` returned, the date was
+the day the *skeleton* was generated rather than the day the content was
+written, the version sat at `0.1` unless someone remembered to bump it, and the
+organization line said the same thing on every page of every project. A fact
+nobody maintains is worse than an absent one, because a reader trusts it.
+
+A document that genuinely tracks revisions uses [[change-history]], which is
+dated per row. A document that must state its owner or reviewers adds a `<dl>`
+by hand — the CSS still styles it; see `components/foundational/structure/metadata-header/usage.md`.
+
+Removing them made three mechanisms dead, so they went too: `git_user()` in
+`builder.py` (with its `subprocess` and `datetime` imports), `--brand-name`,
+and the whole body-class machinery.
+
+### `presentation` removed
+
+The doc-type, `presentation.css`, and the `page` component. It was the only
+user of `{# body-class: … #}`, so `BODY_CLASS_RE`, the `body_class` render
+context and the conditional in `base.html.j2` went with it.
+
+**74 doc-types, 116 components.**
+
+### Domain CSS is namespaced
+
+Every class in `domain-specific/` now starts with its domain:
+`.bridge-bar` → `.investing-bridge-bar`, `.swot` → `.business-swot`. 310 class
+names across 51 files. Markup now says which domain owns a rule, and the two
+domains cannot reach into each other's names.
+
+Two classes failed the prefix test and moved to `foundational/` instead, which
+is the more useful result:
+
+- **`.badge`** → `foundational/blocks.css`. business.css's own comment called it
+  "a generic status/rating pill", and three investing components used it.
+- **`.neg`** → `foundational/content.css`. It was the system's only genuine
+  collision — both domain modules defined it — and "this number is negative" is
+  arithmetic, not a domain concept. It is hand-written in doc-type markup across
+  accounting, finance and general documents.
+
+Where a class name arrives as a **macro argument** — `financial_table` takes
+rows of `("subtotal", …)` from 11 doc-types — the macro adds the prefix, so
+authoring keeps its plain vocabulary and only the emitted markup changes.
+
+### `css/` and `components/` are grouped by scope
+
+Both trees use the same five groups, so a component and the CSS that styles it
+sit in matching places:
+
+| group | what it means |
+|---|---|
+| `foundational/` | any document may use it; nothing here knows a domain |
+| `domain-specific/` | one domain owns it; its classes carry that domain's name |
+| `math/` · `diagrams/` · `charts/` | rendering subsystems, each with a lazy CDN engine |
+
+The last three are separate because each carries its own engine (KaTeX, Mermaid,
+ECharts) and a document using none of them downloads none of them.
+
+### One colour file
+
+`css/foundational/theme.css` holds **every colour in the system** as `:root`
+custom properties — surfaces, semantic tones, the syntax palette, the data ramps
+and the chart palette. `base.css` keeps typography and spacing and no colour at
+all; `brand.css` is gone, its one token folded in as `--accent`.
+
+Retheming and rebranding are now the same act: edit that one file. **No other
+module may hardcode a colour** — verified, and the check is in
+`css/REFERENCE.md`.
+
+Charts follow it: `js/modules/charts.js` reads `--chart-palette-N`,
+`--chart-ramp-N` and `--chart-*` with `getComputedStyle` at load instead of
+carrying its own hex, so a retheme reaches every existing chart.
+
+### No print stylesheet
+
+`print.css` is deleted. Ctrl+P uses the browser's own defaults — paper size,
+margins and pagination come from the print dialog. What remains is the
+`@media print` block each module keeps for itself: the floating toolbar hides,
+diagrams freeze to static fully-visible images, columns collapse to one. Those
+stop screen-only UI reaching paper; they impose no layout.
+
+### `builder.py`: one check, less machinery
+
+**Added `builder.py check`** — the skill's only automated guard. It parses every
+component template and composes every doc-type and showcase, failing on a
+surviving `{% … %}` (never on `{{ … }}`, which is the placeholder a skeleton is
+*supposed* to carry). 116 components in about two seconds. It exists because
+these failures are silent: a malformed chart spec renders as a code box
+indistinguishable from an unreachable CDN.
+
+**Removed** `lib/` entirely — `dataviz.py` and `chartkit.py`. The sixteen chart
+components that delegated to `chartkit` now build their own ECharts option in
+their own template, like the five that always did; every rendered spec was
+diffed against the old output and is byte-identical. `builder.py charts` and
+`builder.py dataviz` are gone with them. `SKILL.md`'s "Commands" section is
+split into **CLI** (the five real subcommands) and **Procedures** (what you
+carry out) — there is no `builder.py modify`, `release` or `audit`.
+
+### Migrating a 3.x document
+
+1. Point both head links at `@4.0.0`.
+2. Delete the `<dl>` of Author/Date/Version from `<header class="doc-meta">`,
+   or keep it and edit the values to something true.
+3. If the document uses investing or business components, prefix their classes
+   (`bridge-` → `investing-bridge-`, `swot` → `business-swot`); leave `badge`
+   and `neg` alone.
+4. A presentation has no 4.x equivalent — keep it pinned to `@3.4.0`.
+
+Or simply leave it pinned. `@3.4.0` is immutable and keeps working.
+
+---
+
 ## 3.4.0 — 2026-07-22
 
 Additive. The `investment-thesis` doc-type finally composes from the investing

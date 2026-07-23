@@ -14,7 +14,7 @@
      (e.g. this file was copied out of the repo), fall back to the pinned CDN so
      the page still renders. Local first, CDN only if local is missing. */
   (function () {
-    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@3.4.0/skills/docs-html";
+    var CDN = "https://cdn.jsdelivr.net/gh/vasilegrafu/.aifx@4.0.0/skills/docs-html";
     function cssLoaded() {
       try {
         for (var i = 0; i < document.styleSheets.length; i++) {
@@ -168,9 +168,8 @@
   <p>The body text wrapper — measured line length, inline <code>code</code>, <a href="#">links</a> and <dfn>definitions</dfn>. Every readable paragraph on this page is prose.</p>
 
   <p><small>Also in this category and used to build the page itself:
-    <code>metadata-header</code> (the cover), <code>toc</code> (the contents block
-    above), and <code>page</code> — which renders only inside
-    <code>&lt;body class="presentation"&gt;</code>, see the presentation doc-type.</small></p>
+    <code>metadata-header</code> (the cover) and <code>toc</code> (the contents
+    block above).</small></p>
 
 
     <section class="gx-cat" id="layout">
@@ -738,15 +737,15 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">financial-table</span>
   </div>
 
-    <table class="financial">
+    <table class="business-financial">
     <caption>Income statement — FY2026 (EUR '000)</caption>
     <thead><tr><th></th><th>FY2025</th><th>FY2026</th></tr></thead>
     <tbody>
       <tr><td>Revenue</td><td>1,200</td><td>1,450</td></tr>
       <tr><td>Cost of sales</td><td><span class="neg">(700)</span></td><td><span class="neg">(810)</span></td></tr>
-      <tr class="subtotal"><td>Gross profit</td><td>500</td><td>640</td></tr>
+      <tr class="business-subtotal"><td>Gross profit</td><td>500</td><td>640</td></tr>
       <tr><td>Operating expenses</td><td><span class="neg">(320)</span></td><td><span class="neg">(355)</span></td></tr>
-      <tr class="total"><td>Operating profit</td><td>180</td><td>285</td></tr>
+      <tr class="business-total"><td>Operating profit</td><td>180</td><td>285</td></tr>
     </tbody>
   </table>
 
@@ -756,17 +755,17 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">journal-entry</span>
   </div>
 
-    <div class="journal">
-    <div class="journal-head">
-<span class="journal-date">2026-07-19</span><span class="journal-id">JE-042</span>    </div>
+    <div class="business-journal">
+    <div class="business-journal-head">
+<span class="business-journal-date">2026-07-19</span><span class="business-journal-id">JE-042</span>    </div>
     <table>
       <thead><tr><th>Account</th><th>Debit</th><th>Credit</th></tr></thead>
       <tbody>
         <tr><td>Trading commissions expense</td><td>12.50</td><td></td></tr>
-        <tr><td class="credit-account">Cash — broker account</td><td></td><td>12.50</td></tr>
+        <tr><td class="business-credit-account">Cash — broker account</td><td></td><td>12.50</td></tr>
       </tbody>
     </table>
-    <p class="journal-memo">Broker commission on IBKR trade #18841</p>
+    <p class="business-journal-memo">Broker commission on IBKR trade #18841</p>
   </div>
 
 
@@ -775,28 +774,28 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">scenarios</span>
   </div>
 
-    <div class="scenarios">
-    <article class="scenario scenario-good">
+    <div class="business-scenarios">
+    <article class="business-scenario business-scenario-good">
       <h3>Bull</h3>
       <ul>
         <li>Rate cuts land H2</li>
         <li>Margins recover</li>
       </ul>
-<p class="scenario-outcome">+40% · target 68</p>    </article>
-    <article class="scenario scenario-neutral">
+<p class="business-scenario-outcome">+40% · target 68</p>    </article>
+    <article class="business-scenario business-scenario-neutral">
       <h3>Base</h3>
       <ul>
         <li>Rates flat</li>
         <li>Share stable</li>
       </ul>
-<p class="scenario-outcome">+12% · target 54</p>    </article>
-    <article class="scenario scenario-bad">
+<p class="business-scenario-outcome">+12% · target 54</p>    </article>
+    <article class="business-scenario business-scenario-bad">
       <h3>Bear</h3>
       <ul>
         <li>Recession</li>
         <li>Price war</li>
       </ul>
-<p class="scenario-outcome">−25% · target 36</p>    </article>
+<p class="business-scenario-outcome">−25% · target 36</p>    </article>
   </div>
 
 
@@ -805,12 +804,12 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">pros-cons</span>
   </div>
 
-    <div class="pros-cons">
-    <div class="pros">
+    <div class="business-pros-cons">
+    <div class="business-pros">
       <p>Pros</p>
       <ul><li>Recurring revenue, 92% retention</li><li>Net cash balance sheet</li></ul>
     </div>
-    <div class="cons">
+    <div class="business-cons">
       <p>Cons</p>
       <ul><li>Customer concentration (top 3 = 41%)</li><li>Founder dependency</li></ul>
     </div>
@@ -822,11 +821,11 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">swot-grid</span>
   </div>
 
-    <div class="swot">
-    <div class="strengths"><p>Strengths</p><ul><li>Pricing power in niche</li></ul></div>
-    <div class="weaknesses"><p>Weaknesses</p><ul><li>Single-region supply</li></ul></div>
-    <div class="opportunities"><p>Opportunities</p><ul><li>Adjacent product line</li></ul></div>
-    <div class="threats"><p>Threats</p><ul><li>Regulatory change draft in consultation</li></ul></div>
+    <div class="business-swot">
+    <div class="business-strengths"><p>Strengths</p><ul><li>Pricing power in niche</li></ul></div>
+    <div class="business-weaknesses"><p>Weaknesses</p><ul><li>Single-region supply</li></ul></div>
+    <div class="business-opportunities"><p>Opportunities</p><ul><li>Adjacent product line</li></ul></div>
+    <div class="business-threats"><p>Threats</p><ul><li>Regulatory change draft in consultation</li></ul></div>
   </div>
 
 
@@ -835,7 +834,7 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">party-block</span>
   </div>
 
-    <div class="parties">
+    <div class="business-parties">
     <div>
       <p>Provider</p>
       <ul><li>Jane Doe</li><li>Bucharest, RO</li><li>jane.doe@example.com</li></ul>
@@ -862,18 +861,18 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">security-header</span>
   </div>
 
-    <header class="sec-header">
-    <p class="sec-id">
-      <span class="sec-ticker">AAPL</span>
-      <span class="sec-name">Apple Inc.</span>
-<span class="sec-exchange">NASDAQ</span>    </p>
-    <dl class="sec-facts">
+    <header class="investing-sec-header">
+    <p class="investing-sec-id">
+      <span class="investing-sec-ticker">AAPL</span>
+      <span class="investing-sec-name">Apple Inc.</span>
+<span class="investing-sec-exchange">NASDAQ</span>    </p>
+    <dl class="investing-sec-facts">
       <div><dt>Price</dt><dd>$232.40</dd></div>
       <div><dt>Market cap</dt><dd>$3.45T</dd></div>
       <div><dt>Sector</dt><dd>Information Technology</dd></div>
       <div><dt>Fiscal year end</dt><dd>September</dd></div>
     </dl>
-<p class="sec-asof">Market data as of 2026-07-17</p>  </header>
+<p class="investing-sec-asof">Market data as of 2026-07-17</p>  </header>
 
 
     <div class="gx-spec-head">
@@ -881,16 +880,16 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">recommendation</span>
   </div>
 
-    <aside class="reco reco-good">
-    <p class="reco-action">Accumulate below $240</p>
-    <dl class="reco-facts">
+    <aside class="investing-reco investing-reco-good">
+    <p class="investing-reco-action">Accumulate below $240</p>
+    <dl class="investing-reco-facts">
       <div><dt>Price target</dt><dd>$268</dd></div>
       <div><dt>Upside</dt><dd>+15.3%</dd></div>
       <div><dt>Horizon</dt><dd>12 months</dd></div>
       <div><dt>Conviction</dt><dd>Medium</dd></div>
       <div><dt>Max position</dt><dd>4%</dd></div>
     </dl>
-<p class="reco-rationale">Services mix lifts gross margin faster than consensus models it; the hardware cycle is priced as if flat.</p>  </aside>
+<p class="investing-reco-rationale">Services mix lifts gross margin faster than consensus models it; the hardware cycle is priced as if flat.</p>  </aside>
 
 
     <div class="gx-spec-head">
@@ -898,16 +897,16 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">thesis-pillars</span>
   </div>
 
-    <ol class="pillars">
-    <li class="pillar">
-      <p class="pillar-claim">Services compounds at 12%+ through FY2028</p>
-<p class="pillar-evidence">Services grew 13.1% in FY2025 to $109.2B on a 74% gross margin; installed base up 7% y/y.</p><p class="pillar-falsifier"><span class="pillar-tag">Breaks if</span> Two consecutive quarters of Services growth below 8%, or an adverse EU ruling on App Store terms.</p>    </li>
-    <li class="pillar">
-      <p class="pillar-claim">Gross margin re-rates the whole business</p>
-<p class="pillar-evidence">Mix shift lifted group gross margin from 43.3% to 46.9% over three years.</p><p class="pillar-falsifier"><span class="pillar-tag">Breaks if</span> Group gross margin falls below 44% for two consecutive quarters.</p>    </li>
-    <li class="pillar">
-      <p class="pillar-claim">Buybacks shrink the share count 3% a year</p>
-<p class="pillar-evidence">$95B repurchased in FY2025 against a $3.4T cap; net cash still above $50B.</p><p class="pillar-falsifier"><span class="pillar-tag">Breaks if</span> Net buyback drops below $60B a year, or net cash turns negative.</p>    </li>
+    <ol class="investing-pillars">
+    <li class="investing-pillar">
+      <p class="investing-pillar-claim">Services compounds at 12%+ through FY2028</p>
+<p class="investing-pillar-evidence">Services grew 13.1% in FY2025 to $109.2B on a 74% gross margin; installed base up 7% y/y.</p><p class="investing-pillar-falsifier"><span class="investing-pillar-tag">Breaks if</span> Two consecutive quarters of Services growth below 8%, or an adverse EU ruling on App Store terms.</p>    </li>
+    <li class="investing-pillar">
+      <p class="investing-pillar-claim">Gross margin re-rates the whole business</p>
+<p class="investing-pillar-evidence">Mix shift lifted group gross margin from 43.3% to 46.9% over three years.</p><p class="investing-pillar-falsifier"><span class="investing-pillar-tag">Breaks if</span> Group gross margin falls below 44% for two consecutive quarters.</p>    </li>
+    <li class="investing-pillar">
+      <p class="investing-pillar-claim">Buybacks shrink the share count 3% a year</p>
+<p class="investing-pillar-evidence">$95B repurchased in FY2025 against a $3.4T cap; net cash still above $50B.</p><p class="investing-pillar-falsifier"><span class="investing-pillar-tag">Breaks if</span> Net buyback drops below $60B a year, or net cash turns negative.</p>    </li>
   </ol>
 
 
@@ -916,46 +915,46 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">scorecard</span>
   </div>
 
-    <table class="fin scorecard">
+    <table class="investing-fin investing-scorecard">
 <caption>Moat assessment</caption>    <thead><tr><th>Criterion</th><th>Weight</th><th>Score</th><th>Rating</th><th>Evidence</th></tr></thead>
     <tbody>
       <tr>
         <td>Intangible assets</td>
         <td>30%</td>
         <td>5 / 5</td>
-        <td><span class="score-track"><span class="score-fill" data-pct="100.0%"></span></span></td>
+        <td><span class="investing-score-track"><span class="investing-score-fill" data-pct="100.0%"></span></span></td>
         <td>Brand carries a 20%+ price premium at like-for-like specification.</td>
       </tr>
       <tr>
         <td>Switching costs</td>
         <td>25%</td>
         <td>4 / 5</td>
-        <td><span class="score-track"><span class="score-fill" data-pct="80.0%"></span></span></td>
+        <td><span class="investing-score-track"><span class="investing-score-fill" data-pct="80.0%"></span></span></td>
         <td>iCloud, iMessage and purchase history; 92% retention on upgrade.</td>
       </tr>
       <tr>
         <td>Network effect</td>
         <td>15%</td>
         <td>3 / 5</td>
-        <td><span class="score-track"><span class="score-fill" data-pct="60.0%"></span></span></td>
+        <td><span class="investing-score-track"><span class="investing-score-fill" data-pct="60.0%"></span></span></td>
         <td>App Store is two-sided, but developers multi-home to Android.</td>
       </tr>
       <tr>
         <td>Cost advantage</td>
         <td>20%</td>
         <td>4 / 5</td>
-        <td><span class="score-track"><span class="score-fill" data-pct="80.0%"></span></span></td>
+        <td><span class="investing-score-track"><span class="investing-score-fill" data-pct="80.0%"></span></span></td>
         <td>Silicon designed in-house; scale purchasing on displays and memory.</td>
       </tr>
       <tr>
         <td>Efficient scale</td>
         <td>10%</td>
         <td>2 / 5</td>
-        <td><span class="score-track"><span class="score-fill" data-pct="40.0%"></span></span></td>
+        <td><span class="investing-score-track"><span class="investing-score-fill" data-pct="40.0%"></span></span></td>
         <td>No structural limit on entrants at the low end.</td>
       </tr>
     </tbody>
-    <tfoot><tr class="total"><td>Weighted total</td><td></td><td>3.9 / 5 — wide</td><td></td><td></td></tr></tfoot>
+    <tfoot><tr class="investing-total"><td>Weighted total</td><td></td><td>3.9 / 5 — wide</td><td></td><td></td></tr></tfoot>
   </table>
 
 
@@ -964,28 +963,28 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">metric-trend</span>
   </div>
 
-    <table class="fin metric-trend">
-<caption>Apple — five-year operating record ($B unless noted)</caption>    <thead><tr><th>Metric</th><th>FY2021</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>CAGR</th><th class="trend-head">Trend</th></tr></thead>
+    <table class="investing-fin metric-trend">
+<caption>Apple — five-year operating record ($B unless noted)</caption>    <thead><tr><th>Metric</th><th>FY2021</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>CAGR</th><th class="investing-trend-head">Trend</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Revenue</th>
 <td>365.8</td><td>394.3</td><td>383.3</td><td>391.0</td><td>416.2</td>        <td class="metric-cagr">+3.3%</td>
-        <td class="trend trend-up">▲</td>
+        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
       <tr>
         <th scope="row">Gross margin</th>
 <td>41.8%</td><td>43.3%</td><td>44.1%</td><td>46.2%</td><td>46.9%</td>        <td class="metric-cagr">+2.9pp</td>
-        <td class="trend trend-up">▲</td>
+        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
       <tr>
         <th scope="row">Operating income</th>
 <td>108.9</td><td>119.4</td><td>114.3</td><td>123.2</td><td>133.0</td>        <td class="metric-cagr">+5.1%</td>
-        <td class="trend trend-up">▲</td>
+        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
       <tr>
         <th scope="row">Diluted shares (M)</th>
 <td>16,865</td><td>16,326</td><td>15,813</td><td>15,408</td><td>14,948</td>        <td class="metric-cagr">-3.0%</td>
-        <td class="trend trend-down">▼</td>
+        <td class="investing-trend investing-trend-down">▼</td>
       </tr>
     </tbody>
   </table>
@@ -996,12 +995,12 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">valuation-multiples</span>
   </div>
 
-    <table class="fin multiples">
+    <table class="investing-fin investing-multiples">
 <caption>Apple vs mega-cap platform peers, NTM basis</caption>    <thead><tr><th>Multiple</th><th>Current</th><th>Peer median</th><th>5-yr own median</th><th>Premium</th><th>Read</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">P/E (NTM)</th>
-        <td class="mult-current">31.2x</td>
+        <td class="investing-mult-current">31.2x</td>
         <td>24.8x</td>
         <td>27.4x</td>
         <td>+14% vs own</td>
@@ -1009,7 +1008,7 @@ def rate_limited(partition: str) -> bool:
       </tr>
       <tr>
         <th scope="row">EV/EBITDA</th>
-        <td class="mult-current">23.1x</td>
+        <td class="investing-mult-current">23.1x</td>
         <td>17.9x</td>
         <td>20.2x</td>
         <td>+14% vs own</td>
@@ -1017,7 +1016,7 @@ def rate_limited(partition: str) -> bool:
       </tr>
       <tr>
         <th scope="row">EV/Sales</th>
-        <td class="mult-current">8.4x</td>
+        <td class="investing-mult-current">8.4x</td>
         <td>6.1x</td>
         <td>7.2x</td>
         <td>+17% vs own</td>
@@ -1025,7 +1024,7 @@ def rate_limited(partition: str) -> bool:
       </tr>
       <tr>
         <th scope="row">FCF yield</th>
-        <td class="mult-current">3.4%</td>
+        <td class="investing-mult-current">3.4%</td>
         <td>4.1%</td>
         <td>3.8%</td>
         <td>-0.4pp</td>
@@ -1040,10 +1039,10 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">peer-comparison</span>
   </div>
 
-    <table class="fin peers">
+    <table class="investing-fin investing-peers">
 <caption>Mega-cap platforms — FY2025 reported</caption>    <thead><tr><th>Company</th><th>Revenue growth</th><th>Gross margin</th><th>Operating margin</th><th>ROIC</th><th>P/E (NTM)</th></tr></thead>
     <tbody>
-      <tr class="subject">
+      <tr class="investing-subject">
         <th scope="row">Apple</th>
 <td>+6.4%</td><td>46.9%</td><td>32.0%</td><td>58%</td><td>31.2x</td>      </tr>
       <tr>
@@ -1064,38 +1063,38 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">earnings-surprise</span>
   </div>
 
-    <table class="fin surprise">
-<caption>Apple <span class="surprise-period">FQ4 2025 (quarter ended 27 Sep 2025)</span></caption>    <thead><tr><th>Metric</th><th>Consensus</th><th>Reported</th><th>Surprise</th></tr></thead>
+    <table class="investing-fin surprise">
+<caption>Apple <span class="investing-surprise-period">FQ4 2025 (quarter ended 27 Sep 2025)</span></caption>    <thead><tr><th>Metric</th><th>Consensus</th><th>Reported</th><th>Surprise</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Revenue</th>
         <td>$102.1B</td>
-        <td class="surprise-actual">$102.5B</td>
-        <td class="surprise-delta tone-good">+0.4%</td>
+        <td class="investing-surprise-actual">$102.5B</td>
+        <td class="investing-surprise-delta investing-tone-good">+0.4%</td>
       </tr>
       <tr>
         <th scope="row">iPhone revenue</th>
         <td>$45.9B</td>
-        <td class="surprise-actual">$44.6B</td>
-        <td class="surprise-delta tone-bad">-2.8%</td>
+        <td class="investing-surprise-actual">$44.6B</td>
+        <td class="investing-surprise-delta investing-tone-bad">-2.8%</td>
       </tr>
       <tr>
         <th scope="row">Services revenue</th>
         <td>$27.5B</td>
-        <td class="surprise-actual">$28.8B</td>
-        <td class="surprise-delta tone-good">+4.7%</td>
+        <td class="investing-surprise-actual">$28.8B</td>
+        <td class="investing-surprise-delta investing-tone-good">+4.7%</td>
       </tr>
       <tr>
         <th scope="row">Gross margin</th>
         <td>46.4%</td>
-        <td class="surprise-actual">47.2%</td>
-        <td class="surprise-delta tone-good">+80bp</td>
+        <td class="investing-surprise-actual">47.2%</td>
+        <td class="investing-surprise-delta investing-tone-good">+80bp</td>
       </tr>
       <tr>
         <th scope="row">Diluted EPS</th>
         <td>$1.66</td>
-        <td class="surprise-actual">$1.74</td>
-        <td class="surprise-delta tone-good">+4.8%</td>
+        <td class="investing-surprise-actual">$1.74</td>
+        <td class="investing-surprise-delta investing-tone-good">+4.8%</td>
       </tr>
     </tbody>
   </table>
@@ -1106,45 +1105,45 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">valuation-range</span>
   </div>
 
-    <figure class="valrange">
-<figcaption>Apple — value per share by method</figcaption>    <div class="valrange-rows">
-      <div class="valrange-row">
-        <span class="valrange-method">DCF — WACC 8.5%, TGR 3.0%</span>
-        <span class="valrange-track">
-          <span class="valrange-bar" data-lo="33.75%" data-span="45.0%"></span>
-<span class="valrange-mark" data-at="45.0%"></span>        </span>
-        <span class="valrange-value">$214 – $286</span>
+    <figure class="investing-valrange">
+<figcaption>Apple — value per share by method</figcaption>    <div class="investing-valrange-rows">
+      <div class="investing-valrange-row">
+        <span class="investing-valrange-method">DCF — WACC 8.5%, TGR 3.0%</span>
+        <span class="investing-valrange-track">
+          <span class="investing-valrange-bar" data-lo="33.75%" data-span="45.0%"></span>
+<span class="investing-valrange-mark" data-at="45.0%"></span>        </span>
+        <span class="investing-valrange-value">$214 – $286</span>
       </div>
-      <div class="valrange-row">
-        <span class="valrange-method">Peer P/E 24–30x NTM</span>
-        <span class="valrange-track">
-          <span class="valrange-bar" data-lo="23.75%" data-span="31.25%"></span>
-<span class="valrange-mark" data-at="45.0%"></span>        </span>
-        <span class="valrange-value">$198 – $248</span>
+      <div class="investing-valrange-row">
+        <span class="investing-valrange-method">Peer P/E 24–30x NTM</span>
+        <span class="investing-valrange-track">
+          <span class="investing-valrange-bar" data-lo="23.75%" data-span="31.25%"></span>
+<span class="investing-valrange-mark" data-at="45.0%"></span>        </span>
+        <span class="investing-valrange-value">$198 – $248</span>
       </div>
-      <div class="valrange-row">
-        <span class="valrange-method">EV/EBITDA 18–23x</span>
-        <span class="valrange-track">
-          <span class="valrange-bar" data-lo="16.25%" data-span="32.5%"></span>
-<span class="valrange-mark" data-at="45.0%"></span>        </span>
-        <span class="valrange-value">$186 – $238</span>
+      <div class="investing-valrange-row">
+        <span class="investing-valrange-method">EV/EBITDA 18–23x</span>
+        <span class="investing-valrange-track">
+          <span class="investing-valrange-bar" data-lo="16.25%" data-span="32.5%"></span>
+<span class="investing-valrange-mark" data-at="45.0%"></span>        </span>
+        <span class="investing-valrange-value">$186 – $238</span>
       </div>
-      <div class="valrange-row">
-        <span class="valrange-method">Sum of the parts</span>
-        <span class="valrange-track">
-          <span class="valrange-bar" data-lo="41.25%" data-span="45.0%"></span>
-<span class="valrange-mark" data-at="45.0%"></span>        </span>
-        <span class="valrange-value">$226 – $298</span>
+      <div class="investing-valrange-row">
+        <span class="investing-valrange-method">Sum of the parts</span>
+        <span class="investing-valrange-track">
+          <span class="investing-valrange-bar" data-lo="41.25%" data-span="45.0%"></span>
+<span class="investing-valrange-mark" data-at="45.0%"></span>        </span>
+        <span class="investing-valrange-value">$226 – $298</span>
       </div>
-      <div class="valrange-row">
-        <span class="valrange-method">52-week range</span>
-        <span class="valrange-track">
-          <span class="valrange-bar" data-lo="5.62%" data-span="56.88%"></span>
-<span class="valrange-mark" data-at="45.0%"></span>        </span>
-        <span class="valrange-value">$169 – $260</span>
+      <div class="investing-valrange-row">
+        <span class="investing-valrange-method">52-week range</span>
+        <span class="investing-valrange-track">
+          <span class="investing-valrange-bar" data-lo="5.62%" data-span="56.88%"></span>
+<span class="investing-valrange-mark" data-at="45.0%"></span>        </span>
+        <span class="investing-valrange-value">$169 – $260</span>
       </div>
     </div>
-    <p class="valrange-axis"><span>$160</span><span class="valrange-price">Spot $232</span><span>$320</span></p>
+    <p class="investing-valrange-axis"><span>$160</span><span class="investing-valrange-price">Spot $232</span><span>$320</span></p>
   </figure>
 
 
@@ -1153,34 +1152,34 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">catalyst-timeline</span>
   </div>
 
-    <ol class="catalysts">
-    <li class="catalyst catalyst-up">
-      <span class="catalyst-date">2026-08-01</span>
-      <span class="catalyst-dir" aria-hidden="true">▲</span>
-      <span class="catalyst-body">
-        <span class="catalyst-event">FQ3 2026 earnings</span>
-<span class="catalyst-likelihood">Certain</span><span class="catalyst-note">Services growth above 11% confirms pillar 1; below 8% breaks it.</span>      </span>
+    <ol class="investing-catalysts">
+    <li class="investing-catalyst investing-catalyst-up">
+      <span class="investing-catalyst-date">2026-08-01</span>
+      <span class="investing-catalyst-dir" aria-hidden="true">▲</span>
+      <span class="investing-catalyst-body">
+        <span class="investing-catalyst-event">FQ3 2026 earnings</span>
+<span class="investing-catalyst-likelihood">Certain</span><span class="investing-catalyst-note">Services growth above 11% confirms pillar 1; below 8% breaks it.</span>      </span>
     </li>
-    <li class="catalyst catalyst-mixed">
-      <span class="catalyst-date">2026-09-10</span>
-      <span class="catalyst-dir" aria-hidden="true">◆</span>
-      <span class="catalyst-body">
-        <span class="catalyst-event">iPhone 18 launch</span>
-<span class="catalyst-likelihood">Certain</span><span class="catalyst-note">Unit cycle matters less than the ASP mix; watch the Pro share.</span>      </span>
+    <li class="investing-catalyst investing-catalyst-mixed">
+      <span class="investing-catalyst-date">2026-09-10</span>
+      <span class="investing-catalyst-dir" aria-hidden="true">◆</span>
+      <span class="investing-catalyst-body">
+        <span class="investing-catalyst-event">iPhone 18 launch</span>
+<span class="investing-catalyst-likelihood">Certain</span><span class="investing-catalyst-note">Unit cycle matters less than the ASP mix; watch the Pro share.</span>      </span>
     </li>
-    <li class="catalyst catalyst-down">
-      <span class="catalyst-date">2026-10-31</span>
-      <span class="catalyst-dir" aria-hidden="true">▼</span>
-      <span class="catalyst-body">
-        <span class="catalyst-event">EU Digital Markets Act ruling</span>
-<span class="catalyst-likelihood">Likely</span><span class="catalyst-note">Worst case removes about 4% of Services revenue in Europe.</span>      </span>
+    <li class="investing-catalyst investing-catalyst-down">
+      <span class="investing-catalyst-date">2026-10-31</span>
+      <span class="investing-catalyst-dir" aria-hidden="true">▼</span>
+      <span class="investing-catalyst-body">
+        <span class="investing-catalyst-event">EU Digital Markets Act ruling</span>
+<span class="investing-catalyst-likelihood">Likely</span><span class="investing-catalyst-note">Worst case removes about 4% of Services revenue in Europe.</span>      </span>
     </li>
-    <li class="catalyst catalyst-down">
-      <span class="catalyst-date">2027-Q1</span>
-      <span class="catalyst-dir" aria-hidden="true">▼</span>
-      <span class="catalyst-body">
-        <span class="catalyst-event">Google TAC contract renewal</span>
-<span class="catalyst-likelihood">Possible</span><span class="catalyst-note">About $20B of high-margin revenue is contractually exposed.</span>      </span>
+    <li class="investing-catalyst investing-catalyst-down">
+      <span class="investing-catalyst-date">2027-Q1</span>
+      <span class="investing-catalyst-dir" aria-hidden="true">▼</span>
+      <span class="investing-catalyst-body">
+        <span class="investing-catalyst-event">Google TAC contract renewal</span>
+<span class="investing-catalyst-likelihood">Possible</span><span class="investing-catalyst-note">About $20B of high-margin revenue is contractually exposed.</span>      </span>
     </li>
   </ol>
 
@@ -1190,32 +1189,32 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">expected-value</span>
   </div>
 
-    <table class="fin ev">
+    <table class="investing-fin investing-ev">
 <caption>Apple — 12-month probability-weighted return from $232</caption>    <thead><tr><th>Scenario</th><th>Probability</th><th>Price target</th><th>Return</th><th>Weighted</th></tr></thead>
     <tbody>
       <tr>
-        <th scope="row"><span class="ev-dot ev-good" aria-hidden="true"></span>Bull — Services reaccelerates, margin holds</th>
+        <th scope="row"><span class="investing-ev-dot investing-ev-good" aria-hidden="true"></span>Bull — Services reaccelerates, margin holds</th>
         <td>25%</td>
         <td>$298</td>
         <td>+28.4%</td>
         <td>+7.1%</td>
       </tr>
       <tr>
-        <th scope="row"><span class="ev-dot ev-neutral" aria-hidden="true"></span>Base — mid-single-digit growth, flat multiple</th>
+        <th scope="row"><span class="investing-ev-dot investing-ev-neutral" aria-hidden="true"></span>Base — mid-single-digit growth, flat multiple</th>
         <td>50%</td>
         <td>$268</td>
         <td>+15.5%</td>
         <td>+7.8%</td>
       </tr>
       <tr>
-        <th scope="row"><span class="ev-dot ev-bad" aria-hidden="true"></span>Bear — DMA ruling plus a hardware air pocket</th>
+        <th scope="row"><span class="investing-ev-dot investing-ev-bad" aria-hidden="true"></span>Bear — DMA ruling plus a hardware air pocket</th>
         <td>25%</td>
         <td>$180</td>
         <td>-22.4%</td>
         <td>-5.6%</td>
       </tr>
     </tbody>
-    <tfoot><tr class="total"><th scope="row">Expected value</th><td>100%</td><td></td><td></td><td>+9.8%</td></tr></tfoot>
+    <tfoot><tr class="investing-total"><th scope="row">Expected value</th><td>100%</td><td></td><td></td><td>+9.8%</td></tr></tfoot>
   </table>
 
 
@@ -1224,39 +1223,39 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">holdings-table</span>
   </div>
 
-    <table class="fin holdings">
-<caption>Portfolio — 30 Jun 2026</caption>    <thead><tr><th>Position</th><th class="holdings-weight-head">Weight</th><th>Avg cost</th><th>Last</th><th>Value</th><th>Unrealised</th></tr></thead>
+    <table class="investing-fin holdings">
+<caption>Portfolio — 30 Jun 2026</caption>    <thead><tr><th>Position</th><th class="investing-holdings-weight-head">Weight</th><th>Avg cost</th><th>Last</th><th>Value</th><th>Unrealised</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Apple (AAPL)</th>
-        <td class="holdings-weight">
-          <span class="holdings-track"><span class="holdings-fill" data-pct="18.4%"></span></span>
-          <span class="holdings-pct">18.4%</span>
+        <td class="investing-holdings-weight">
+          <span class="investing-holdings-track"><span class="investing-holdings-fill" data-pct="18.4%"></span></span>
+          <span class="investing-holdings-pct">18.4%</span>
         </td>
-<td>$164.20</td><td>$232.40</td><td>$184,300</td><td class="tone-good">+41.5%</td>      </tr>
+<td>$164.20</td><td>$232.40</td><td>$184,300</td><td class="investing-tone-good">+41.5%</td>      </tr>
       <tr>
         <th scope="row">Microsoft (MSFT)</th>
-        <td class="holdings-weight">
-          <span class="holdings-track"><span class="holdings-fill" data-pct="14.1%"></span></span>
-          <span class="holdings-pct">14.1%</span>
+        <td class="investing-holdings-weight">
+          <span class="investing-holdings-track"><span class="investing-holdings-fill" data-pct="14.1%"></span></span>
+          <span class="investing-holdings-pct">14.1%</span>
         </td>
-<td>$318.00</td><td>$428.10</td><td>$141,200</td><td class="tone-good">+34.6%</td>      </tr>
+<td>$318.00</td><td>$428.10</td><td>$141,200</td><td class="investing-tone-good">+34.6%</td>      </tr>
       <tr>
         <th scope="row">Alphabet (GOOGL)</th>
-        <td class="holdings-weight">
-          <span class="holdings-track"><span class="holdings-fill" data-pct="9.8%"></span></span>
-          <span class="holdings-pct">9.8%</span>
+        <td class="investing-holdings-weight">
+          <span class="investing-holdings-track"><span class="investing-holdings-fill" data-pct="9.8%"></span></span>
+          <span class="investing-holdings-pct">9.8%</span>
         </td>
-<td>$142.60</td><td>$186.30</td><td>$98,100</td><td class="tone-good">+30.6%</td>      </tr>
+<td>$142.60</td><td>$186.30</td><td>$98,100</td><td class="investing-tone-good">+30.6%</td>      </tr>
       <tr>
         <th scope="row">Cash</th>
-        <td class="holdings-weight">
-          <span class="holdings-track"><span class="holdings-fill" data-pct="7.2%"></span></span>
-          <span class="holdings-pct">7.2%</span>
+        <td class="investing-holdings-weight">
+          <span class="investing-holdings-track"><span class="investing-holdings-fill" data-pct="7.2%"></span></span>
+          <span class="investing-holdings-pct">7.2%</span>
         </td>
-<td>—</td><td>—</td><td>$72,000</td><td class="tone-neutral">—</td>      </tr>
+<td>—</td><td>—</td><td>$72,000</td><td class="investing-tone-neutral">—</td>      </tr>
     </tbody>
-    <tfoot><tr class="total"><th scope="row">Total</th><td>100.0%</td><td></td><td></td><td>$1,001,000</td><td>+22.4%</td></tr></tfoot>
+    <tfoot><tr class="investing-total"><th scope="row">Total</th><td>100.0%</td><td></td><td></td><td>$1,001,000</td><td>+22.4%</td></tr></tfoot>
   </table>
 
 
@@ -1265,16 +1264,16 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">performance-table</span>
   </div>
 
-    <table class="fin perf">
+    <table class="investing-fin investing-perf">
 <caption>Total return, net of costs, USD, to 30 Jun 2026</caption>    <thead><tr><th>Series</th><th>1M</th><th>3M</th><th>YTD</th><th>1Y</th><th>3Y p.a.</th><th>5Y p.a.</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Portfolio</th>
 <td>+2.1%</td><td>+6.4%</td><td>+9.6%</td><td>+22.4%</td><td>+14.8%</td><td>+12.1%</td>      </tr>
-      <tr class="benchmark">
+      <tr class="investing-benchmark">
         <th scope="row">MSCI World (net)</th>
 <td>+1.8%</td><td>+5.1%</td><td>+8.2%</td><td>+18.9%</td><td>+13.2%</td><td>+11.6%</td>      </tr>
-      <tr class="excess">
+      <tr class="investing-excess">
         <th scope="row">Excess</th>
 <td>+0.3pp</td><td>+1.3pp</td><td>+1.4pp</td><td>+3.5pp</td><td>+1.6pp</td><td>+0.5pp</td>      </tr>
     </tbody>
@@ -1286,41 +1285,41 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">exposure-bars</span>
   </div>
 
-    <figure class="exposure">
-<figcaption>Sector exposure vs policy limits</figcaption>    <div class="exposure-row">
-      <span class="exposure-label">Information technology</span>
-      <span class="exposure-track"><span class="exposure-fill" data-pct="42.3%"></span></span>
-      <span class="exposure-value">42.3% <em>limit 40% — over</em></span>
+    <figure class="investing-exposure">
+<figcaption>Sector exposure vs policy limits</figcaption>    <div class="investing-exposure-row">
+      <span class="investing-exposure-label">Information technology</span>
+      <span class="investing-exposure-track"><span class="investing-exposure-fill" data-pct="42.3%"></span></span>
+      <span class="investing-exposure-value">42.3% <em>limit 40% — over</em></span>
     </div>
-    <div class="exposure-row">
-      <span class="exposure-label">Communication services</span>
-      <span class="exposure-track"><span class="exposure-fill" data-pct="15.1%"></span></span>
-      <span class="exposure-value">15.1% <em>limit 25%</em></span>
+    <div class="investing-exposure-row">
+      <span class="investing-exposure-label">Communication services</span>
+      <span class="investing-exposure-track"><span class="investing-exposure-fill" data-pct="15.1%"></span></span>
+      <span class="investing-exposure-value">15.1% <em>limit 25%</em></span>
     </div>
-    <div class="exposure-row">
-      <span class="exposure-label">Health care</span>
-      <span class="exposure-track"><span class="exposure-fill" data-pct="12.6%"></span></span>
-      <span class="exposure-value">12.6% <em>limit 25%</em></span>
+    <div class="investing-exposure-row">
+      <span class="investing-exposure-label">Health care</span>
+      <span class="investing-exposure-track"><span class="investing-exposure-fill" data-pct="12.6%"></span></span>
+      <span class="investing-exposure-value">12.6% <em>limit 25%</em></span>
     </div>
-    <div class="exposure-row">
-      <span class="exposure-label">Consumer discretionary</span>
-      <span class="exposure-track"><span class="exposure-fill" data-pct="11.0%"></span></span>
-      <span class="exposure-value">11.0% <em>limit 25%</em></span>
+    <div class="investing-exposure-row">
+      <span class="investing-exposure-label">Consumer discretionary</span>
+      <span class="investing-exposure-track"><span class="investing-exposure-fill" data-pct="11.0%"></span></span>
+      <span class="investing-exposure-value">11.0% <em>limit 25%</em></span>
     </div>
-    <div class="exposure-row">
-      <span class="exposure-label">Financials</span>
-      <span class="exposure-track"><span class="exposure-fill" data-pct="8.6%"></span></span>
-      <span class="exposure-value">8.6% <em>limit 25%</em></span>
+    <div class="investing-exposure-row">
+      <span class="investing-exposure-label">Financials</span>
+      <span class="investing-exposure-track"><span class="investing-exposure-fill" data-pct="8.6%"></span></span>
+      <span class="investing-exposure-value">8.6% <em>limit 25%</em></span>
     </div>
-    <div class="exposure-row">
-      <span class="exposure-label">Cash</span>
-      <span class="exposure-track"><span class="exposure-fill" data-pct="7.2%"></span></span>
-      <span class="exposure-value">7.2% <em>range 5–15%</em></span>
+    <div class="investing-exposure-row">
+      <span class="investing-exposure-label">Cash</span>
+      <span class="investing-exposure-track"><span class="investing-exposure-fill" data-pct="7.2%"></span></span>
+      <span class="investing-exposure-value">7.2% <em>range 5–15%</em></span>
     </div>
-    <div class="exposure-row">
-      <span class="exposure-label">Other</span>
-      <span class="exposure-track"><span class="exposure-fill" data-pct="3.2%"></span></span>
-      <span class="exposure-value">3.2%</span>
+    <div class="investing-exposure-row">
+      <span class="investing-exposure-label">Other</span>
+      <span class="investing-exposure-track"><span class="investing-exposure-fill" data-pct="3.2%"></span></span>
+      <span class="investing-exposure-value">3.2%</span>
     </div>
   </figure>
 
@@ -1330,38 +1329,38 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">risk-metrics</span>
   </div>
 
-    <table class="fin riskmetrics">
+    <table class="investing-fin investing-riskmetrics">
 <caption>Strategy statistics — 2016-01 to 2026-06, monthly, net of 0.1% round-trip</caption>    <thead><tr><th>Metric</th><th>Strategy</th><th>MSCI World</th><th>Reading</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">CAGR</th>
-        <td class="rm-value">12.1%</td>
+        <td class="investing-rm-value">12.1%</td>
         <td>11.6%</td>
-        <td class="rm-note">Half a point ahead, before considering risk.</td>
+        <td class="investing-rm-note">Half a point ahead, before considering risk.</td>
       </tr>
       <tr>
         <th scope="row">Volatility (ann.)</th>
-        <td class="rm-value">17.8%</td>
+        <td class="investing-rm-value">17.8%</td>
         <td>14.9%</td>
-        <td class="rm-note">Concentration costs 2.9pp of volatility.</td>
+        <td class="investing-rm-note">Concentration costs 2.9pp of volatility.</td>
       </tr>
       <tr>
         <th scope="row">Sharpe ratio</th>
-        <td class="rm-value">0.58</td>
+        <td class="investing-rm-value">0.58</td>
         <td>0.66</td>
-        <td class="rm-note">Below benchmark — the excess return is not paid for.</td>
+        <td class="investing-rm-note">Below benchmark — the excess return is not paid for.</td>
       </tr>
       <tr>
         <th scope="row">Max drawdown</th>
-        <td class="rm-value">-38.4%</td>
+        <td class="investing-rm-value">-38.4%</td>
         <td>-25.7%</td>
-        <td class="rm-note">Peak Feb 2020, trough Mar 2020, recovered Aug 2020.</td>
+        <td class="investing-rm-note">Peak Feb 2020, trough Mar 2020, recovered Aug 2020.</td>
       </tr>
       <tr>
         <th scope="row">Beta</th>
-        <td class="rm-value">1.14</td>
+        <td class="investing-rm-value">1.14</td>
         <td>1.00</td>
-        <td class="rm-note">Most of the excess return is leverage to the index.</td>
+        <td class="investing-rm-note">Most of the excess return is leverage to the index.</td>
       </tr>
     </tbody>
   </table>
@@ -1372,36 +1371,36 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">trade-log</span>
   </div>
 
-    <table class="fin tradelog">
+    <table class="investing-fin investing-tradelog">
 <caption>Trades — Q2 2026</caption>    <thead><tr><th>Date</th><th>Instrument</th><th>Side</th><th>Size</th><th>Price</th><th>Result</th></tr></thead>
     <tbody>
-      <tr class="trade">
-        <td class="trade-date">2026-04-14</td>
+      <tr class="investing-trade">
+        <td class="investing-trade-date">2026-04-14</td>
         <th scope="row">AAPL</th>
-        <td><span class="side side-buy">Buy</span></td>
+        <td><span class="investing-side investing-side-buy">Buy</span></td>
         <td>250 sh</td>
         <td>$218.40</td>
         <td>open</td>
       </tr>
-      <tr class="trade-note"><td colspan="6">Added on the DMA headline drawdown; pillar 1 unaffected, Services growth still above 12%. Sized to take weight from 16% to 18.4%.</td></tr>
-      <tr class="trade">
-        <td class="trade-date">2026-05-02</td>
+      <tr class="investing-trade-note"><td colspan="6">Added on the DMA headline drawdown; pillar 1 unaffected, Services growth still above 12%. Sized to take weight from 16% to 18.4%.</td></tr>
+      <tr class="investing-trade">
+        <td class="investing-trade-date">2026-05-02</td>
         <th scope="row">NVDA</th>
-        <td><span class="side side-sell">Sell</span></td>
+        <td><span class="investing-side investing-side-sell">Sell</span></td>
         <td>180 sh</td>
         <td>$1,142.00</td>
         <td>+64.2%</td>
       </tr>
-      <tr class="trade-note"><td colspan="6">Trimmed on valuation, not on thesis: EV/Sales above 22x left no margin of safety. Retained half the position.</td></tr>
-      <tr class="trade">
-        <td class="trade-date">2026-06-11</td>
+      <tr class="investing-trade-note"><td colspan="6">Trimmed on valuation, not on thesis: EV/Sales above 22x left no margin of safety. Retained half the position.</td></tr>
+      <tr class="investing-trade">
+        <td class="investing-trade-date">2026-06-11</td>
         <th scope="row">XLU</th>
-        <td><span class="side side-buy">Buy</span></td>
+        <td><span class="investing-side investing-side-buy">Buy</span></td>
         <td>1,200 sh</td>
         <td>$78.10</td>
         <td class="neg">-3.1%</td>
       </tr>
-      <tr class="trade-note"><td colspan="6">Defensive ballast ahead of the rate decision. A mistake in hindsight — this was market timing, not an allocation decision.</td></tr>
+      <tr class="investing-trade-note"><td colspan="6">Defensive ballast ahead of the rate decision. A mistake in hindsight — this was market timing, not an allocation decision.</td></tr>
     </tbody>
   </table>
 
@@ -1411,56 +1410,56 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">macro-indicators</span>
   </div>
 
-    <table class="fin macro">
-<caption>United States <span class="macro-asof">as of 2026-07-17</span></caption>    <thead><tr><th>Indicator</th><th>Latest</th><th>Prior</th><th>Consensus</th><th>Surprise</th><th class="trend-head">Trend</th></tr></thead>
+    <table class="investing-fin macro">
+<caption>United States <span class="investing-macro-asof">as of 2026-07-17</span></caption>    <thead><tr><th>Indicator</th><th>Latest</th><th>Prior</th><th>Consensus</th><th>Surprise</th><th class="investing-trend-head">Trend</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">CPI y/y</th>
-        <td class="macro-latest">2.6%</td>
+        <td class="investing-macro-latest">2.6%</td>
         <td>2.8%</td>
         <td>2.7%</td>
         <td class="neg">-0.1pp</td>
-        <td class="trend trend-down">▼</td>
+        <td class="investing-trend investing-trend-down">▼</td>
       </tr>
       <tr>
         <th scope="row">Core PCE y/y</th>
-        <td class="macro-latest">2.4%</td>
+        <td class="investing-macro-latest">2.4%</td>
         <td>2.5%</td>
         <td>2.4%</td>
         <td>0.0pp</td>
-        <td class="trend trend-down">▼</td>
+        <td class="investing-trend investing-trend-down">▼</td>
       </tr>
       <tr>
         <th scope="row">Unemployment rate</th>
-        <td class="macro-latest">4.3%</td>
+        <td class="investing-macro-latest">4.3%</td>
         <td>4.2%</td>
         <td>4.2%</td>
         <td>+0.1pp</td>
-        <td class="trend trend-up">▲</td>
+        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
       <tr>
         <th scope="row">Non-farm payrolls (3m avg)</th>
-        <td class="macro-latest">118k</td>
+        <td class="investing-macro-latest">118k</td>
         <td>142k</td>
         <td>135k</td>
         <td class="neg">-17k</td>
-        <td class="trend trend-down">▼</td>
+        <td class="investing-trend investing-trend-down">▼</td>
       </tr>
       <tr>
         <th scope="row">ISM manufacturing</th>
-        <td class="macro-latest">49.1</td>
+        <td class="investing-macro-latest">49.1</td>
         <td>48.4</td>
         <td>48.9</td>
         <td>+0.2</td>
-        <td class="trend trend-up">▲</td>
+        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
       <tr>
         <th scope="row">10y Treasury yield</th>
-        <td class="macro-latest">4.12%</td>
+        <td class="investing-macro-latest">4.12%</td>
         <td>4.31%</td>
         <td>—</td>
         <td>—</td>
-        <td class="trend trend-down">▼</td>
+        <td class="investing-trend investing-trend-down">▼</td>
       </tr>
     </tbody>
   </table>
@@ -1471,22 +1470,22 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">cycle-position</span>
   </div>
 
-    <figure class="cycle">
-    <ol class="cycle-band">
-      <li class="cycle-phase">
-        <span class="cycle-label">Early</span>
-<span class="cycle-note">Growth accelerating from a low base; credit reopening.</span>      </li>
-      <li class="cycle-phase">
-        <span class="cycle-label">Mid</span>
-<span class="cycle-note">Growth above trend; margins peak; policy neutral.</span>      </li>
-      <li class="cycle-phase current" aria-current="true">
-        <span class="cycle-label">Late</span>
-<span class="cycle-note">Growth decelerating; restrictive policy turning easier; curve re-steepening.</span>      </li>
-      <li class="cycle-phase">
-        <span class="cycle-label">Recession</span>
-<span class="cycle-note">Output contracting; credit spreads wide; earnings revised down.</span>      </li>
+    <figure class="investing-cycle">
+    <ol class="investing-cycle-band">
+      <li class="investing-cycle-phase">
+        <span class="investing-cycle-label">Early</span>
+<span class="investing-cycle-note">Growth accelerating from a low base; credit reopening.</span>      </li>
+      <li class="investing-cycle-phase">
+        <span class="investing-cycle-label">Mid</span>
+<span class="investing-cycle-note">Growth above trend; margins peak; policy neutral.</span>      </li>
+      <li class="investing-cycle-phase investing-current" aria-current="true">
+        <span class="investing-cycle-label">Late</span>
+<span class="investing-cycle-note">Growth decelerating; restrictive policy turning easier; curve re-steepening.</span>      </li>
+      <li class="investing-cycle-phase">
+        <span class="investing-cycle-label">Recession</span>
+<span class="investing-cycle-note">Output contracting; credit spreads wide; earnings revised down.</span>      </li>
     </ol>
-    <figcaption>Late cycle: growth decelerating with inflation already normalised — historically the phase that rewards quality and duration over cyclicals. <span class="cycle-asof">July 2026</span></figcaption>
+    <figcaption>Late cycle: growth decelerating with inflation already normalised — historically the phase that rewards quality and duration over cyclicals. <span class="investing-cycle-asof">July 2026</span></figcaption>
   </figure>
 
 
@@ -1495,124 +1494,124 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">income-statement</span>
   </div>
 
-    <table class="fin statement st-income">
-<caption>Consolidated statements of operations — illustrative <span class="st-unit">$M</span></caption>    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
+    <table class="investing-fin investing-statement st-income">
+<caption>Consolidated statements of operations — illustrative <span class="investing-st-unit">$M</span></caption>    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
     <tbody>
-      <tr class="st-section">
+      <tr class="investing-st-section">
         <th scope="row">Revenue</th>
 <td></td><td></td><td></td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Products</th>
 <td>298,085</td><td>294,866</td><td>307,000</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Services</th>
 <td>85,200</td><td>96,169</td><td>109,200</td>      </tr>
-      <tr class="st-subtotal">
-        <th scope="row">Total net sales <a class="st-note" href="#note-2">2</a></th>
+      <tr class="investing-st-subtotal">
+        <th scope="row">Total net sales <a class="investing-st-note" href="#note-2">2</a></th>
 <td>383,285</td><td>391,035</td><td>416,200</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Total cost of sales</th>
 <td class="neg">(214,137)</td><td class="neg">(210,352)</td><td class="neg">(219,800)</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Gross profit</th>
 <td>169,148</td><td>180,683</td><td>196,400</td>      </tr>
-      <tr class="st-pct">
+      <tr class="investing-st-pct">
         <th scope="row">Gross margin</th>
 <td>44.1%</td><td>46.2%</td><td>47.2%</td>      </tr>
-      <tr class="st-section">
+      <tr class="investing-st-section">
         <th scope="row">Operating expenses</th>
 <td></td><td></td><td></td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Research and development</th>
 <td class="neg">(29,915)</td><td class="neg">(31,370)</td><td class="neg">(34,200)</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Selling, general and administrative</th>
 <td class="neg">(24,932)</td><td class="neg">(26,097)</td><td class="neg">(28,100)</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Total operating expenses</th>
 <td class="neg">(54,847)</td><td class="neg">(57,467)</td><td class="neg">(62,300)</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Operating income</th>
 <td>114,301</td><td>123,216</td><td>134,100</td>      </tr>
-      <tr class="st-pct">
+      <tr class="investing-st-pct">
         <th scope="row">Operating margin</th>
 <td>29.8%</td><td>31.5%</td><td>32.2%</td>      </tr>
-      <tr class="st-line">
+      <tr class="investing-st-line">
         <th scope="row">Other income/(expense), net</th>
 <td class="neg">(565)</td><td>269</td><td>400</td>      </tr>
-      <tr class="st-line">
-        <th scope="row">Provision for income taxes <a class="st-note" href="#note-5">5</a></th>
+      <tr class="investing-st-line">
+        <th scope="row">Provision for income taxes <a class="investing-st-note" href="#note-5">5</a></th>
 <td class="neg">(16,741)</td><td class="neg">(29,749)</td><td class="neg">(22,900)</td>      </tr>
-      <tr class="st-total">
+      <tr class="investing-st-total">
         <th scope="row">Net income</th>
 <td>96,995</td><td>93,736</td><td>111,600</td>      </tr>
-      <tr class="st-pct">
+      <tr class="investing-st-pct">
         <th scope="row">Net margin</th>
 <td>25.3%</td><td>24.0%</td><td>26.8%</td>      </tr>
     </tbody>
   </table>
-<p class="st-source">Illustrative figures shaped after a FY2025 Form 10-K; not a real filing.</p>
+<p class="investing-st-source">Illustrative figures shaped after a FY2025 Form 10-K; not a real filing.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Balance sheet — with the balance check</h3>
     <span class="gx-spec-name">balance-sheet</span>
   </div>
 
-    <table class="fin statement st-balance">
-<caption>Consolidated balance sheets — illustrative <span class="st-unit">$M</span></caption>    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
+    <table class="investing-fin investing-statement st-balance">
+<caption>Consolidated balance sheets — illustrative <span class="investing-st-unit">$M</span></caption>    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
     <tbody>
-      <tr class="st-section">
+      <tr class="investing-st-section">
         <th scope="row">Assets</th>
 <td></td><td></td><td></td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Cash and cash equivalents</th>
 <td>29,965</td><td>29,943</td><td>32,400</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Marketable securities</th>
 <td>31,590</td><td>35,228</td><td>38,100</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Accounts receivable, net</th>
 <td>29,508</td><td>33,410</td><td>35,900</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Inventories</th>
 <td>6,331</td><td>7,286</td><td>7,900</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Total current assets</th>
 <td>143,566</td><td>152,987</td><td>162,500</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Total non-current assets</th>
 <td>209,017</td><td>211,993</td><td>214,800</td>      </tr>
-      <tr class="st-total">
+      <tr class="investing-st-total">
         <th scope="row">Total assets</th>
 <td>352,583</td><td>364,980</td><td>377,300</td>      </tr>
-      <tr class="st-section">
+      <tr class="investing-st-section">
         <th scope="row">Liabilities and shareholders&rsquo; equity</th>
 <td></td><td></td><td></td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Total current liabilities</th>
 <td>145,308</td><td>176,392</td><td>176,600</td>      </tr>
-      <tr class="st-detail">
-        <th scope="row">Term debt <a class="st-note" href="#note-12">12</a></th>
+      <tr class="investing-st-detail">
+        <th scope="row">Term debt <a class="investing-st-note" href="#note-12">12</a></th>
 <td>95,281</td><td>85,750</td><td>82,300</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Total liabilities</th>
 <td>290,437</td><td>308,030</td><td>306,000</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Common stock and paid-in capital</th>
 <td>73,812</td><td>83,276</td><td>88,900</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Retained earnings/(deficit)</th>
 <td class="neg">(214)</td><td class="neg">(19,154)</td><td class="neg">(11,600)</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Total shareholders&rsquo; equity</th>
 <td>62,146</td><td>56,950</td><td>71,300</td>      </tr>
-      <tr class="st-total">
+      <tr class="investing-st-total">
         <th scope="row">Total liabilities and equity</th>
 <td>352,583</td><td>364,980</td><td>377,300</td>      </tr>
     </tbody>
   </table>
-    <p class="st-check">
-      <span class="st-check-tag">Balances</span> Total assets $377,300M = total liabilities $306,000M + shareholders' equity $71,300M.
+    <p class="investing-st-check">
+      <span class="investing-st-check-tag">Balances</span> Total assets $377,300M = total liabilities $306,000M + shareholders' equity $71,300M.
     </p>
 
 
@@ -1621,60 +1620,60 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">cash-flow-statement</span>
   </div>
 
-    <table class="fin statement st-cashflow">
-<caption>Consolidated statements of cash flows — illustrative <span class="st-unit">$M</span></caption>    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
+    <table class="investing-fin investing-statement st-cashflow">
+<caption>Consolidated statements of cash flows — illustrative <span class="investing-st-unit">$M</span></caption>    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
     <tbody>
-      <tr class="st-section">
+      <tr class="investing-st-section">
         <th scope="row">Operating activities</th>
 <td></td><td></td><td></td>      </tr>
-      <tr class="st-line">
+      <tr class="investing-st-line">
         <th scope="row">Net income</th>
 <td>96,995</td><td>93,736</td><td>111,600</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Depreciation and amortisation</th>
 <td>11,519</td><td>11,445</td><td>12,200</td>      </tr>
-      <tr class="st-detail">
-        <th scope="row">Share-based compensation <a class="st-note" href="#note-8">8</a></th>
+      <tr class="investing-st-detail">
+        <th scope="row">Share-based compensation <a class="investing-st-note" href="#note-8">8</a></th>
 <td>10,833</td><td>11,688</td><td>12,600</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Changes in working capital</th>
 <td class="neg">(6,577)</td><td class="neg">(6,577)</td><td class="neg">(4,100)</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Cash generated by operating activities</th>
 <td>110,543</td><td>118,254</td><td>128,900</td>      </tr>
-      <tr class="st-section">
+      <tr class="investing-st-section">
         <th scope="row">Investing activities</th>
 <td></td><td></td><td></td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Payments for property, plant and equipment</th>
 <td class="neg">(10,959)</td><td class="neg">(9,447)</td><td class="neg">(12,100)</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Marketable securities, net</th>
 <td>5,141</td><td>13,690</td><td>8,400</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Cash generated by/(used in) investing</th>
 <td>3,705</td><td>2,935</td><td class="neg">(4,200)</td>      </tr>
-      <tr class="st-section">
+      <tr class="investing-st-section">
         <th scope="row">Financing activities</th>
 <td></td><td></td><td></td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Dividends paid</th>
 <td class="neg">(15,025)</td><td class="neg">(15,234)</td><td class="neg">(15,900)</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Repurchases of common stock</th>
 <td class="neg">(77,550)</td><td class="neg">(94,949)</td><td class="neg">(95,000)</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Repayments of term debt, net</th>
 <td class="neg">(11,151)</td><td class="neg">(9,958)</td><td class="neg">(8,000)</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Cash used in financing activities</th>
 <td class="neg">(108,488)</td><td class="neg">(121,983)</td><td class="neg">(121,600)</td>      </tr>
-      <tr class="st-total">
+      <tr class="investing-st-total">
         <th scope="row">Increase/(decrease) in cash</th>
 <td>5,760</td><td class="neg">(794)</td><td>3,100</td>      </tr>
     </tbody>
   </table>
-    <p class="st-fcf"><span class="st-fcf-tag">Free cash flow</span> Operating cash $128,900M − capital expenditure $12,100M = $116,800M, 28.1% of revenue and 105% of net income.</p>
+    <p class="investing-st-fcf"><span class="investing-st-fcf-tag">Free cash flow</span> Operating cash $128,900M − capital expenditure $12,100M = $116,800M, 28.1% of revenue and 105% of net income.</p>
 
 
     <div class="gx-spec-head">
@@ -1682,25 +1681,25 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">segment-reporting</span>
   </div>
 
-    <table class="fin segments">
-<caption>Revenue and gross profit by category, FY2025 — illustrative <span class="st-unit">$M</span></caption>    <thead><tr>
+    <table class="investing-fin segments">
+<caption>Revenue and gross profit by category, FY2025 — illustrative <span class="investing-st-unit">$M</span></caption>    <thead><tr>
       <th>Segment</th>
-      <th>Revenue</th><th class="seg-share-head">% of revenue</th>
-      <th>Gross profit</th><th class="seg-share-head">% of gross profit</th>
+      <th>Revenue</th><th class="investing-seg-share-head">% of revenue</th>
+      <th>Gross profit</th><th class="investing-seg-share-head">% of gross profit</th>
       <th>Margin</th><th>y/y</th>
     </tr></thead>
     <tbody>
       <tr>
         <th scope="row">iPhone</th>
         <td>205,600</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill" data-pct="49.4%"></span></span>
-          <span class="seg-pct">49.4%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill" data-pct="49.4%"></span></span>
+          <span class="investing-seg-pct">49.4%</span>
         </td>
         <td>76,100</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill seg-fill-profit" data-pct="38.7%"></span></span>
-          <span class="seg-pct">38.7%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill investing-seg-fill-profit" data-pct="38.7%"></span></span>
+          <span class="investing-seg-pct">38.7%</span>
         </td>
         <td>37.0%</td>
         <td>+2.1%</td>
@@ -1708,14 +1707,14 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">Services</th>
         <td>109,200</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill" data-pct="26.2%"></span></span>
-          <span class="seg-pct">26.2%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill" data-pct="26.2%"></span></span>
+          <span class="investing-seg-pct">26.2%</span>
         </td>
         <td>80,800</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill seg-fill-profit" data-pct="41.1%"></span></span>
-          <span class="seg-pct">41.1%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill investing-seg-fill-profit" data-pct="41.1%"></span></span>
+          <span class="investing-seg-pct">41.1%</span>
         </td>
         <td>74.0%</td>
         <td>+13.6%</td>
@@ -1723,14 +1722,14 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">Wearables &amp; Home</th>
         <td>41,300</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill" data-pct="9.9%"></span></span>
-          <span class="seg-pct">9.9%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill" data-pct="9.9%"></span></span>
+          <span class="investing-seg-pct">9.9%</span>
         </td>
         <td>18,100</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill seg-fill-profit" data-pct="9.2%"></span></span>
-          <span class="seg-pct">9.2%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill investing-seg-fill-profit" data-pct="9.2%"></span></span>
+          <span class="investing-seg-pct">9.2%</span>
         </td>
         <td>43.8%</td>
         <td class="neg">-1.2%</td>
@@ -1738,14 +1737,14 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">Mac</th>
         <td>31,200</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill" data-pct="7.5%"></span></span>
-          <span class="seg-pct">7.5%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill" data-pct="7.5%"></span></span>
+          <span class="investing-seg-pct">7.5%</span>
         </td>
         <td>11,500</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill seg-fill-profit" data-pct="5.9%"></span></span>
-          <span class="seg-pct">5.9%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill investing-seg-fill-profit" data-pct="5.9%"></span></span>
+          <span class="investing-seg-pct">5.9%</span>
         </td>
         <td>36.9%</td>
         <td>+4.0%</td>
@@ -1753,20 +1752,20 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">iPad</th>
         <td>28,900</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill" data-pct="6.9%"></span></span>
-          <span class="seg-pct">6.9%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill" data-pct="6.9%"></span></span>
+          <span class="investing-seg-pct">6.9%</span>
         </td>
         <td>10,100</td>
-        <td class="seg-share">
-          <span class="seg-track"><span class="seg-fill seg-fill-profit" data-pct="5.1%"></span></span>
-          <span class="seg-pct">5.1%</span>
+        <td class="investing-seg-share">
+          <span class="investing-seg-track"><span class="investing-seg-fill investing-seg-fill-profit" data-pct="5.1%"></span></span>
+          <span class="investing-seg-pct">5.1%</span>
         </td>
         <td>34.9%</td>
         <td>+5.1%</td>
       </tr>
     </tbody>
-    <tfoot><tr class="total">
+    <tfoot><tr class="investing-total">
       <th scope="row">Total</th>
 <td>416,200</td><td>100.0%</td><td>196,600</td><td>100.0%</td><td>47.2%</td><td>+6.4%</td>    </tr></tfoot>
   </table>
@@ -1777,34 +1776,34 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">footnote-disclosures</span>
   </div>
 
-    <div class="disclosures">
-<p class="disclosures-caption">Notes cited in the statements above</p>    <section class="disclosure" id="note-2">
-      <p class="disclosure-head">
-        <span class="disclosure-num">Note 2</span>
-        <span class="disclosure-title">Revenue recognition</span>
+    <div class="investing-disclosures">
+<p class="investing-disclosures-caption">Notes cited in the statements above</p>    <section class="investing-disclosure" id="note-2">
+      <p class="investing-disclosure-head">
+        <span class="investing-disclosure-num">Note 2</span>
+        <span class="investing-disclosure-title">Revenue recognition</span>
       </p>
-      <p class="disclosure-body">Services revenue is recognised over the contract term. Deferred revenue of $9.1B at year end is disclosed separately and is not in the Services line above.</p>
+      <p class="investing-disclosure-body">Services revenue is recognised over the contract term. Deferred revenue of $9.1B at year end is disclosed separately and is not in the Services line above.</p>
     </section>
-    <section class="disclosure disclosure-watch" id="note-5">
-      <p class="disclosure-head">
-        <span class="disclosure-num">Note 5</span>
-        <span class="disclosure-title">Income taxes</span>
-<span class="disclosure-flag">watch</span>      </p>
-      <p class="disclosure-body">The FY2024 provision includes a one-off $10.2B charge from a State Aid decision. The FY2025 effective rate of 17.0% is the run rate; FY2024 net income is not comparable without adjusting for it.</p>
+    <section class="investing-disclosure investing-disclosure-watch" id="note-5">
+      <p class="investing-disclosure-head">
+        <span class="investing-disclosure-num">Note 5</span>
+        <span class="investing-disclosure-title">Income taxes</span>
+<span class="investing-disclosure-flag">watch</span>      </p>
+      <p class="investing-disclosure-body">The FY2024 provision includes a one-off $10.2B charge from a State Aid decision. The FY2025 effective rate of 17.0% is the run rate; FY2024 net income is not comparable without adjusting for it.</p>
     </section>
-    <section class="disclosure disclosure-watch" id="note-8">
-      <p class="disclosure-head">
-        <span class="disclosure-num">Note 8</span>
-        <span class="disclosure-title">Share-based compensation</span>
-<span class="disclosure-flag">watch</span>      </p>
-      <p class="disclosure-body">$12.6B was expensed in FY2025 and added back in operating cash flow. Dilution is offset by buybacks, so the cost is real but never appears in the share count.</p>
+    <section class="investing-disclosure investing-disclosure-watch" id="note-8">
+      <p class="investing-disclosure-head">
+        <span class="investing-disclosure-num">Note 8</span>
+        <span class="investing-disclosure-title">Share-based compensation</span>
+<span class="investing-disclosure-flag">watch</span>      </p>
+      <p class="investing-disclosure-body">$12.6B was expensed in FY2025 and added back in operating cash flow. Dilution is offset by buybacks, so the cost is real but never appears in the share count.</p>
     </section>
-    <section class="disclosure" id="note-12">
-      <p class="disclosure-head">
-        <span class="disclosure-num">Note 12</span>
-        <span class="disclosure-title">Debt and commitments</span>
+    <section class="investing-disclosure" id="note-12">
+      <p class="investing-disclosure-head">
+        <span class="investing-disclosure-num">Note 12</span>
+        <span class="investing-disclosure-title">Debt and commitments</span>
       </p>
-      <p class="disclosure-body">Term debt of $82.3B carries a weighted average rate of 3.1%, with a maturity wall of $18.4B in FY2027. Operating lease commitments of $14.2B are not included in term debt.</p>
+      <p class="investing-disclosure-body">Term debt of $82.3B carries a weighted average rate of 3.1%, with a maturity wall of $18.4B in FY2027. Operating lease commitments of $14.2B are not included in term debt.</p>
     </section>
   </div>
 
@@ -1814,52 +1813,52 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">bridge</span>
   </div>
 
-    <figure class="bridge">
-<figcaption>FY2024 → FY2025 revenue bridge ($M) — illustrative</figcaption>    <div class="bridge-rows">
-      <div class="bridge-row bridge-start">
-        <span class="bridge-label">FY2024 revenue</span>
-        <span class="bridge-track">
-          <span class="bridge-bar" data-lo="0.0%" data-span="24.52%"></span>
+    <figure class="investing-bridge">
+<figcaption>FY2024 → FY2025 revenue bridge ($M) — illustrative</figcaption>    <div class="investing-bridge-rows">
+      <div class="investing-bridge-row investing-bridge-start">
+        <span class="investing-bridge-label">FY2024 revenue</span>
+        <span class="investing-bridge-track">
+          <span class="investing-bridge-bar" data-lo="0.0%" data-span="24.52%"></span>
         </span>
-        <span class="bridge-value">391,035</span>
+        <span class="investing-bridge-value">391,035</span>
       </div>
-      <div class="bridge-row bridge-up">
-        <span class="bridge-label">Services growth</span>
-        <span class="bridge-track">
-          <span class="bridge-bar" data-lo="24.52%" data-span="28.96%"></span>
+      <div class="investing-bridge-row investing-bridge-up">
+        <span class="investing-bridge-label">Services growth</span>
+        <span class="investing-bridge-track">
+          <span class="investing-bridge-bar" data-lo="24.52%" data-span="28.96%"></span>
         </span>
-        <span class="bridge-value">+13,031</span>
+        <span class="investing-bridge-value">+13,031</span>
       </div>
-      <div class="bridge-row bridge-up">
-        <span class="bridge-label">iPhone units</span>
-        <span class="bridge-track">
-          <span class="bridge-bar" data-lo="53.48%" data-span="9.33%"></span>
+      <div class="investing-bridge-row investing-bridge-up">
+        <span class="investing-bridge-label">iPhone units</span>
+        <span class="investing-bridge-track">
+          <span class="investing-bridge-bar" data-lo="53.48%" data-span="9.33%"></span>
         </span>
-        <span class="bridge-value">+4,200</span>
+        <span class="investing-bridge-value">+4,200</span>
       </div>
-      <div class="bridge-row bridge-up">
-        <span class="bridge-label">Pricing and mix</span>
-        <span class="bridge-track">
-          <span class="bridge-bar" data-lo="62.81%" data-span="20.3%"></span>
+      <div class="investing-bridge-row investing-bridge-up">
+        <span class="investing-bridge-label">Pricing and mix</span>
+        <span class="investing-bridge-track">
+          <span class="investing-bridge-bar" data-lo="62.81%" data-span="20.3%"></span>
         </span>
-        <span class="bridge-value">+9,134</span>
+        <span class="investing-bridge-value">+9,134</span>
       </div>
-      <div class="bridge-row bridge-down">
-        <span class="bridge-label">FX translation</span>
-        <span class="bridge-track">
-          <span class="bridge-bar" data-lo="80.44%" data-span="2.67%"></span>
+      <div class="investing-bridge-row investing-bridge-down">
+        <span class="investing-bridge-label">FX translation</span>
+        <span class="investing-bridge-track">
+          <span class="investing-bridge-bar" data-lo="80.44%" data-span="2.67%"></span>
         </span>
-        <span class="bridge-value">-1,200</span>
+        <span class="investing-bridge-value">-1,200</span>
       </div>
-      <div class="bridge-row bridge-end">
-        <span class="bridge-label">FY2025 revenue</span>
-        <span class="bridge-track">
-          <span class="bridge-bar" data-lo="0.0%" data-span="80.44%"></span>
+      <div class="investing-bridge-row investing-bridge-end">
+        <span class="investing-bridge-label">FY2025 revenue</span>
+        <span class="investing-bridge-track">
+          <span class="investing-bridge-bar" data-lo="0.0%" data-span="80.44%"></span>
         </span>
-        <span class="bridge-value">416,200</span>
+        <span class="investing-bridge-value">416,200</span>
       </div>
     </div>
-<p class="bridge-note">Services contributed 53% of the increase on 26% of the base.</p>  </figure>
+<p class="investing-bridge-note">Services contributed 53% of the increase on 26% of the base.</p>  </figure>
 
 
     <div class="gx-spec-head">
@@ -1867,130 +1866,130 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">sensitivity-table</span>
   </div>
 
-    <table class="sens">
+    <table class="investing-sens">
 <caption>Value per share ($) — DCF sensitivity</caption>    <thead>
       <tr>
-        <th class="sens-corner"><span class="sens-row-label">WACC</span><span class="sens-col-label">Terminal growth</span></th>
+        <th class="investing-sens-corner"><span class="investing-sens-row-label">WACC</span><span class="investing-sens-col-label">Terminal growth</span></th>
 <th>2.0%</th><th>2.5%</th><th>3.0%</th><th>3.5%</th><th>4.0%</th>      </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">7.5%</th>
-        <td class="sens-cell sens-high">268</td>
-        <td class="sens-cell sens-high">284</td>
-        <td class="sens-cell sens-high">305</td>
-        <td class="sens-cell sens-high">332</td>
-        <td class="sens-cell sens-high">368</td>
+        <td class="investing-sens-cell investing-sens-high">268</td>
+        <td class="investing-sens-cell investing-sens-high">284</td>
+        <td class="investing-sens-cell investing-sens-high">305</td>
+        <td class="investing-sens-cell investing-sens-high">332</td>
+        <td class="investing-sens-cell investing-sens-high">368</td>
       </tr>
       <tr>
         <th scope="row">8.0%</th>
-        <td class="sens-cell sens-high">246</td>
-        <td class="sens-cell sens-high">259</td>
-        <td class="sens-cell sens-high">275</td>
-        <td class="sens-cell sens-high">296</td>
-        <td class="sens-cell sens-high">322</td>
+        <td class="investing-sens-cell investing-sens-high">246</td>
+        <td class="investing-sens-cell investing-sens-high">259</td>
+        <td class="investing-sens-cell investing-sens-high">275</td>
+        <td class="investing-sens-cell investing-sens-high">296</td>
+        <td class="investing-sens-cell investing-sens-high">322</td>
       </tr>
       <tr>
         <th scope="row">8.5%</th>
-        <td class="sens-cell sens-mid">227</td>
-        <td class="sens-cell sens-mid">238</td>
-        <td class="sens-cell sens-mid sens-base">251</td>
-        <td class="sens-cell sens-high">267</td>
-        <td class="sens-cell sens-high">287</td>
+        <td class="investing-sens-cell investing-sens-mid">227</td>
+        <td class="investing-sens-cell investing-sens-mid">238</td>
+        <td class="investing-sens-cell investing-sens-mid investing-sens-base">251</td>
+        <td class="investing-sens-cell investing-sens-high">267</td>
+        <td class="investing-sens-cell investing-sens-high">287</td>
       </tr>
       <tr>
         <th scope="row">9.0%</th>
-        <td class="sens-cell sens-low">211</td>
-        <td class="sens-cell sens-low">219</td>
-        <td class="sens-cell sens-mid">230</td>
-        <td class="sens-cell sens-mid">243</td>
-        <td class="sens-cell sens-high">259</td>
+        <td class="investing-sens-cell investing-sens-low">211</td>
+        <td class="investing-sens-cell investing-sens-low">219</td>
+        <td class="investing-sens-cell investing-sens-mid">230</td>
+        <td class="investing-sens-cell investing-sens-mid">243</td>
+        <td class="investing-sens-cell investing-sens-high">259</td>
       </tr>
       <tr>
         <th scope="row">9.5%</th>
-        <td class="sens-cell sens-low">196</td>
-        <td class="sens-cell sens-low">203</td>
-        <td class="sens-cell sens-low">212</td>
-        <td class="sens-cell sens-low">222</td>
-        <td class="sens-cell sens-mid">234</td>
+        <td class="investing-sens-cell investing-sens-low">196</td>
+        <td class="investing-sens-cell investing-sens-low">203</td>
+        <td class="investing-sens-cell investing-sens-low">212</td>
+        <td class="investing-sens-cell investing-sens-low">222</td>
+        <td class="investing-sens-cell investing-sens-mid">234</td>
       </tr>
     </tbody>
   </table>
-<p class="sens-note">Spot $232. The base case assumes WACC 8.5% and terminal growth 3.0%.</p>
+<p class="investing-sens-note">Spot $232. The base case assumes WACC 8.5% and terminal growth 3.0%.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Roll-forward — the movement schedule</h3>
     <span class="gx-spec-name">roll-forward</span>
   </div>
 
-    <table class="fin rollfwd">
+    <table class="investing-fin investing-rollfwd">
 <caption>Share count roll-forward (millions of diluted shares)</caption>    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
     <tbody>
-      <tr class="rf-opening">
+      <tr class="investing-rf-opening">
         <th scope="row">Opening balance</th>
 <td>16,326</td><td>15,813</td><td>15,408</td>      </tr>
-      <tr class="rf-movement">
+      <tr class="investing-rf-movement">
         <th scope="row">Shares issued on settlement</th>
 <td>92</td><td>88</td><td>84</td>      </tr>
-      <tr class="rf-movement">
+      <tr class="investing-rf-movement">
         <th scope="row">Shares repurchased</th>
 <td class="neg">(605)</td><td class="neg">(493)</td><td class="neg">(544)</td>      </tr>
-      <tr class="rf-closing">
+      <tr class="investing-rf-closing">
         <th scope="row">Closing balance</th>
 <td>15,813</td><td>15,408</td><td>14,948</td>      </tr>
     </tbody>
   </table>
-<p class="st-source">Buybacks retired about 3.0% of shares a year; issuance is settled RSUs.</p>
+<p class="investing-st-source">Buybacks retired about 3.0% of shares a year; issuance is settled RSUs.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Heatmap — monthly returns, correlations, grids</h3>
     <span class="gx-spec-name">heatmap</span>
   </div>
 
-    <table class="heatmap">
+    <table class="investing-heatmap">
 <caption>Monthly total return (%)</caption>    <thead><tr><th class="hm-corner">Year</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>YTD</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">2024</th>
-        <td class="hm-cell hm-p2">2.1</td>
-        <td class="hm-cell hm-n1">-1.4</td>
-        <td class="hm-cell hm-p2">3.8</td>
-        <td class="hm-cell hm-n3">-5.9</td>
-        <td class="hm-cell hm-p2">4.2</td>
-        <td class="hm-cell hm-p1">1.1</td>
-        <td class="hm-cell hm-p2">3.5</td>
+        <td class="investing-hm-cell investing-hm-p2">2.1</td>
+        <td class="investing-hm-cell investing-hm-n1">-1.4</td>
+        <td class="investing-hm-cell investing-hm-p2">3.8</td>
+        <td class="investing-hm-cell investing-hm-n3">-5.9</td>
+        <td class="investing-hm-cell investing-hm-p2">4.2</td>
+        <td class="investing-hm-cell investing-hm-p1">1.1</td>
+        <td class="investing-hm-cell investing-hm-p2">3.5</td>
       </tr>
       <tr>
         <th scope="row">2025</th>
-        <td class="hm-cell hm-n1">-0.8</td>
-        <td class="hm-cell hm-p2">2.9</td>
-        <td class="hm-cell hm-p1">1.2</td>
-        <td class="hm-cell hm-p3">6.4</td>
-        <td class="hm-cell hm-n2">-2.2</td>
-        <td class="hm-cell hm-z0">0.4</td>
-        <td class="hm-cell hm-p3">7.9</td>
+        <td class="investing-hm-cell investing-hm-n1">-0.8</td>
+        <td class="investing-hm-cell investing-hm-p2">2.9</td>
+        <td class="investing-hm-cell investing-hm-p1">1.2</td>
+        <td class="investing-hm-cell investing-hm-p3">6.4</td>
+        <td class="investing-hm-cell investing-hm-n2">-2.2</td>
+        <td class="investing-hm-cell investing-hm-z0">0.4</td>
+        <td class="investing-hm-cell investing-hm-p3">7.9</td>
       </tr>
       <tr>
         <th scope="row">2026</th>
-        <td class="hm-cell hm-p1">1.8</td>
-        <td class="hm-cell hm-p2">3.1</td>
-        <td class="hm-cell hm-z0">-0.6</td>
-        <td class="hm-cell hm-p2">2.4</td>
-        <td class="hm-cell hm-p1">1.9</td>
-        <td class="hm-cell hm-p2">2.1</td>
-<td class="hm-empty"></td>      </tr>
+        <td class="investing-hm-cell investing-hm-p1">1.8</td>
+        <td class="investing-hm-cell investing-hm-p2">3.1</td>
+        <td class="investing-hm-cell investing-hm-z0">-0.6</td>
+        <td class="investing-hm-cell investing-hm-p2">2.4</td>
+        <td class="investing-hm-cell investing-hm-p1">1.9</td>
+        <td class="investing-hm-cell investing-hm-p2">2.1</td>
+<td class="investing-hm-empty"></td>      </tr>
     </tbody>
   </table>
-<p class="hm-legend">Levels: ±1 under 2%, ±2 two to five percent, ±3 above 5%.</p>
+<p class="investing-hm-legend">Levels: ±1 under 2%, ±2 two to five percent, ±3 above 5%.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Capital allocation — where the cash went</h3>
     <span class="gx-spec-name">capital-allocation</span>
   </div>
 
-    <table class="fin capalloc">
-<caption>Uses of operating cash, FY2021–FY2025 — illustrative <span class="st-unit">$M</span></caption>    <thead><tr><th>Use of cash</th><th>FY2021</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>Cumulative</th><th class="ca-share-head">% of source</th></tr></thead>
-    <tbody class="ca-source">
+    <table class="investing-fin capalloc">
+<caption>Uses of operating cash, FY2021–FY2025 — illustrative <span class="investing-st-unit">$M</span></caption>    <thead><tr><th>Use of cash</th><th>FY2021</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>Cumulative</th><th class="investing-ca-share-head">% of source</th></tr></thead>
+    <tbody class="investing-ca-source">
       <tr><th scope="row">Operating cash flow</th>
 <td>104,038</td><td>122,151</td><td>110,543</td><td>118,254</td><td>128,900</td>        <td>583,886</td><td></td>
       </tr>
@@ -1998,165 +1997,165 @@ def rate_limited(partition: str) -> bool:
     <tbody>
       <tr>
         <th scope="row">Capital expenditure</th>
-<td class="neg">(11,085)</td><td class="neg">(10,708)</td><td class="neg">(10,959)</td><td class="neg">(9,447)</td><td class="neg">(12,100)</td>        <td class="ca-cum">(54,299)</td>
-        <td class="ca-share">
-          <span class="ca-track"><span class="ca-fill" data-pct="9.3%"></span></span>
-          <span class="ca-pct">9.3%</span>
+<td class="neg">(11,085)</td><td class="neg">(10,708)</td><td class="neg">(10,959)</td><td class="neg">(9,447)</td><td class="neg">(12,100)</td>        <td class="investing-ca-cum">(54,299)</td>
+        <td class="investing-ca-share">
+          <span class="investing-ca-track"><span class="investing-ca-fill" data-pct="9.3%"></span></span>
+          <span class="investing-ca-pct">9.3%</span>
         </td>
       </tr>
       <tr>
         <th scope="row">Acquisitions</th>
-<td class="neg">(33)</td><td class="neg">(306)</td><td class="neg">(1,445)</td><td class="neg">(620)</td><td class="neg">(800)</td>        <td class="ca-cum">(3,204)</td>
-        <td class="ca-share">
-          <span class="ca-track"><span class="ca-fill" data-pct="0.5%"></span></span>
-          <span class="ca-pct">0.5%</span>
+<td class="neg">(33)</td><td class="neg">(306)</td><td class="neg">(1,445)</td><td class="neg">(620)</td><td class="neg">(800)</td>        <td class="investing-ca-cum">(3,204)</td>
+        <td class="investing-ca-share">
+          <span class="investing-ca-track"><span class="investing-ca-fill" data-pct="0.5%"></span></span>
+          <span class="investing-ca-pct">0.5%</span>
         </td>
       </tr>
       <tr>
         <th scope="row">Dividends</th>
-<td class="neg">(14,467)</td><td class="neg">(14,841)</td><td class="neg">(15,025)</td><td class="neg">(15,234)</td><td class="neg">(15,900)</td>        <td class="ca-cum">(75,467)</td>
-        <td class="ca-share">
-          <span class="ca-track"><span class="ca-fill" data-pct="12.9%"></span></span>
-          <span class="ca-pct">12.9%</span>
+<td class="neg">(14,467)</td><td class="neg">(14,841)</td><td class="neg">(15,025)</td><td class="neg">(15,234)</td><td class="neg">(15,900)</td>        <td class="investing-ca-cum">(75,467)</td>
+        <td class="investing-ca-share">
+          <span class="investing-ca-track"><span class="investing-ca-fill" data-pct="12.9%"></span></span>
+          <span class="investing-ca-pct">12.9%</span>
         </td>
       </tr>
       <tr>
         <th scope="row">Buybacks</th>
-<td class="neg">(85,971)</td><td class="neg">(89,402)</td><td class="neg">(77,550)</td><td class="neg">(94,949)</td><td class="neg">(95,000)</td>        <td class="ca-cum">(442,872)</td>
-        <td class="ca-share">
-          <span class="ca-track"><span class="ca-fill" data-pct="75.8%"></span></span>
-          <span class="ca-pct">75.8%</span>
+<td class="neg">(85,971)</td><td class="neg">(89,402)</td><td class="neg">(77,550)</td><td class="neg">(94,949)</td><td class="neg">(95,000)</td>        <td class="investing-ca-cum">(442,872)</td>
+        <td class="investing-ca-share">
+          <span class="investing-ca-track"><span class="investing-ca-fill" data-pct="75.8%"></span></span>
+          <span class="investing-ca-pct">75.8%</span>
         </td>
       </tr>
       <tr>
         <th scope="row">Net debt repayment</th>
-<td class="neg">(7,500)</td><td class="neg">(9,543)</td><td class="neg">(11,151)</td><td class="neg">(9,958)</td><td class="neg">(8,000)</td>        <td class="ca-cum">(46,152)</td>
-        <td class="ca-share">
-          <span class="ca-track"><span class="ca-fill" data-pct="7.9%"></span></span>
-          <span class="ca-pct">7.9%</span>
+<td class="neg">(7,500)</td><td class="neg">(9,543)</td><td class="neg">(11,151)</td><td class="neg">(9,958)</td><td class="neg">(8,000)</td>        <td class="investing-ca-cum">(46,152)</td>
+        <td class="investing-ca-share">
+          <span class="investing-ca-track"><span class="investing-ca-fill" data-pct="7.9%"></span></span>
+          <span class="investing-ca-pct">7.9%</span>
         </td>
       </tr>
     </tbody>
   </table>
-<p class="st-source">Buybacks were executed at an average of 27x trailing earnings.</p>
+<p class="investing-st-source">Buybacks were executed at an average of 27x trailing earnings.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">DuPont — return decomposed into its drivers</h3>
     <span class="gx-spec-name">dupont</span>
   </div>
 
-    <table class="fin dupont">
+    <table class="investing-fin dupont">
 <caption>Return on equity decomposition</caption>    <thead><tr><th>Driver</th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr></thead>
     <tbody>
       <tr>
-        <th scope="row"><span class="dp-op"></span>Net margin</th>
+        <th scope="row"><span class="investing-dp-op"></span>Net margin</th>
 <td>25.3%</td><td>24.0%</td><td>26.8%</td>      </tr>
       <tr>
-        <th scope="row"><span class="dp-op">×</span>Asset turnover</th>
+        <th scope="row"><span class="investing-dp-op">×</span>Asset turnover</th>
 <td>1.09x</td><td>1.07x</td><td>1.10x</td>      </tr>
       <tr>
-        <th scope="row"><span class="dp-op">×</span>Equity multiplier</th>
+        <th scope="row"><span class="investing-dp-op">×</span>Equity multiplier</th>
 <td>5.67x</td><td>6.41x</td><td>5.29x</td>      </tr>
     </tbody>
-    <tfoot><tr class="total">
-      <th scope="row"><span class="dp-op">=</span>Return on equity</th>
+    <tfoot><tr class="investing-total">
+      <th scope="row"><span class="investing-dp-op">=</span>Return on equity</th>
 <td>156.4%</td><td>164.6%</td><td>156.0%</td>    </tr></tfoot>
   </table>
-<p class="st-source">ROE is flattered by a shrinking equity base: buybacks pushed the equity multiplier around while margin did the real work.</p>
+<p class="investing-st-source">ROE is flattered by a shrinking equity base: buybacks pushed the equity multiplier around while margin did the real work.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">DCF summary — assumptions, build, value per share</h3>
     <span class="gx-spec-name">dcf-summary</span>
   </div>
 
-    <dl class="dcf-assumptions">
+    <dl class="investing-dcf-assumptions">
     <div><dt>WACC</dt><dd>8.5%</dd></div>
     <div><dt>Terminal growth</dt><dd>3.0%</dd></div>
     <div><dt>Forecast horizon</dt><dd>5 years</dd></div>
     <div><dt>Tax rate</dt><dd>17.0%</dd></div>
     <div><dt>Valuation date</dt><dd>2026-07-17</dd></div>
   </dl>
-  <table class="fin statement st-dcf">
-<caption>Discounted cash flow — value per share — illustrative <span class="st-unit">$M except per share</span></caption>    <thead><tr><th></th><th>FY2026E</th><th>FY2027E</th><th>FY2028E</th><th>FY2029E</th><th>FY2030E</th></tr></thead>
+  <table class="investing-fin investing-statement st-dcf">
+<caption>Discounted cash flow — value per share — illustrative <span class="investing-st-unit">$M except per share</span></caption>    <thead><tr><th></th><th>FY2026E</th><th>FY2027E</th><th>FY2028E</th><th>FY2029E</th><th>FY2030E</th></tr></thead>
     <tbody>
-      <tr class="st-line">
+      <tr class="investing-st-line">
         <th scope="row">Free cash flow</th>
 <td>118,400</td><td>124,900</td><td>131,200</td><td>137,100</td><td>142,600</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Discount factor</th>
 <td>0.922</td><td>0.850</td><td>0.783</td><td>0.722</td><td>0.665</td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Present value of FCF</th>
 <td>109,165</td><td>106,165</td><td>102,730</td><td>98,986</td><td>94,829</td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Sum of present values</th>
 <td>511,875</td><td></td><td></td><td></td><td></td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Present value of terminal value</th>
 <td>1,259,000</td><td></td><td></td><td></td><td></td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Enterprise value</th>
 <td>1,770,875</td><td></td><td></td><td></td><td></td>      </tr>
-      <tr class="st-detail">
-        <th scope="row">Less: net debt <a class="st-note" href="#note-12">12</a></th>
+      <tr class="investing-st-detail">
+        <th scope="row">Less: net debt <a class="investing-st-note" href="#note-12">12</a></th>
 <td class="neg">(51,000)</td><td></td><td></td><td></td><td></td>      </tr>
-      <tr class="st-subtotal">
+      <tr class="investing-st-subtotal">
         <th scope="row">Equity value</th>
 <td>1,821,875</td><td></td><td></td><td></td><td></td>      </tr>
-      <tr class="st-detail">
+      <tr class="investing-st-detail">
         <th scope="row">Diluted shares (M)</th>
 <td>14,948</td><td></td><td></td><td></td><td></td>      </tr>
-      <tr class="st-total">
+      <tr class="investing-st-total">
         <th scope="row">Value per share</th>
 <td>$121.88</td><td></td><td></td><td></td><td></td>      </tr>
     </tbody>
   </table>
-<p class="st-source">Terminal value is 71% of enterprise value — the conclusion rests on the exit assumption, not the forecast.</p>
+<p class="investing-st-source">Terminal value is 71% of enterprise value — the conclusion rests on the exit assumption, not the forecast.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Debt maturity — the wall</h3>
     <span class="gx-spec-name">debt-maturity</span>
   </div>
 
-    <figure class="maturity">
-<figcaption>Term debt maturity profile <span class="st-unit">$M</span></figcaption>    <div class="maturity-rows">
-      <div class="maturity-row">
-        <span class="maturity-period">FY2026</span>
-        <span class="maturity-track"><span class="maturity-fill" data-pct="10.0%"></span></span>
-        <span class="maturity-amount">8,200</span>
-        <span class="maturity-rate">2.4%</span>
-        <span class="maturity-instrument">Senior notes</span>
+    <figure class="investing-maturity">
+<figcaption>Term debt maturity profile <span class="investing-st-unit">$M</span></figcaption>    <div class="investing-maturity-rows">
+      <div class="investing-maturity-row">
+        <span class="investing-maturity-period">FY2026</span>
+        <span class="investing-maturity-track"><span class="investing-maturity-fill" data-pct="10.0%"></span></span>
+        <span class="investing-maturity-amount">8,200</span>
+        <span class="investing-maturity-rate">2.4%</span>
+        <span class="investing-maturity-instrument">Senior notes</span>
       </div>
-      <div class="maturity-row">
-        <span class="maturity-period">FY2027</span>
-        <span class="maturity-track"><span class="maturity-fill" data-pct="22.4%"></span></span>
-        <span class="maturity-amount">18,400</span>
-        <span class="maturity-rate">1.9%</span>
-        <span class="maturity-instrument">Senior notes</span>
+      <div class="investing-maturity-row">
+        <span class="investing-maturity-period">FY2027</span>
+        <span class="investing-maturity-track"><span class="investing-maturity-fill" data-pct="22.4%"></span></span>
+        <span class="investing-maturity-amount">18,400</span>
+        <span class="investing-maturity-rate">1.9%</span>
+        <span class="investing-maturity-instrument">Senior notes</span>
       </div>
-      <div class="maturity-row">
-        <span class="maturity-period">FY2028</span>
-        <span class="maturity-track"><span class="maturity-fill" data-pct="13.7%"></span></span>
-        <span class="maturity-amount">11,300</span>
-        <span class="maturity-rate">3.0%</span>
-        <span class="maturity-instrument">Senior notes</span>
+      <div class="investing-maturity-row">
+        <span class="investing-maturity-period">FY2028</span>
+        <span class="investing-maturity-track"><span class="investing-maturity-fill" data-pct="13.7%"></span></span>
+        <span class="investing-maturity-amount">11,300</span>
+        <span class="investing-maturity-rate">3.0%</span>
+        <span class="investing-maturity-instrument">Senior notes</span>
       </div>
-      <div class="maturity-row">
-        <span class="maturity-period">FY2029</span>
-        <span class="maturity-track"><span class="maturity-fill" data-pct="11.7%"></span></span>
-        <span class="maturity-amount">9,600</span>
-        <span class="maturity-rate">3.3%</span>
-        <span class="maturity-instrument">Senior notes</span>
+      <div class="investing-maturity-row">
+        <span class="investing-maturity-period">FY2029</span>
+        <span class="investing-maturity-track"><span class="investing-maturity-fill" data-pct="11.7%"></span></span>
+        <span class="investing-maturity-amount">9,600</span>
+        <span class="investing-maturity-rate">3.3%</span>
+        <span class="investing-maturity-instrument">Senior notes</span>
       </div>
-      <div class="maturity-row">
-        <span class="maturity-period">FY2030+</span>
-        <span class="maturity-track"><span class="maturity-fill" data-pct="42.2%"></span></span>
-        <span class="maturity-amount">34,800</span>
-        <span class="maturity-rate">3.6%</span>
-        <span class="maturity-instrument">Notes and green bonds</span>
+      <div class="investing-maturity-row">
+        <span class="investing-maturity-period">FY2030+</span>
+        <span class="investing-maturity-track"><span class="investing-maturity-fill" data-pct="42.2%"></span></span>
+        <span class="investing-maturity-amount">34,800</span>
+        <span class="investing-maturity-rate">3.6%</span>
+        <span class="investing-maturity-instrument">Notes and green bonds</span>
       </div>
     </div>
-<p class="maturity-summary">Weighted average coupon 3.1%, weighted average life 6.4 years. The FY2027 wall of $18,400M refinances at roughly 5.2% on today&rsquo;s curve, costing about $390M of incremental annual interest.</p>  </figure>
+<p class="investing-maturity-summary">Weighted average coupon 3.1%, weighted average life 6.4 years. The FY2027 wall of $18,400M refinances at roughly 5.2% on today&rsquo;s curve, costing about $390M of incremental annual interest.</p>  </figure>
 
 
     <div class="gx-spec-head">
@@ -2164,39 +2163,39 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">working-capital</span>
   </div>
 
-    <table class="fin workcap">
-<caption>Working capital efficiency (days)</caption>    <thead><tr><th>Metric</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th class="trend-head">Trend</th></tr></thead>
+    <table class="investing-fin investing-workcap">
+<caption>Working capital efficiency (days)</caption>    <thead><tr><th>Metric</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th class="investing-trend-head">Trend</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Days sales outstanding (DSO)</th>
-<td>28.1</td><td>31.2</td><td>31.5</td>        <td class="trend trend-up">▲</td>
+<td>28.1</td><td>31.2</td><td>31.5</td>        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
       <tr>
         <th scope="row">Days inventory outstanding (DIO)</th>
-<td>6.0</td><td>9.0</td><td>9.6</td>        <td class="trend trend-up">▲</td>
+<td>6.0</td><td>9.0</td><td>9.6</td>        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
       <tr>
         <th scope="row">Days payable outstanding (DPO)</th>
-<td>106.7</td><td>119.6</td><td>120.3</td>        <td class="trend trend-up">▲</td>
+<td>106.7</td><td>119.6</td><td>120.3</td>        <td class="investing-trend investing-trend-up">▲</td>
       </tr>
-      <tr class="wc-total">
+      <tr class="investing-wc-total">
         <th scope="row">Cash conversion cycle</th>
-<td class="neg">(72.6)</td><td class="neg">(79.4)</td><td class="neg">(79.2)</td>        <td class="trend trend-down">▼</td>
+<td class="neg">(72.6)</td><td class="neg">(79.4)</td><td class="neg">(79.2)</td>        <td class="investing-trend investing-trend-down">▼</td>
       </tr>
     </tbody>
   </table>
-<p class="st-source">Cash conversion cycle = DSO + DIO − DPO. A negative cycle means suppliers fund working capital.</p>
+<p class="investing-st-source">Cash conversion cycle = DSO + DIO − DPO. A negative cycle means suppliers fund working capital.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Composite score — formula, inputs, band</h3>
     <span class="gx-spec-name">composite-score</span>
   </div>
 
-    <div class="composite">
-    <p class="composite-head">
-      <span class="composite-name">Altman Z-score (manufacturing)</span>
+    <div class="investing-composite">
+    <p class="investing-composite-head">
+      <span class="investing-composite-name">Altman Z-score (manufacturing)</span>
 <span class="math">Z = 1.2X_1 + 1.4X_2 + 3.3X_3 + 0.6X_4 + 1.0X_5</span>    </p>
-    <table class="fin composite-inputs">
+    <table class="investing-fin investing-composite-inputs">
 <caption>Inputs, FY2025 — illustrative</caption>      <thead><tr><th>Component</th><th>Coefficient</th><th>Value</th><th>Contribution</th></tr></thead>
       <tbody>
         <tr>
@@ -2230,17 +2229,17 @@ def rate_limited(partition: str) -> bool:
           <td>0.052</td>
         </tr>
       </tbody>
-      <tfoot><tr class="total"><th scope="row">Score</th><td></td><td></td><td>3.41</td></tr></tfoot>
+      <tfoot><tr class="investing-total"><th scope="row">Score</th><td></td><td></td><td>3.41</td></tr></tfoot>
     </table>
-    <p class="composite-band composite-good">
-      <span class="composite-band-tag">Safe</span>
-      <span class="composite-scale">
-        <span class="composite-step composite-step-bad">Distress <em>&lt; 1.81</em></span>
-        <span class="composite-step composite-step-warn">Grey <em>1.81 – 2.99</em></span>
-        <span class="composite-step composite-step-good current">Safe <em>&gt; 2.99</em></span>
+    <p class="investing-composite-band investing-composite-good">
+      <span class="investing-composite-band-tag">Safe</span>
+      <span class="investing-composite-scale">
+        <span class="investing-composite-step investing-composite-step-bad">Distress <em>&lt; 1.81</em></span>
+        <span class="investing-composite-step investing-composite-step-warn">Grey <em>1.81 – 2.99</em></span>
+        <span class="investing-composite-step investing-composite-step-good investing-current">Safe <em>&gt; 2.99</em></span>
       </span>
     </p>
-<p class="st-source">The score rests on X₄ (market value of equity to total liabilities); a 40% de-rating alone would move it into the grey zone.</p>  </div>
+<p class="investing-st-source">The score rests on X₄ (market value of equity to total liabilities); a 40% de-rating alone would move it into the grey zone.</p>  </div>
 
 
     <div class="gx-spec-head">
@@ -2248,82 +2247,82 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">ownership-table</span>
   </div>
 
-    <dl class="own-summary">
+    <dl class="investing-own-summary">
     <div><dt>Insider ownership</dt><dd>0.05%</dd></div>
     <div><dt>Institutional</dt><dd>62.1%</dd></div>
     <div><dt>Free float</dt><dd>99.9%</dd></div>
     <div><dt>Short interest</dt><dd>0.8% of float</dd></div>
     <div><dt>Days to cover</dt><dd>1.2</dd></div>
   </dl>
-  <table class="fin ownership">
-<caption>Largest holders — illustrative <span class="macro-asof">as of 2026-06-30</span></caption>    <thead><tr><th>Holder</th><th>Type</th><th>Shares</th><th class="own-stake-head">Stake</th><th>Change</th></tr></thead>
+  <table class="investing-fin ownership">
+<caption>Largest holders — illustrative <span class="investing-macro-asof">as of 2026-06-30</span></caption>    <thead><tr><th>Holder</th><th>Type</th><th>Shares</th><th class="investing-own-stake-head">Stake</th><th>Change</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Vanguard Group</th>
-        <td class="own-type">Index</td>
+        <td class="investing-own-type">Index</td>
         <td>1,380M</td>
-        <td class="own-stake">
-          <span class="own-track"><span class="own-fill" data-pct="9.2%"></span></span>
-          <span class="own-pct">9.2%</span>
+        <td class="investing-own-stake">
+          <span class="investing-own-track"><span class="investing-own-fill" data-pct="9.2%"></span></span>
+          <span class="investing-own-pct">9.2%</span>
         </td>
-        <td class="tone-neutral">+0.1pp</td>
+        <td class="investing-tone-neutral">+0.1pp</td>
       </tr>
       <tr>
         <th scope="row">BlackRock</th>
-        <td class="own-type">Index</td>
+        <td class="investing-own-type">Index</td>
         <td>1,050M</td>
-        <td class="own-stake">
-          <span class="own-track"><span class="own-fill" data-pct="7.0%"></span></span>
-          <span class="own-pct">7.0%</span>
+        <td class="investing-own-stake">
+          <span class="investing-own-track"><span class="investing-own-fill" data-pct="7.0%"></span></span>
+          <span class="investing-own-pct">7.0%</span>
         </td>
-        <td class="tone-neutral">+0.2pp</td>
+        <td class="investing-tone-neutral">+0.2pp</td>
       </tr>
       <tr>
         <th scope="row">State Street</th>
-        <td class="own-type">Index</td>
+        <td class="investing-own-type">Index</td>
         <td>615M</td>
-        <td class="own-stake">
-          <span class="own-track"><span class="own-fill" data-pct="4.1%"></span></span>
-          <span class="own-pct">4.1%</span>
+        <td class="investing-own-stake">
+          <span class="investing-own-track"><span class="investing-own-fill" data-pct="4.1%"></span></span>
+          <span class="investing-own-pct">4.1%</span>
         </td>
-        <td class="tone-neutral">0.0pp</td>
+        <td class="investing-tone-neutral">0.0pp</td>
       </tr>
       <tr>
         <th scope="row">Berkshire Hathaway</th>
-        <td class="own-type">Strategic</td>
+        <td class="investing-own-type">Strategic</td>
         <td>300M</td>
-        <td class="own-stake">
-          <span class="own-track"><span class="own-fill" data-pct="2.0%"></span></span>
-          <span class="own-pct">2.0%</span>
+        <td class="investing-own-stake">
+          <span class="investing-own-track"><span class="investing-own-fill" data-pct="2.0%"></span></span>
+          <span class="investing-own-pct">2.0%</span>
         </td>
-        <td class="tone-bad">-1.4pp</td>
+        <td class="investing-tone-bad">-1.4pp</td>
       </tr>
       <tr>
         <th scope="row">Insiders and officers</th>
-        <td class="own-type">Insider</td>
+        <td class="investing-own-type">Insider</td>
         <td>7M</td>
-        <td class="own-stake">
-          <span class="own-track"><span class="own-fill" data-pct="0.05%"></span></span>
-          <span class="own-pct">0.05%</span>
+        <td class="investing-own-stake">
+          <span class="investing-own-track"><span class="investing-own-fill" data-pct="0.05%"></span></span>
+          <span class="investing-own-pct">0.05%</span>
         </td>
-        <td class="tone-neutral">-0.01pp</td>
+        <td class="investing-tone-neutral">-0.01pp</td>
       </tr>
     </tbody>
   </table>
-<p class="st-source">Source: Form 13F filings for the quarter ended 30 Jun 2026. 13F data is 45 days stale by rule.</p>
+<p class="investing-st-source">Source: Form 13F filings for the quarter ended 30 Jun 2026. 13F data is 45 days stale by rule.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Variance analysis — budget vs actual</h3>
     <span class="gx-spec-name">variance-analysis</span>
   </div>
 
-    <table class="fin variance">
-<caption>Operating budget <span class="macro-asof">H1 FY2026</span> <span class="st-unit">$000</span></caption>    <thead><tr><th>Line</th><th>Budget</th><th>Actual</th><th>Variance</th><th>%</th><th>Verdict</th></tr></thead>
+    <table class="investing-fin investing-variance">
+<caption>Operating budget <span class="investing-macro-asof">H1 FY2026</span> <span class="investing-st-unit">$000</span></caption>    <thead><tr><th>Line</th><th>Budget</th><th>Actual</th><th>Variance</th><th>%</th><th>Verdict</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Revenue</th>
         <td>12,400</td>
-        <td class="var-actual">11,860</td>
+        <td class="investing-var-actual">11,860</td>
         <td class="neg">(540)</td>
         <td>-4.4%</td>
         <td><span class="badge badge-bad">adverse</span></td>
@@ -2331,7 +2330,7 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">Cost of sales</th>
         <td>(4,960)</td>
-        <td class="var-actual">(4,620)</td>
+        <td class="investing-var-actual">(4,620)</td>
         <td>340</td>
         <td>-6.9%</td>
         <td><span class="badge badge-good">favourable</span></td>
@@ -2339,7 +2338,7 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">Gross profit</th>
         <td>7,440</td>
-        <td class="var-actual">7,240</td>
+        <td class="investing-var-actual">7,240</td>
         <td class="neg">(200)</td>
         <td>-2.7%</td>
         <td><span class="badge badge-bad">adverse</span></td>
@@ -2347,7 +2346,7 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">Marketing</th>
         <td>(1,860)</td>
-        <td class="var-actual">(1,240)</td>
+        <td class="investing-var-actual">(1,240)</td>
         <td>620</td>
         <td>-33.3%</td>
         <td><span class="badge badge-bad">adverse</span></td>
@@ -2355,7 +2354,7 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">Engineering</th>
         <td>(2,480)</td>
-        <td class="var-actual">(2,510)</td>
+        <td class="investing-var-actual">(2,510)</td>
         <td class="neg">(30)</td>
         <td>+1.2%</td>
         <td><span class="badge badge-info">neutral</span></td>
@@ -2363,112 +2362,112 @@ def rate_limited(partition: str) -> bool:
       <tr>
         <th scope="row">General and admin</th>
         <td>(1,120)</td>
-        <td class="var-actual">(1,080)</td>
+        <td class="investing-var-actual">(1,080)</td>
         <td>40</td>
         <td>-3.6%</td>
         <td><span class="badge badge-good">favourable</span></td>
       </tr>
     </tbody>
-    <tfoot><tr class="total"><th scope="row">Operating profit</th><td>1,980</td><td>2,410</td><td>430</td><td>+21.7%</td><td></td></tr></tfoot>
+    <tfoot><tr class="investing-total"><th scope="row">Operating profit</th><td>1,980</td><td>2,410</td><td>430</td><td>+21.7%</td><td></td></tr></tfoot>
   </table>
-<p class="st-source">The revenue shortfall is timing: two enterprise contracts slipped from June to July and closed at full value.</p>
+<p class="investing-st-source">The revenue shortfall is timing: two enterprise contracts slipped from June to July and closed at full value.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Aging schedule — receivables by bucket</h3>
     <span class="gx-spec-name">aging-schedule</span>
   </div>
 
-    <table class="fin aging">
-<caption>Trade receivables ageing at 30 Jun 2026 <span class="st-unit">$000</span></caption>    <thead><tr><th>Counterparty</th><th>Current</th><th>1–30 days</th><th>31–60 days</th><th>61–90 days</th><th>90+ days</th><th>Total</th><th class="aging-share-head">Overdue</th></tr></thead>
+    <table class="investing-fin aging">
+<caption>Trade receivables ageing at 30 Jun 2026 <span class="investing-st-unit">$000</span></caption>    <thead><tr><th>Counterparty</th><th>Current</th><th>1–30 days</th><th>31–60 days</th><th>61–90 days</th><th>90+ days</th><th>Total</th><th class="investing-aging-share-head">Overdue</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Northwind Traders</th>
-<td>1,240</td><td>380</td><td>210</td><td>160</td><td>540</td>        <td class="aging-total">2,530</td>
-        <td class="aging-share">
-          <span class="aging-track"><span class="aging-fill aging-fill-bad" data-pct="51.0%"></span></span>
-          <span class="aging-pct">51.0%</span>
+<td>1,240</td><td>380</td><td>210</td><td>160</td><td>540</td>        <td class="investing-aging-total">2,530</td>
+        <td class="investing-aging-share">
+          <span class="investing-aging-track"><span class="investing-aging-fill investing-aging-fill-bad" data-pct="51.0%"></span></span>
+          <span class="investing-aging-pct">51.0%</span>
         </td>
       </tr>
       <tr>
         <th scope="row">Contoso Ltd</th>
-<td>3,110</td><td>420</td><td>90</td><td>0</td><td>0</td>        <td class="aging-total">3,620</td>
-        <td class="aging-share">
-          <span class="aging-track"><span class="aging-fill aging-fill-neutral" data-pct="14.1%"></span></span>
-          <span class="aging-pct">14.1%</span>
+<td>3,110</td><td>420</td><td>90</td><td>0</td><td>0</td>        <td class="investing-aging-total">3,620</td>
+        <td class="investing-aging-share">
+          <span class="investing-aging-track"><span class="investing-aging-fill investing-aging-fill-neutral" data-pct="14.1%"></span></span>
+          <span class="investing-aging-pct">14.1%</span>
         </td>
       </tr>
       <tr>
         <th scope="row">Fabrikam Inc</th>
-<td>2,480</td><td>150</td><td>0</td><td>0</td><td>60</td>        <td class="aging-total">2,690</td>
-        <td class="aging-share">
-          <span class="aging-track"><span class="aging-fill aging-fill-good" data-pct="7.8%"></span></span>
-          <span class="aging-pct">7.8%</span>
+<td>2,480</td><td>150</td><td>0</td><td>0</td><td>60</td>        <td class="investing-aging-total">2,690</td>
+        <td class="investing-aging-share">
+          <span class="investing-aging-track"><span class="investing-aging-fill investing-aging-fill-good" data-pct="7.8%"></span></span>
+          <span class="investing-aging-pct">7.8%</span>
         </td>
       </tr>
       <tr>
         <th scope="row">Other (42 accounts)</th>
-<td>6,900</td><td>820</td><td>310</td><td>120</td><td>570</td>        <td class="aging-total">8,720</td>
-        <td class="aging-share">
-          <span class="aging-track"><span class="aging-fill aging-fill-neutral" data-pct="20.8%"></span></span>
-          <span class="aging-pct">20.8%</span>
+<td>6,900</td><td>820</td><td>310</td><td>120</td><td>570</td>        <td class="investing-aging-total">8,720</td>
+        <td class="investing-aging-share">
+          <span class="investing-aging-track"><span class="investing-aging-fill investing-aging-fill-neutral" data-pct="20.8%"></span></span>
+          <span class="investing-aging-pct">20.8%</span>
         </td>
       </tr>
     </tbody>
-    <tfoot><tr class="total"><th scope="row">Total</th><td>13,730</td><td>1,770</td><td>610</td><td>280</td><td>1,170</td><td>17,560</td><td></td></tr></tfoot>
+    <tfoot><tr class="investing-total"><th scope="row">Total</th><td>13,730</td><td>1,770</td><td>610</td><td>280</td><td>1,170</td><td>17,560</td><td></td></tr></tfoot>
   </table>
-<p class="st-source">Provision of $840k covers 71% of balances over 90 days. Northwind alone is 46% of the 90+ bucket and is in payment dispute.</p>
+<p class="investing-st-source">Provision of $840k covers 71% of balances over 90 days. Northwind alone is 46% of the 90+ bucket and is in payment dispute.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Covenant table — headroom before breach</h3>
     <span class="gx-spec-name">covenant-table</span>
   </div>
 
-    <table class="fin covenants">
-<caption>Senior facility covenants <span class="macro-asof">tested at 30 Jun 2026</span></caption>    <thead><tr><th>Covenant</th><th>Test</th><th>Limit</th><th>Actual</th><th>Headroom</th><th>Status</th></tr></thead>
+    <table class="investing-fin investing-covenants">
+<caption>Senior facility covenants <span class="investing-macro-asof">tested at 30 Jun 2026</span></caption>    <thead><tr><th>Covenant</th><th>Test</th><th>Limit</th><th>Actual</th><th>Headroom</th><th>Status</th></tr></thead>
     <tbody>
-      <tr class="cov-pass">
+      <tr class="investing-cov-pass">
         <th scope="row">Net leverage</th>
-        <td class="cov-test">Net debt / EBITDA</td>
+        <td class="investing-cov-test">Net debt / EBITDA</td>
         <td>≤ 3.50x</td>
-        <td class="cov-actual">2.85x</td>
+        <td class="investing-cov-actual">2.85x</td>
         <td>18% EBITDA decline</td>
         <td><span class="badge badge-good">pass</span></td>
       </tr>
-      <tr class="cov-tight">
+      <tr class="investing-cov-tight">
         <th scope="row">Interest cover</th>
-        <td class="cov-test">EBITDA / net interest</td>
+        <td class="investing-cov-test">EBITDA / net interest</td>
         <td>≥ 3.00x</td>
-        <td class="cov-actual">3.42x</td>
+        <td class="investing-cov-actual">3.42x</td>
         <td>12% EBITDA decline</td>
         <td><span class="badge badge-warn">tight</span></td>
       </tr>
-      <tr class="cov-pass">
+      <tr class="investing-cov-pass">
         <th scope="row">Fixed charge cover</th>
-        <td class="cov-test">EBITDAR / fixed charges</td>
+        <td class="investing-cov-test">EBITDAR / fixed charges</td>
         <td>≥ 1.75x</td>
-        <td class="cov-actual">2.31x</td>
+        <td class="investing-cov-actual">2.31x</td>
         <td>24% EBITDA decline</td>
         <td><span class="badge badge-good">pass</span></td>
       </tr>
-      <tr class="cov-pass">
+      <tr class="investing-cov-pass">
         <th scope="row">Minimum liquidity</th>
-        <td class="cov-test">Cash + undrawn revolver</td>
+        <td class="investing-cov-test">Cash + undrawn revolver</td>
         <td>≥ $150M</td>
-        <td class="cov-actual">$412M</td>
+        <td class="investing-cov-actual">$412M</td>
         <td>$262M</td>
         <td><span class="badge badge-good">pass</span></td>
       </tr>
     </tbody>
   </table>
-<p class="st-source">Tested quarterly on a rolling twelve-month basis. Headroom is the EBITDA decline that would breach the test, holding debt constant.</p>
+<p class="investing-st-source">Tested quarterly on a rolling twelve-month basis. Headroom is the EBITDA decline that would breach the test, holding debt constant.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Attribution — allocation vs selection</h3>
     <span class="gx-spec-name">attribution</span>
   </div>
 
-    <table class="fin attribution">
-<caption>Brinson attribution vs MSCI World <span class="macro-asof">YTD to 30 Jun 2026</span></caption>    <thead>
+    <table class="investing-fin investing-attribution">
+<caption>Brinson attribution vs MSCI World <span class="investing-macro-asof">YTD to 30 Jun 2026</span></caption>    <thead>
       <tr>
         <th>Segment</th>
         <th>Port. weight</th><th>Bench. weight</th>
@@ -2479,212 +2478,212 @@ def rate_limited(partition: str) -> bool:
     <tbody>
       <tr>
         <th scope="row">Information technology</th>
-        <td>42.3%</td><td class="attr-bench">24.1%</td>
-        <td>+14.2%</td><td class="attr-bench">+11.8%</td>
+        <td>42.3%</td><td class="investing-attr-bench">24.1%</td>
+        <td>+14.2%</td><td class="investing-attr-bench">+11.8%</td>
         <td>+0.44pp</td>
         <td>+1.02pp</td>
-        <td class="attr-total">+1.46pp</td>
+        <td class="investing-attr-total">+1.46pp</td>
       </tr>
       <tr>
         <th scope="row">Health care</th>
-        <td>12.6%</td><td class="attr-bench">11.8%</td>
-        <td>+6.1%</td><td class="attr-bench">+8.4%</td>
+        <td>12.6%</td><td class="investing-attr-bench">11.8%</td>
+        <td>+6.1%</td><td class="investing-attr-bench">+8.4%</td>
         <td>+0.01pp</td>
         <td class="neg">-0.29pp</td>
-        <td class="attr-total neg">-0.28pp</td>
+        <td class="investing-attr-total neg">-0.28pp</td>
       </tr>
       <tr>
         <th scope="row">Financials</th>
-        <td>8.6%</td><td class="attr-bench">16.2%</td>
-        <td>+11.0%</td><td class="attr-bench">+9.2%</td>
+        <td>8.6%</td><td class="investing-attr-bench">16.2%</td>
+        <td>+11.0%</td><td class="investing-attr-bench">+9.2%</td>
         <td class="neg">-0.09pp</td>
         <td>+0.16pp</td>
-        <td class="attr-total">+0.07pp</td>
+        <td class="investing-attr-total">+0.07pp</td>
       </tr>
       <tr>
         <th scope="row">Consumer discretionary</th>
-        <td>11.0%</td><td class="attr-bench">10.9%</td>
-        <td>+9.4%</td><td class="attr-bench">+7.7%</td>
+        <td>11.0%</td><td class="investing-attr-bench">10.9%</td>
+        <td>+9.4%</td><td class="investing-attr-bench">+7.7%</td>
         <td>+0.00pp</td>
         <td>+0.19pp</td>
-        <td class="attr-total">+0.19pp</td>
+        <td class="investing-attr-total">+0.19pp</td>
       </tr>
       <tr>
         <th scope="row">Cash</th>
-        <td>7.2%</td><td class="attr-bench">0.0%</td>
-        <td>+2.1%</td><td class="attr-bench">0.0%</td>
+        <td>7.2%</td><td class="investing-attr-bench">0.0%</td>
+        <td>+2.1%</td><td class="investing-attr-bench">0.0%</td>
         <td class="neg">-0.42pp</td>
         <td>+0.00pp</td>
-        <td class="attr-total neg">-0.42pp</td>
+        <td class="investing-attr-total neg">-0.42pp</td>
       </tr>
     </tbody>
-    <tfoot><tr class="total"><th scope="row">Total</th><td>100.0%</td><td>100.0%</td><td>+9.6%</td><td>+8.2%</td><td>-0.06pp</td><td>+1.08pp</td><td>+1.40pp</td></tr></tfoot>
+    <tfoot><tr class="investing-total"><th scope="row">Total</th><td>100.0%</td><td>100.0%</td><td>+9.6%</td><td>+8.2%</td><td>-0.06pp</td><td>+1.08pp</td><td>+1.40pp</td></tr></tfoot>
   </table>
-<p class="st-source">Excess return is 82% selection. The technology overweight contributed 0.4pp; the rest came from stock choice within it.</p>
+<p class="investing-st-source">Excess return is 82% selection. The technology overweight contributed 0.4pp; the rest came from stock choice within it.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Drawdown table — depth and time to recover</h3>
     <span class="gx-spec-name">drawdown-table</span>
   </div>
 
-    <table class="fin drawdowns">
+    <table class="investing-fin investing-drawdowns">
 <caption>Five deepest drawdowns, 2016-01 to 2026-06</caption>    <thead><tr><th>#</th><th>Depth</th><th>Peak</th><th>Trough</th><th>Recovered</th><th>Fall</th><th>Recovery</th><th>Cause</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">1</th>
-        <td class="dd-depth neg">-38.4%</td>
-        <td class="dd-date">2020-02-19</td>
-        <td class="dd-date">2020-03-23</td>
-        <td class="dd-date">2020-08-18</td>
+        <td class="investing-dd-depth neg">-38.4%</td>
+        <td class="investing-dd-date">2020-02-19</td>
+        <td class="investing-dd-date">2020-03-23</td>
+        <td class="investing-dd-date">2020-08-18</td>
         <td>1 month</td>
         <td>5 months</td>
-        <td class="dd-cause">Covid liquidity shock</td>
+        <td class="investing-dd-cause">Covid liquidity shock</td>
       </tr>
       <tr>
         <th scope="row">2</th>
-        <td class="dd-depth neg">-31.2%</td>
-        <td class="dd-date">2022-01-03</td>
-        <td class="dd-date">2022-10-12</td>
-        <td class="dd-date">2024-01-19</td>
+        <td class="investing-dd-depth neg">-31.2%</td>
+        <td class="investing-dd-date">2022-01-03</td>
+        <td class="investing-dd-date">2022-10-12</td>
+        <td class="investing-dd-date">2024-01-19</td>
         <td>9 months</td>
         <td>15 months</td>
-        <td class="dd-cause">Rate shock, multiple compression</td>
+        <td class="investing-dd-cause">Rate shock, multiple compression</td>
       </tr>
       <tr>
         <th scope="row">3</th>
-        <td class="dd-depth neg">-19.8%</td>
-        <td class="dd-date">2018-10-01</td>
-        <td class="dd-date">2018-12-24</td>
-        <td class="dd-date">2019-04-23</td>
+        <td class="investing-dd-depth neg">-19.8%</td>
+        <td class="investing-dd-date">2018-10-01</td>
+        <td class="investing-dd-date">2018-12-24</td>
+        <td class="investing-dd-date">2019-04-23</td>
         <td>3 months</td>
         <td>4 months</td>
-        <td class="dd-cause">Trade war, hawkish Fed</td>
+        <td class="investing-dd-cause">Trade war, hawkish Fed</td>
       </tr>
       <tr>
         <th scope="row">4</th>
-        <td class="dd-depth neg">-14.1%</td>
-        <td class="dd-date">2025-02-19</td>
-        <td class="dd-date">2025-04-08</td>
-        <td class="dd-date">2025-07-30</td>
+        <td class="investing-dd-depth neg">-14.1%</td>
+        <td class="investing-dd-date">2025-02-19</td>
+        <td class="investing-dd-date">2025-04-08</td>
+        <td class="investing-dd-date">2025-07-30</td>
         <td>2 months</td>
         <td>4 months</td>
-        <td class="dd-cause">Tariff announcement</td>
+        <td class="investing-dd-cause">Tariff announcement</td>
       </tr>
       <tr>
         <th scope="row">5</th>
-        <td class="dd-depth neg">-11.6%</td>
-        <td class="dd-date">2023-07-31</td>
-        <td class="dd-date">2023-10-27</td>
-        <td class="dd-date">2023-12-08</td>
+        <td class="investing-dd-depth neg">-11.6%</td>
+        <td class="investing-dd-date">2023-07-31</td>
+        <td class="investing-dd-date">2023-10-27</td>
+        <td class="investing-dd-date">2023-12-08</td>
         <td>3 months</td>
         <td>1 month</td>
-        <td class="dd-cause">Duration sell-off</td>
+        <td class="investing-dd-cause">Duration sell-off</td>
       </tr>
     </tbody>
   </table>
-<p class="st-source">Median time to recovery is 9 months; the 2022 drawdown took 15. Position sizing assumes the ability to hold through a 40% decline lasting two years.</p>
+<p class="investing-st-source">Median time to recovery is 9 months; the 2022 drawdown took 15. Position sizing assumes the ability to hold through a 40% decline lasting two years.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Stress test — trigger, impact, response</h3>
     <span class="gx-spec-name">stress-test</span>
   </div>
 
-    <table class="fin stress">
-<caption>Portfolio stress scenarios — impact on NAV</caption>    <thead><tr><th>Scenario</th><th>Trigger</th><th class="stress-impact-head">Impact</th><th>Response</th></tr></thead>
+    <table class="investing-fin investing-stress">
+<caption>Portfolio stress scenarios — impact on NAV</caption>    <thead><tr><th>Scenario</th><th>Trigger</th><th class="investing-stress-impact-head">Impact</th><th>Response</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">2008-style credit event</th>
-        <td class="stress-trigger">Spreads above 800bp, funding freeze</td>
-        <td class="stress-impact">
-          <span class="stress-value tone-bad">-38%</span>
-          <span class="stress-track"><span class="stress-fill stress-fill-bad" data-pct="100%"></span></span>
+        <td class="investing-stress-trigger">Spreads above 800bp, funding freeze</td>
+        <td class="investing-stress-impact">
+          <span class="investing-stress-value investing-tone-bad">-38%</span>
+          <span class="investing-stress-track"><span class="investing-stress-fill investing-stress-fill-bad" data-pct="100%"></span></span>
         </td>
-        <td class="stress-response">Hold; cash reserve funds 18 months of drawdowns without forced selling.</td>
+        <td class="investing-stress-response">Hold; cash reserve funds 18 months of drawdowns without forced selling.</td>
       </tr>
       <tr>
         <th scope="row">Rate shock +200bp</th>
-        <td class="stress-trigger">Ten-year yield above 6%</td>
-        <td class="stress-impact">
-          <span class="stress-value tone-bad">-22%</span>
-          <span class="stress-track"><span class="stress-fill stress-fill-bad" data-pct="58%"></span></span>
+        <td class="investing-stress-trigger">Ten-year yield above 6%</td>
+        <td class="investing-stress-impact">
+          <span class="investing-stress-value investing-tone-bad">-22%</span>
+          <span class="investing-stress-track"><span class="investing-stress-fill investing-stress-fill-bad" data-pct="58%"></span></span>
         </td>
-        <td class="stress-response">Trim duration-sensitive names; add to cash-generative positions.</td>
+        <td class="investing-stress-response">Trim duration-sensitive names; add to cash-generative positions.</td>
       </tr>
       <tr>
         <th scope="row">Technology de-rating</th>
-        <td class="stress-trigger">Sector multiple back to 20-year median</td>
-        <td class="stress-impact">
-          <span class="stress-value tone-bad">-28%</span>
-          <span class="stress-track"><span class="stress-fill stress-fill-bad" data-pct="74%"></span></span>
+        <td class="investing-stress-trigger">Sector multiple back to 20-year median</td>
+        <td class="investing-stress-impact">
+          <span class="investing-stress-value investing-tone-bad">-28%</span>
+          <span class="investing-stress-track"><span class="investing-stress-fill investing-stress-fill-bad" data-pct="74%"></span></span>
         </td>
-        <td class="stress-response">Thesis-driven; reduce only where the multiple was the thesis.</td>
+        <td class="investing-stress-response">Thesis-driven; reduce only where the multiple was the thesis.</td>
       </tr>
       <tr>
         <th scope="row">Sustained inflation 5%+</th>
-        <td class="stress-trigger">Core PCE above 5% for two quarters</td>
-        <td class="stress-impact">
-          <span class="stress-value tone-warn">-11%</span>
-          <span class="stress-track"><span class="stress-fill stress-fill-warn" data-pct="29%"></span></span>
+        <td class="investing-stress-trigger">Core PCE above 5% for two quarters</td>
+        <td class="investing-stress-impact">
+          <span class="investing-stress-value investing-tone-warn">-11%</span>
+          <span class="investing-stress-track"><span class="investing-stress-fill investing-stress-fill-warn" data-pct="29%"></span></span>
         </td>
-        <td class="stress-response">Rotate toward pricing power; no forced action.</td>
+        <td class="investing-stress-response">Rotate toward pricing power; no forced action.</td>
       </tr>
       <tr>
         <th scope="row">Single-name fraud</th>
-        <td class="stress-trigger">Accounting restatement at the largest holding</td>
-        <td class="stress-impact">
-          <span class="stress-value tone-bad">-18%</span>
-          <span class="stress-track"><span class="stress-fill stress-fill-bad" data-pct="47%"></span></span>
+        <td class="investing-stress-trigger">Accounting restatement at the largest holding</td>
+        <td class="investing-stress-impact">
+          <span class="investing-stress-value investing-tone-bad">-18%</span>
+          <span class="investing-stress-track"><span class="investing-stress-fill investing-stress-fill-bad" data-pct="47%"></span></span>
         </td>
-        <td class="stress-response">Position cap of 20% is the control; exit on restatement.</td>
+        <td class="investing-stress-response">Position cap of 20% is the control; exit on restatement.</td>
       </tr>
     </tbody>
   </table>
-<p class="st-source">Magnitudes are scaled to the worst case. Correlations are assumed to rise toward 1 in every stress.</p>
+<p class="investing-st-source">Magnitudes are scaled to the worst case. Correlations are assumed to rise toward 1 in every stress.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Five forces — industry structure</h3>
     <span class="gx-spec-name">five-forces</span>
   </div>
 
-    <div class="forces">
-<p class="forces-caption">Smartphone and platform industry structure</p>    <div class="forces-grid">
-      <article class="force force-good">
-        <p class="force-head">
-          <span class="force-name">Threat of new entrants</span>
-          <span class="force-rating">Low</span>
+    <div class="investing-forces">
+<p class="investing-forces-caption">Smartphone and platform industry structure</p>    <div class="investing-forces-grid">
+      <article class="investing-force investing-force-good">
+        <p class="investing-force-head">
+          <span class="investing-force-name">Threat of new entrants</span>
+          <span class="investing-force-rating">Low</span>
         </p>
-        <p class="force-evidence">Silicon design, a two-million-app ecosystem and $30B+ of annual R&amp;D make entry uneconomic; no new entrant has taken 1% share in a decade.</p>
+        <p class="investing-force-evidence">Silicon design, a two-million-app ecosystem and $30B+ of annual R&amp;D make entry uneconomic; no new entrant has taken 1% share in a decade.</p>
       </article>
-      <article class="force force-good">
-        <p class="force-head">
-          <span class="force-name">Supplier power</span>
-          <span class="force-rating">Low</span>
+      <article class="investing-force investing-force-good">
+        <p class="investing-force-head">
+          <span class="investing-force-name">Supplier power</span>
+          <span class="investing-force-rating">Low</span>
         </p>
-        <p class="force-evidence">Displays and memory are commoditised across three vendors each; in-house silicon removed the largest supplier dependency.</p>
+        <p class="investing-force-evidence">Displays and memory are commoditised across three vendors each; in-house silicon removed the largest supplier dependency.</p>
       </article>
-      <article class="force force-neutral">
-        <p class="force-head">
-          <span class="force-name">Buyer power</span>
-          <span class="force-rating">Moderate</span>
+      <article class="investing-force investing-force-neutral">
+        <p class="investing-force-head">
+          <span class="investing-force-name">Buyer power</span>
+          <span class="investing-force-rating">Moderate</span>
         </p>
-        <p class="force-evidence">Consumers are price-sensitive at the low end but switching costs are high once inside the ecosystem; carrier subsidies have largely gone.</p>
+        <p class="investing-force-evidence">Consumers are price-sensitive at the low end but switching costs are high once inside the ecosystem; carrier subsidies have largely gone.</p>
       </article>
-      <article class="force force-good">
-        <p class="force-head">
-          <span class="force-name">Threat of substitutes</span>
-          <span class="force-rating">Low</span>
+      <article class="investing-force investing-force-good">
+        <p class="investing-force-head">
+          <span class="investing-force-name">Threat of substitutes</span>
+          <span class="investing-force-rating">Low</span>
         </p>
-        <p class="force-evidence">No category substitutes for the smartphone; wearables extend the platform rather than replacing it.</p>
+        <p class="investing-force-evidence">No category substitutes for the smartphone; wearables extend the platform rather than replacing it.</p>
       </article>
-      <article class="force force-neutral">
-        <p class="force-head">
-          <span class="force-name">Competitive rivalry</span>
-          <span class="force-rating">Moderate</span>
+      <article class="investing-force investing-force-neutral">
+        <p class="investing-force-head">
+          <span class="investing-force-name">Competitive rivalry</span>
+          <span class="investing-force-rating">Moderate</span>
         </p>
-        <p class="force-evidence">Android competes hard on price and specification but not on ecosystem lock-in; the premium tier is effectively a duopoly.</p>
+        <p class="investing-force-evidence">Android competes hard on price and specification but not on ecosystem lock-in; the premium tier is effectively a duopoly.</p>
       </article>
     </div>
-<p class="forces-verdict">Structurally attractive for the incumbent: the binding constraint is regulation, which sits outside Porter&rsquo;s frame entirely.</p>  </div>
+<p class="investing-forces-verdict">Structurally attractive for the incumbent: the binding constraint is regulation, which sits outside Porter&rsquo;s frame entirely.</p>  </div>
 
 
     <div class="gx-spec-head">
@@ -2692,32 +2691,32 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">quadrant-map</span>
   </div>
 
-    <figure class="quadrant">
-<figcaption>Watchlist — quality against valuation</figcaption>    <div class="quadrant-frame">
-      <span class="quadrant-y-label">Business quality score →</span>
-      <div class="quadrant-plot">
-<span class="quadrant-zone quadrant-z1">Quality, cheap</span><span class="quadrant-zone quadrant-z2">Quality, expensive</span><span class="quadrant-zone quadrant-z3">Weak, cheap</span><span class="quadrant-zone quadrant-z4">Weak, expensive</span>        <span class="quadrant-item quadrant-neutral" data-x="82%" data-y="78%">
-          <span class="quadrant-dot"></span><span class="quadrant-label">AAPL</span>
+    <figure class="investing-quadrant">
+<figcaption>Watchlist — quality against valuation</figcaption>    <div class="investing-quadrant-frame">
+      <span class="investing-quadrant-y-label">Business quality score →</span>
+      <div class="investing-quadrant-plot">
+<span class="investing-quadrant-zone investing-quadrant-z1">Quality, cheap</span><span class="investing-quadrant-zone investing-quadrant-z2">Quality, expensive</span><span class="investing-quadrant-zone investing-quadrant-z3">Weak, cheap</span><span class="investing-quadrant-zone investing-quadrant-z4">Weak, expensive</span>        <span class="investing-quadrant-item investing-quadrant-neutral" data-x="82%" data-y="78%">
+          <span class="investing-quadrant-dot"></span><span class="investing-quadrant-label">AAPL</span>
         </span>
-        <span class="quadrant-item quadrant-neutral" data-x="88%" data-y="86%">
-          <span class="quadrant-dot"></span><span class="quadrant-label">MSFT</span>
+        <span class="investing-quadrant-item investing-quadrant-neutral" data-x="88%" data-y="86%">
+          <span class="investing-quadrant-dot"></span><span class="investing-quadrant-label">MSFT</span>
         </span>
-        <span class="quadrant-item quadrant-good" data-x="41%" data-y="81%">
-          <span class="quadrant-dot"></span><span class="quadrant-label">GOOGL</span>
+        <span class="investing-quadrant-item investing-quadrant-good" data-x="41%" data-y="81%">
+          <span class="investing-quadrant-dot"></span><span class="investing-quadrant-label">GOOGL</span>
         </span>
-        <span class="quadrant-item quadrant-good" data-x="55%" data-y="68%">
-          <span class="quadrant-dot"></span><span class="quadrant-label">META</span>
+        <span class="investing-quadrant-item investing-quadrant-good" data-x="55%" data-y="68%">
+          <span class="investing-quadrant-dot"></span><span class="investing-quadrant-label">META</span>
         </span>
-        <span class="quadrant-item quadrant-bad" data-x="36%" data-y="24%">
-          <span class="quadrant-dot"></span><span class="quadrant-label">INTC</span>
+        <span class="investing-quadrant-item investing-quadrant-bad" data-x="36%" data-y="24%">
+          <span class="investing-quadrant-dot"></span><span class="investing-quadrant-label">INTC</span>
         </span>
-        <span class="quadrant-item quadrant-neutral" data-x="72%" data-y="38%">
-          <span class="quadrant-dot"></span><span class="quadrant-label">IBM</span>
+        <span class="investing-quadrant-item investing-quadrant-neutral" data-x="72%" data-y="38%">
+          <span class="investing-quadrant-dot"></span><span class="investing-quadrant-label">IBM</span>
         </span>
       </div>
-      <span class="quadrant-x-label">Valuation percentile vs own 10-year history →</span>
+      <span class="investing-quadrant-x-label">Valuation percentile vs own 10-year history →</span>
     </div>
-<p class="quadrant-note">Quality is the weighted scorecard total; valuation percentile is the current NTM P/E against the company&rsquo;s own ten-year distribution. Top-left is the buy zone.</p>  </figure>
+<p class="investing-quadrant-note">Quality is the weighted scorecard total; valuation percentile is the current NTM P/E against the company&rsquo;s own ten-year distribution. Top-left is the buy zone.</p>  </figure>
 
 
     <div class="gx-spec-head">
@@ -2725,40 +2724,40 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">funnel</span>
   </div>
 
-    <figure class="funnel">
-<figcaption>Market sizing — enterprise workflow software</figcaption>    <div class="funnel-stages">
-      <div class="funnel-stage">
-        <span class="funnel-bar" data-pct="100%">
-          <span class="funnel-label">Total addressable market</span>
-          <span class="funnel-value">$84B</span>
+    <figure class="investing-funnel">
+<figcaption>Market sizing — enterprise workflow software</figcaption>    <div class="investing-funnel-stages">
+      <div class="investing-funnel-stage">
+        <span class="investing-funnel-bar" data-pct="100%">
+          <span class="investing-funnel-label">Total addressable market</span>
+          <span class="investing-funnel-value">$84B</span>
         </span>
-<span class="funnel-note">All enterprise workflow spend, global.</span>      </div>
-      <div class="funnel-stage">
-        <span class="funnel-bar" data-pct="61%">
-          <span class="funnel-label">Served by cloud vendors</span>
-          <span class="funnel-value">$51B</span>
+<span class="investing-funnel-note">All enterprise workflow spend, global.</span>      </div>
+      <div class="investing-funnel-stage">
+        <span class="investing-funnel-bar" data-pct="61%">
+          <span class="investing-funnel-label">Served by cloud vendors</span>
+          <span class="investing-funnel-value">$51B</span>
         </span>
-<span class="funnel-note">Excludes on-premise and bespoke build (39%).</span>      </div>
-      <div class="funnel-stage">
-        <span class="funnel-bar" data-pct="40%">
-          <span class="funnel-label">Mid-market and above</span>
-          <span class="funnel-value">$34B</span>
+<span class="investing-funnel-note">Excludes on-premise and bespoke build (39%).</span>      </div>
+      <div class="investing-funnel-stage">
+        <span class="investing-funnel-bar" data-pct="40%">
+          <span class="investing-funnel-label">Mid-market and above</span>
+          <span class="investing-funnel-value">$34B</span>
         </span>
-<span class="funnel-note">Below 500 seats is served by self-serve tools at a tenth of the price.</span>      </div>
-      <div class="funnel-stage">
-        <span class="funnel-bar" data-pct="25%">
-          <span class="funnel-label">English-speaking regions</span>
-          <span class="funnel-value">$21B</span>
+<span class="investing-funnel-note">Below 500 seats is served by self-serve tools at a tenth of the price.</span>      </div>
+      <div class="investing-funnel-stage">
+        <span class="investing-funnel-bar" data-pct="25%">
+          <span class="investing-funnel-label">English-speaking regions</span>
+          <span class="investing-funnel-value">$21B</span>
         </span>
-<span class="funnel-note">Product is not localised; localisation is a FY2028 roadmap item.</span>      </div>
-      <div class="funnel-stage">
-        <span class="funnel-bar" data-pct="8%">
-          <span class="funnel-label">Realistic 5-year share</span>
-          <span class="funnel-value">$650M</span>
+<span class="investing-funnel-note">Product is not localised; localisation is a FY2028 roadmap item.</span>      </div>
+      <div class="investing-funnel-stage">
+        <span class="investing-funnel-bar" data-pct="8%">
+          <span class="investing-funnel-label">Realistic 5-year share</span>
+          <span class="investing-funnel-value">$650M</span>
         </span>
-<span class="funnel-note">3.1% of the serviceable market.</span>      </div>
+<span class="investing-funnel-note">3.1% of the serviceable market.</span>      </div>
     </div>
-<p class="funnel-summary">The final stage implies 3.1% share of the serviceable market by FY2030, against 1.2% today. That share gain is the entire growth case.</p>  </figure>
+<p class="investing-funnel-summary">The final stage implies 3.1% share of the serviceable market by FY2030, against 1.2% today. That share gain is the entire growth case.</p>  </figure>
 
 
     <div class="gx-spec-head">
@@ -2766,95 +2765,95 @@ def rate_limited(partition: str) -> bool:
     <span class="gx-spec-name">cohort-table</span>
   </div>
 
-    <table class="cohorts">
+    <table class="investing-cohorts">
 <caption>Net revenue retention by signup cohort (%)</caption>    <thead><tr><th>Cohort</th><th>Accounts</th><th>M0</th><th>M6</th><th>M12</th><th>M18</th><th>M24</th><th>M30</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">FY2023 H1</th>
-        <td class="cohort-size">1,240</td>
-<td class="cohort-cell cohort-l3">100</td><td class="cohort-cell cohort-l4">104</td><td class="cohort-cell cohort-l4">118</td><td class="cohort-cell cohort-l5">126</td><td class="cohort-cell cohort-l5">131</td><td class="cohort-cell cohort-l5">138</td>      </tr>
+        <td class="investing-cohort-size">1,240</td>
+<td class="investing-cohort-cell investing-cohort-l3">100</td><td class="investing-cohort-cell investing-cohort-l4">104</td><td class="investing-cohort-cell investing-cohort-l4">118</td><td class="investing-cohort-cell investing-cohort-l5">126</td><td class="investing-cohort-cell investing-cohort-l5">131</td><td class="investing-cohort-cell investing-cohort-l5">138</td>      </tr>
       <tr>
         <th scope="row">FY2023 H2</th>
-        <td class="cohort-size">1,510</td>
-<td class="cohort-cell cohort-l3">100</td><td class="cohort-cell cohort-l3">102</td><td class="cohort-cell cohort-l4">115</td><td class="cohort-cell cohort-l5">121</td><td class="cohort-cell cohort-l5">128</td><td class="cohort-empty"></td>      </tr>
+        <td class="investing-cohort-size">1,510</td>
+<td class="investing-cohort-cell investing-cohort-l3">100</td><td class="investing-cohort-cell investing-cohort-l3">102</td><td class="investing-cohort-cell investing-cohort-l4">115</td><td class="investing-cohort-cell investing-cohort-l5">121</td><td class="investing-cohort-cell investing-cohort-l5">128</td><td class="investing-cohort-empty"></td>      </tr>
       <tr>
         <th scope="row">FY2024 H1</th>
-        <td class="cohort-size">1,880</td>
-<td class="cohort-cell cohort-l3">100</td><td class="cohort-cell cohort-l3">101</td><td class="cohort-cell cohort-l4">110</td><td class="cohort-cell cohort-l4">114</td><td class="cohort-empty"></td><td class="cohort-empty"></td>      </tr>
+        <td class="investing-cohort-size">1,880</td>
+<td class="investing-cohort-cell investing-cohort-l3">100</td><td class="investing-cohort-cell investing-cohort-l3">101</td><td class="investing-cohort-cell investing-cohort-l4">110</td><td class="investing-cohort-cell investing-cohort-l4">114</td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td>      </tr>
       <tr>
         <th scope="row">FY2024 H2</th>
-        <td class="cohort-size">2,240</td>
-<td class="cohort-cell cohort-l3">100</td><td class="cohort-cell cohort-l3">98</td><td class="cohort-cell cohort-l3">104</td><td class="cohort-empty"></td><td class="cohort-empty"></td><td class="cohort-empty"></td>      </tr>
+        <td class="investing-cohort-size">2,240</td>
+<td class="investing-cohort-cell investing-cohort-l3">100</td><td class="investing-cohort-cell investing-cohort-l3">98</td><td class="investing-cohort-cell investing-cohort-l3">104</td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td>      </tr>
       <tr>
         <th scope="row">FY2025 H1</th>
-        <td class="cohort-size">2,910</td>
-<td class="cohort-cell cohort-l3">100</td><td class="cohort-cell cohort-l2">94</td><td class="cohort-empty"></td><td class="cohort-empty"></td><td class="cohort-empty"></td><td class="cohort-empty"></td>      </tr>
+        <td class="investing-cohort-size">2,910</td>
+<td class="investing-cohort-cell investing-cohort-l3">100</td><td class="investing-cohort-cell investing-cohort-l2">94</td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td>      </tr>
       <tr>
         <th scope="row">FY2025 H2</th>
-        <td class="cohort-size">3,400</td>
-<td class="cohort-cell cohort-l3">100</td><td class="cohort-empty"></td><td class="cohort-empty"></td><td class="cohort-empty"></td><td class="cohort-empty"></td><td class="cohort-empty"></td>      </tr>
+        <td class="investing-cohort-size">3,400</td>
+<td class="investing-cohort-cell investing-cohort-l3">100</td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td><td class="investing-cohort-empty"></td>      </tr>
     </tbody>
   </table>
-<p class="st-source">Levels: 5 above 120%, 4 is 105–120%, 3 is 95–105%, 2 is 80–95%, 1 below 80%. FY2025 cohorts retain materially worse at M12 — the mix shifted to self-serve.</p>
+<p class="investing-st-source">Levels: 5 above 120%, 4 is 105–120%, 3 is 95–105%, 2 is 80–95%, 1 below 80%. FY2025 cohorts retain materially worse at M12 — the mix shifted to self-serve.</p>
 
     <div class="gx-spec-head">
     <h3 class="gx-spec-title">Unit economics — CAC, LTV, payback</h3>
     <span class="gx-spec-name">unit-economics</span>
   </div>
 
-    <dl class="unit-headline unit-good">
+    <dl class="investing-unit-headline investing-unit-good">
     <div><dt>LTV / CAC</dt><dd>3.4x</dd></div>
     <div><dt>CAC payback</dt><dd>17 months</dd></div>
     <div><dt>Gross margin</dt><dd>78%</dd></div>
   </dl>
-  <table class="fin uniteco">
+  <table class="investing-fin investing-uniteco">
 <caption>Unit economics — FY2025 cohort</caption>    <thead><tr><th>Metric</th><th>Value</th><th>SaaS median</th><th>Reading</th></tr></thead>
     <tbody>
       <tr>
         <th scope="row">Customer acquisition cost (CAC)</th>
-        <td class="rm-value">$14,200</td>
+        <td class="investing-rm-value">$14,200</td>
         <td>$12,000</td>
-        <td class="rm-note">Fully loaded; up 22% y/y as the channel mix shifted to paid.</td>
+        <td class="investing-rm-note">Fully loaded; up 22% y/y as the channel mix shifted to paid.</td>
       </tr>
       <tr>
         <th scope="row">Annual contract value</th>
-        <td class="rm-value">$18,600</td>
+        <td class="investing-rm-value">$18,600</td>
         <td>$16,400</td>
-        <td class="rm-note">Up 9% on price, flat on seats.</td>
+        <td class="investing-rm-note">Up 9% on price, flat on seats.</td>
       </tr>
       <tr>
         <th scope="row">Gross margin</th>
-        <td class="rm-value">78%</td>
+        <td class="investing-rm-value">78%</td>
         <td>76%</td>
-        <td class="rm-note">Hosting scales; support does not.</td>
+        <td class="investing-rm-note">Hosting scales; support does not.</td>
       </tr>
       <tr>
         <th scope="row">Annual gross profit per customer</th>
-        <td class="rm-value">$14,500</td>
+        <td class="investing-rm-value">$14,500</td>
         <td>$12,500</td>
-        <td class="rm-note">The real numerator for LTV.</td>
+        <td class="investing-rm-note">The real numerator for LTV.</td>
       </tr>
       <tr>
         <th scope="row">Annual churn</th>
-        <td class="rm-value">9%</td>
+        <td class="investing-rm-value">9%</td>
         <td>12%</td>
-        <td class="rm-note">Better than median; enterprise mix helps.</td>
+        <td class="investing-rm-note">Better than median; enterprise mix helps.</td>
       </tr>
       <tr>
         <th scope="row">Implied customer life</th>
-        <td class="rm-value">5 years (capped)</td>
+        <td class="investing-rm-value">5 years (capped)</td>
         <td>6 years</td>
-        <td class="rm-note">Capped rather than 1/churn — an 11-year life is not evidenced.</td>
+        <td class="investing-rm-note">Capped rather than 1/churn — an 11-year life is not evidenced.</td>
       </tr>
       <tr>
         <th scope="row">Lifetime value (LTV)</th>
-        <td class="rm-value">$48,300</td>
+        <td class="investing-rm-value">$48,300</td>
         <td>$45,000</td>
-        <td class="rm-note">Gross profit basis, 5-year cap, undiscounted.</td>
+        <td class="investing-rm-note">Gross profit basis, 5-year cap, undiscounted.</td>
       </tr>
     </tbody>
   </table>
-<p class="unit-verdict unit-verdict-good">Economics work, but the margin is thinner than the headline ratio suggests: at a 17-month payback, growth is cash-consuming for at least six quarters.</p><p class="st-source">LTV uses gross profit, not revenue, and caps customer life at 5 years. CAC is fully loaded, including sales salaries and brand marketing.</p>
+<p class="investing-unit-verdict investing-unit-verdict-good">Economics work, but the margin is thinner than the headline ratio suggests: at a 17-month payback, growth is cash-consuming for at least six quarters.</p><p class="investing-st-source">LTV uses gross profit, not revenue, and caps customer life at 5 years. CAC is fully loaded, including sales salaries and brand marketing.</p>
 
     <section class="gx-cat" id="front-back-matter">
     <div class="gx-cat-kicker">Category 09 / 12</div>

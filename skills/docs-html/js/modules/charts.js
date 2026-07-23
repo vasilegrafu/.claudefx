@@ -17,17 +17,37 @@
    the DOM as the fallback (charts.css styles it as a readable code box, so an
    unreachable CDN or an invalid spec degrades to source instead of breaking).
 
-   It also owns the DESIGN SYSTEM's dataviz tokens as plain data — PALETTE
+   It also owns the DESIGN SYSTEM's chart colour tokens as plain data — PALETTE
    (categorical), RAMP (sequential) and TOKENS (ink, axes, and the semantic
    direction colours) below. They are deliberately NOT in any engine's theme
    format: an engine translates them into whatever shape it needs, so a second
-   engine inherits the same validated colors rather than re-picking them.
-   Rebrand the dataviz palette here, never per chart and never per engine;
-   `python builder.py dataviz` is the check that keeps it honest. */
+   engine inherits the same colors rather than re-picking them. The VALUES come
+   from css/modules/theme.css — rebrand there, never per chart and never per
+   engine. */
 
 "use strict";
 
 docsHtml.chart = (() => {
+  /* Colours come from the ACTIVE THEME, read once from CSS custom properties.
+
+     An engine's theme object cannot hold `var(--x)` — ECharts wants a literal
+     — so the values are resolved here, at init, and handed over already
+     substituted. Reading them (rather than hardcoding them, as this file did
+     before 4.0.0) is what lets one document render in any theme, and removes
+     a duplication that used to be kept in step with base.css by hand.
+
+     ONCE is enough: the palette is fixed for the life of the page, so nothing
+     re-reads and nothing re-renders. Retheming means editing theme.css; the
+     charts follow on the next load.
+
+     Every read carries the light-theme value as a fallback, so a stylesheet
+     that fails to load can never blank a chart. */
+  const css = getComputedStyle(document.documentElement);
+  const read = (name, fallback) =>
+    css.getPropertyValue(name).trim() || fallback;
+  const readList = (prefix, fallbacks) =>
+    fallbacks.map((f, i) => read(`${prefix}${i + 1}`, f));
+
   /* The 8-slot categorical palette, in FIXED order (never cycled).
 
      These are the Okabe-Ito colours — the published reference set for
@@ -35,21 +55,21 @@ docsHtml.chart = (() => {
      replaced by the document's own ink, because a pure-black series in a
      document whose text is #182338 reads as an axis rather than as data.
 
-     Slot order is by CONTRAST against the chart surface (bg-soft, #f7f9fb),
-     not by separation: the first slots are used most, so they are the ones
-     that must be legible. The three leading slots clear 3:1 unaided; the set
-     stays separable at every prefix length.
+     Slot order is by CONTRAST against the chart surface, not by separation:
+     the first slots are used most, so they are the ones that must be legible.
+     The three leading slots clear 3:1 unaided; the set stays separable at
+     every prefix length. A theme orders the same eight hues for its OWN
+     surface: on a dark ground the order differs, because legibility inverts.
 
-     Run `python builder.py dataviz` after changing any colour here. It checks
-     contrast and pairwise separation under normal vision plus protanopia,
-     deuteranopia and tritanopia, and FAILS if any pair becomes confusable.
-     Its floor (CIEDE2000 10.0) is calibrated just under this palette's own
-     worst pair (11.1), which is as good as eight categorical colours get. */
-  const PALETTE = ["#0072b2", "#d55e00", "#009e73", "#cc79a7",
-                   "#56b4e9", "#e69f00", "#182338", "#f0e442"];
+     Do not substitute colours here casually. This set stays separable under
+     protanopia, deuteranopia and tritanopia — its worst pair is CIEDE2000
+     11.1, which is as good as eight categorical colours get. An ad-hoc
+     replacement will not hold that property; take a published reference set. */
+  const PALETTE = readList("--chart-palette-",
+                           ["#0072b2", "#d55e00", "#009e73", "#cc79a7",
+                            "#56b4e9", "#e69f00", "#182338", "#f0e442"]);
 
-  /* Ink, axis and surface tokens. Literal values because engines cannot read
-     CSS custom properties; kept in sync with css/modules/base.css.
+  /* Ink, axis and surface tokens, from the active theme.
 
      positive/negative/caution are SEMANTIC, not categorical — they mirror
      --decision / --risk / --warning. They exist for the one exception to
@@ -60,28 +80,34 @@ docsHtml.chart = (() => {
      They are also never the sole encoding — positive/negative fail
      deuteranopia separation by construction (that is what red/green means), so
      any mark using them carries a second cue: hollow vs filled body, a sign in
-     the label, or position relative to the axis. `python builder.py dataviz`
-     reports the pair and does not fail on it, for exactly this reason. */
+     the label, or position relative to the axis. */
   const TOKENS = {
-    ink:      "#182338",
-    muted:    "#5b6b81",
-    axis:     "#c3c2b7",
-    grid:     "#eef1f5",
-    surface:  "#ffffff",
-    border:   "#dde3ea",
-    positive: "#15693b",
-    negative: "#b42331",
-    caution:  "#8a5a00",
-    font:     "Inter, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+    ink:      read("--chart-ink", "#182338"),
+    muted:    read("--chart-muted", "#5b6b81"),
+    axis:     read("--chart-axis", "#c3c2b7"),
+    grid:     read("--chart-grid", "#eef1f5"),
+    surface:  read("--chart-surface", "#ffffff"),
+    border:   read("--chart-border", "#dde3ea"),
+    positive: read("--chart-positive", "#15693b"),
+    negative: read("--chart-negative", "#b42331"),
+    caution:  read("--chart-caution", "#8a5a00"),
+    /* Not themed: the type is the same in every theme. Read from --font-text
+       so the engine matches the document rather than restating the stack. */
+    font:     read("--font-text",
+                   "Inter, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"),
   };
 
   /* Sequential ramp for CONTINUOUS encodings — heatmap cells, visualMap, any
      ordered quantity. The categorical palette is wrong here: eight unrelated
      hues imply eight categories, and ECharts' stock blue→red default reads as
-     good→bad on data that carries no such judgement. Anchored on --accent
-     (#1f4e8c) and monotonic in luminance, which is what makes it survive
-     greyscale printing and every form of colour vision deficiency. */
-  const RAMP = ["#eaf1f9", "#c5d9ee", "#9ac0e0", "#6aa3d0", "#3f7fb8", "#1f4e8c"];
+     good→bad on data that carries no such judgement. Anchored on the theme's
+     accent and monotonic in luminance, which is what makes it survive
+     greyscale printing and every form of colour vision deficiency. A dark
+     theme reverses the direction — low values dark, high values bright — and
+     monotonicity is the property it must not lose. */
+  const RAMP = readList("--chart-ramp-",
+                        ["#eaf1f9", "#c5d9ee", "#9ac0e0",
+                         "#6aa3d0", "#3f7fb8", "#1f4e8c"]);
 
   const DEFAULT_HEIGHT = 340;
   const RESIZE_DEBOUNCE = 150;

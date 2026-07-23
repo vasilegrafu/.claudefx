@@ -41,7 +41,7 @@ docs-html.js          entry/loader: the MODULES list + injector — order IS dep
 | `math.js` | feature on `.math`: LaTeX rendered by KaTeX `0.16.11` (lazy CDN, script + stylesheet). `<div class="math">` = display, `<span class="math">` = inline; CDN down → the LaTeX source stays readable (math.css) |
 | `diagrams.js` | **Not a feature** — the shared, engine-agnostic diagram viewport, exposed as `docsHtml.diagram.Viewer`. Owns `.diagram-figure` (bounded box), `.diagram-canvas` (pan surface), the toolbar from a declarative `BUTTONS` spec, the zoom-% readout, fit/reset/fullscreen/download-SVG/copy-source, the resize grip, and pan/zoom (a small self-contained transform — deliberately **not** an external pan library, so no engine bundle can clobber it with a global of its own). Knows nothing about any engine |
 | `diagram-mermaid.js` | feature on `pre.mermaid`: pins Mermaid `11.4.1` (lazy), renders with `useMaxWidth:false` (natural pixel size, so 100% = natural), hands the SVG to `diagram.Viewer`, and adds the ✎ **live source editor** (its only engine-specific tool — re-renders into the same SVG node so the view survives; reuses `highlight` for the colored overlay) |
-| `charts.js` | **Not a feature** — the shared, engine-agnostic chart frame, exposed as `docsHtml.chart`. Owns `PALETTE` (the 8-slot categorical palette — Okabe-Ito, ordered by contrast, ink substituted for pure black), `RAMP` (sequential, for continuous encodings) and `TOKENS` (ink/axis/grid/surface/font plus the semantic `positive`/`negative`/`caution` direction tones) as **plain data, in no engine's format**, so every engine inherits the same checked colors; `resolveColors(spec)`, which substitutes `"palette:3"` / `"token:positive"` / `"ramp:2"` references so a preset never writes a hex into a document; `Frame` (the `.chart-figure` card, the `.chart-canvas` an engine draws into, `data-height`, hiding the source `<pre>`, and the toolbar from a declarative `BUTTONS` spec: download-SVG · copy-source); one debounced resize dispatch for the whole page via `frame.onResize(fn)`; and `markError(pre)`. Knows nothing about any engine. **Rebrand the dataviz palette here**, then run `python builder.py dataviz` — it verifies contrast, colour-blind separation and ramp monotonicity, and fails on a confusable pair |
+| `charts.js` | **Not a feature** — the shared, engine-agnostic chart frame, exposed as `docsHtml.chart`. Owns `PALETTE` (the 8-slot categorical palette — Okabe-Ito, ordered by contrast, ink substituted for pure black), `RAMP` (sequential, for continuous encodings) and `TOKENS` (ink/axis/grid/surface/font plus the semantic `positive`/`negative`/`caution` direction tones) as **plain data, in no engine's format**, so every engine inherits the same checked colors. Since 4.0.0 those values are **read from `css/foundational/theme.css`'s custom properties** (`--chart-palette-N`, `--chart-ramp-N`, `--chart-*`) once at load via `getComputedStyle`, each with a hardcoded fallback — an engine theme object cannot hold `var()`, and the palette is fixed for the life of the page, so one read is enough and nothing re-renders. Also `resolveColors(spec)`, which substitutes `"palette:3"` / `"token:positive"` / `"ramp:2"` references so a preset never writes a hex into a document — which is what lets a retheme reach every existing chart; `Frame` (the `.chart-figure` card, the `.chart-canvas` an engine draws into, `data-height`, hiding the source `<pre>`, and the toolbar from a declarative `BUTTONS` spec: download-SVG · copy-source); one debounced resize dispatch for the whole page via `frame.onResize(fn)`; and `markError(pre)`. Knows nothing about any engine. **Rebrand the palette in `css/foundational/theme.css`, not here** — and take a published colour-blind-safe reference set rather than hand-picking, since nothing checks it |
 | `chart-apache-echarts.js` | feature on `pre.chart.apache-echarts`: declarative data charts. Parses every JSON `option` **first** (an all-invalid page never fetches the ~900 KB engine), lazy-loads ECharts `5.5.1` (pinned CDN), translates `chart.PALETTE`/`TOKENS` into an ECharts theme, and renders **SVG** into `frame.canvas`; auto-fills `aria`/`tooltip`/`legend` only when unset. Invalid JSON or CDN down → the spec stays a readable code box (charts.css) |
 | `main.js` | `docsHtml.init()` on DOM-ready — final, never edited |
 
@@ -55,7 +55,7 @@ exists:
    the engine needs a host element) and call `new docsHtml.diagram.Viewer({ pre,
    svg, index, source, copyTitle, extraButtons })`. Load the engine lazily with
    `docsHtml.util.loadScript(<pinned CDN url>)`, inside `init`.
-2. `css/modules/diagram-<name>.css` — style `pre.<name>` as a readable code box
+2. `css/diagrams/diagram-<name>.css` — style `pre.<name>` as a readable code box
    (the CDN-down fallback) and `pre.<name>[hidden] { display: none }`.
 3. Add `"diagram-<name>"` to `MODULES` in `js/docs-html.js`, after `"diagrams"`.
 4. Add `@import url("modules/diagram-<name>.css") layer(diagrams);` to
@@ -80,7 +80,7 @@ steps, touching nothing that exists:
    engine lazily with `docsHtml.util.loadScript(<pinned CDN url>)`, inside
    `init`. Build the engine's theme from `docsHtml.chart.PALETTE` / `.TOKENS` —
    never re-pick colors.
-2. `css/modules/chart-<name>.css` — engine specifics ONLY. The card, the
+2. `css/charts/chart-<name>.css` — engine specifics ONLY. The card, the
    toolbar, and the `pre.chart` fallback box are already shared, selected by the
    `chart` marker class every engine wears.
 3. Add `"chart-<name>"` to `MODULES` in `js/docs-html.js`, after `"charts"`.
@@ -97,16 +97,31 @@ is a macro that writes a spec for an engine that already exists. There are
 twenty-one of them in `components/charts/`; `bar` is the simplest model and
 `waterfall` the most involved.
 
-1. `components/charts/<kind>/component.html.j2` — a thin macro that names the
-   kind and hands off. It never writes the `<pre>` itself:
+1. `components/charts/<kind>/component.html.j2` — one self-contained macro that
+   builds its own option and hands it to `r.out`. It never writes the `<pre>`
+   itself:
    ```jinja
    {# purpose: one line — read by builder.py catalog #}
    {# sample: series=[("A",[1,2])], categories=["x","y"], caption="s" #}
    {% import "components/charts/_render.html.j2" as r %}
 
    {% macro bar(series=[], categories=[], caption="", height=340, note="", y_name="") %}
-   {{ r.out(chart_cartesian(series=series, categories=categories,
-                            caption=caption, y_name=y_name, kind="bar"), height, note) }}
+   {% set built = [] %}
+   {% for name, values in series %}
+   {%   set _ = built.append({"type": "bar", "name": name, "data": values}) %}
+   {% endfor %}
+   {% set option = {
+        "tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}},
+        "grid": {"left": 8, "right": 16, "top": (52 if caption else 16),
+                 "bottom": 8, "containLabel": true},
+        "xAxis": {"type": "category", "data": categories},
+        "yAxis": {"type": "value"},
+        "series": built,
+      } %}
+   {% if caption %}
+   {%   set _ = option.update({"title": {"text": caption}}) %}
+   {% endif %}
+   {{ r.out(option, height, note) }}
    {% endmacro %}
    ```
    `_render.html.j2` owns the engine call, so the engine is named in ONE place
@@ -116,17 +131,27 @@ twenty-one of them in `components/charts/`; `bar` is the simplest model and
    JSON in a template. Manual comma bookkeeping (`{{ "," if not loop.last }}`)
    fails silently: a malformed spec is not an error, the engine just leaves the
    source visible as a code box, which looks exactly like an unreachable CDN.
-   Shared option-building lives in `lib/chartkit.py` — eleven of
-   the kinds are `chart_cartesian(...)` plus flags. Add a builder there rather
-   than restating an axis skeleton in a template.
+
+   Each kind builds its own option **in its own file** — there is no shared
+   option builder, and a Jinja macro could not be one anyway (a macro returns
+   output, not data). Copy the nearest existing kind and change what differs.
+   The cost is that the grid/axis block repeats; the check in step 4 is what
+   catches the copies drifting apart. Two details are easy to lose in a copy:
+   the left margin must widen to `46` when the y axis carries a `name`
+   (`containLabel` reserves room for tick labels but not for the name, so it
+   renders off the card), and a horizontal chart's category axis needs
+   `"inverse": true` or the ranking reads bottom-up.
 3. Colours by reference, never by hex — `"palette:1"`, `"token:positive"`,
    `"ramp:2"` (`docsHtml.chart.resolveColors` substitutes them). Colouring by
    ROLE rather than by item is why a 15-node sankey does not run out of colours;
    see `components/charts/sankey/usage.md`.
-4. Add a `{# sample: <kwargs> #}` header — real enough to exercise every loop.
-   `python builder.py charts` renders every kind from its sample and fails if
-   the spec is not valid JSON or breaks the relief rule. A kind without a sample
-   is never checked.
+4. Add a `{# sample: <kwargs> #}` header — a real call, real enough to exercise
+   every loop. Nothing executes it; it is the worked example the next author
+   copies, and the arguments you would use to try the kind yourself.
+   **Then compose a document with the kind and open it.** A malformed spec does
+   not raise — the engine leaves the source visible as a code box, which is
+   indistinguishable from an unreachable CDN, so the only way to find out is to
+   look.
 5. Compute at compose time what the reader should be able to audit
    (`drawdown-curve` derives the running peak, `waterfall` the cumulative
    placeholder, `stacked-normalized` the column shares — so the document carries

@@ -2,8 +2,8 @@
 
 _Authoring guidance for the `chart-apache-echarts` component — when to use it, how, and the rules._
 
-Styled by: `css/modules/charts.css` (the shared frame) +
-`css/modules/chart-apache-echarts.css` (engine specifics)
+Styled by: `css/charts/charts.css` (the shared frame) +
+`css/charts/chart-apache-echarts.css` (engine specifics)
 Rendered by: the pinned Apache ECharts CDN script, loaded by the
 `chart-apache-echarts` feature only when the document holds a matching element
 (see SKILL.md). No `<script>` tag in the document — the feature self-loads the
@@ -48,7 +48,7 @@ chart engine has them too.
 Applied only when you did not set them, so an explicit author always wins:
 
 - `aria.enabled: true` — screen-reader description of the chart.
-- `tooltip: {}` — hover layer on by default (dataviz method). For line/bar add
+- `tooltip: {}` — hover layer on by default. For line/bar add
   `"tooltip": { "trigger": "axis" }`; pie/scatter keep the item default.
 - `legend: {}` — added automatically when there are **≥ 2 series** (identity is
   never color-alone).
@@ -63,10 +63,9 @@ the engine at all. So write the `option` clean enough to read as text.
 ## Rules
 
 - **Never restyle the theme.** No per-chart `color`, fonts, or axis colors — the
-  palette is the Okabe-Ito reference set, checked colorblind-safe on the light
-  surface by `python builder.py dataviz`; overriding it breaks that guarantee.
-  Rebrand once, in `PALETTE`/`TOKENS`/`RAMP` in `js/modules/charts.js` — the
-  shared layer, so every engine follows — then re-run the check.
+  palette is the Okabe-Ito reference set, colorblind-safe on the light surface;
+  overriding it breaks that guarantee. Rebrand once, in `PALETTE`/`TOKENS`/`RAMP`
+  in `js/modules/charts.js` — the shared layer, so every engine follows.
 - **A spec may NAME a design colour** rather than write a hex: `"palette:3"`,
   `"token:positive"`, `"ramp:2"`. Use this when a mark genuinely needs a
   specific tone (a target `markLine`, a role-coloured node); never to
@@ -78,8 +77,8 @@ the engine at all. So write the `option` clean enough to read as text.
   on the light surface — **4** (reddish purple), **5** (sky blue), **6**
   (orange) and **8** (yellow): when you use them, add visible data labels
   (`"label": { "show": true }`) or a table view so the series is legible, not
-  color-alone (the dataviz *relief rule*). Slots 1-3 and 7 need no relief.
-  `python builder.py dataviz` prints the current list.
+  color-alone (the *relief rule*). Slots 1-3 and 7 need no relief. Nothing
+  enforces this — count the automatically-coloured series yourself.
 - **Categorical series cap 8**, and only the first 4 for scatter/bubble/maps;
   past that, fold to "Other", facet, or small-multiple.
 - **Charts are never images** — screenshots use [[figure]]. A chart is data.

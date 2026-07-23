@@ -70,8 +70,9 @@ derived numbers and a reader can check them:
 - **distribution** — quartiles and Tukey fences, outliers separated rather than
   absorbed into a whisker.
 
-`python builder.py charts` renders every one of them from its `{# sample: … #}`
-header and fails if the spec is malformed or breaks the relief rule.
+Each kind carries a `{# sample: … #}` header — a real call with real arguments.
+Nothing runs it, so treat it as the worked example to copy from, and check a new
+kind by composing a document with it and opening that in a browser.
 
 ## Colour is not yours to choose
 
@@ -79,7 +80,7 @@ Every kind takes its colours from the design system — the categorical palette
 for series identity, the sequential ramp for ordered quantities, and the
 semantic tones **only for direction** (a waterfall's rise and fall, a signed
 bar's sign, a candlestick's up and down). All three live in
-`js/modules/charts.js` and are checked by `python builder.py dataviz`.
+`js/modules/charts.js`.
 
 A spec that genuinely needs to name one references it rather than writing a hex:
 `"palette:3"`, `"token:positive"`, `"ramp:2"`. Colouring by ROLE rather than by

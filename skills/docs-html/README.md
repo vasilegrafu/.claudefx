@@ -11,19 +11,20 @@ yours, and it will read the same next year as it does today.
 
 - **Standalone HTML, zero lock-in** — no Word, no LaTeX, no export step. Open
   it, edit it, send it, print it.
-- **One system, consistent everywhere** — 84 document types and 45 components
+- **One system, consistent everywhere** — 74 document types and 116 components
   that already look right together; restyle every document by editing one file.
 - **Renders what real documents need** — interactive diagrams, proper math,
   syntax-highlighted code, tables, KPIs, timelines, callouts.
 - **Two-line include** — a document links one stylesheet and one script from a
   version-pinned CDN, so it stays portable and pinned to the exact look it was
   authored against.
-- **Prints to PDF** — Ctrl+P, done. Pagination is handled.
+- **Prints to PDF** — Ctrl+P, done. Screen-only chrome drops away; paper size
+  and pagination are your browser's.
 
 ## What you can do with it
 
-Compose any of **84 document types** across **10 domains**, each built from
-**45 reusable components**:
+Compose any of **74 document types** across **10 domains**, each built from
+**116 reusable components**:
 
 | Domain | A few of the types |
 |---|---|
@@ -107,12 +108,13 @@ There is no publish or export step. The document you compose *is* the artifact.
 It is just Jinja and CSS — growing it is easy:
 
 - **New component** — add `components/<category>/<name>/component.html.j2`
-  (a Jinja macro) plus a short `usage.md`, style it in a `css/modules/` file,
+  (a Jinja macro) plus a short `usage.md`, style it in the matching `css/<group>/` file,
   and add a demo to the gallery.
 - **New document type** — add `doc-types/<domain>/<name>/document.html.j2`
   (a body of component calls) plus a `usage.md`.
-- **Rebrand everything** — edit `css/modules/brand.css` (name + accent colour);
-  it cascades to every document.
+- **Rebrand or retheme everything** — edit `css/foundational/theme.css`, which holds
+  every colour in the system (`--accent` is the brand knob); it cascades to
+  every document.
 
 Then refresh the reference with `python builder.py catalog` and the gallery
 with `python builder.py showcase`. See `SKILL.md` for the full authoring
@@ -137,14 +139,17 @@ docs-html/
 ├── version.json        the design-system version   (+ version.md changelog)
 ├── css/
 │   ├── docs-html.css   the single stylesheet every document links
-│   └── modules/*.css   the modules it imports
+│   ├── foundational/   colour tokens, typography, layout, content, blocks…
+│   ├── domain-specific/  business, investing — classes carry the domain name
+│   ├── diagrams/       shared viewport + one engine
+│   └── charts/         shared frame + one engine
 ├── js/
 │   ├── docs-html.js    the single script every document links
 │   └── modules/*.js    features: syntax highlighting, math, diagrams, layout
 ├── components/
-│   └── <category>/     45 building blocks, grouped by category
+│   └── <group>/        116 building blocks, grouped by scope then category
 ├── doc-types/
-│   └── <domain>/       84 document types, grouped by domain
+│   └── <domain>/       74 document types, grouped by domain
 └── showcases/
     └── components.html  the live component gallery
 ```

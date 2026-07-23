@@ -3,5 +3,23 @@
 {% import "components/charts/_render.html.j2" as r %}
 
 {% macro gauge(value=0, minimum=0, maximum=100, caption="", height=280, note="", unit="") %}
-{{ r.out(chart_gauge(value=value, minimum=minimum, maximum=maximum, caption=caption, unit=unit), height, note) }}
+{# Deliberately plain: no coloured danger bands. A gauge already spends a great
+   deal of ink on a single number (see this component's usage.md), and banding
+   it would add a judgement the number itself does not carry. #}
+{% set option = {
+     "series": [{"type": "gauge", "min": minimum, "max": maximum,
+                 "progress": {"show": true, "width": 12},
+                 "axisLine": {"lineStyle": {"width": 12}},
+                 "axisTick": {"show": false},
+                 "splitLine": {"length": 8},
+                 "axisLabel": {"fontSize": 10},
+                 "pointer": {"width": 4},
+                 "detail": {"fontSize": 22, "offsetCenter": [0, "70%"],
+                            "formatter": "{value}" ~ unit},
+                 "data": [{"value": value}]}],
+   } %}
+{% if caption %}
+{%   set _ = option.update({"title": {"text": caption}}) %}
+{% endif %}
+{{ r.out(option, height, note) }}
 {% endmacro %}
